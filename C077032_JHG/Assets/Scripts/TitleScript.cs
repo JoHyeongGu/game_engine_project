@@ -14,6 +14,6 @@ public class TitleScript : MonoBehaviour
     void OnGUI()
     {
         GUI.Label(new Rect(Screen.width / 2, Screen.height / 2,
-       128, 32), "Plattach");
+       128, 32), "Game Start");
     }
 }
