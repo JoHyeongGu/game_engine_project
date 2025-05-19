@@ -1,27 +1,32 @@
 ﻿using UnityEngine;
 
+// 블록에 관한 정보
 public class Block
-{ // 블록에 관한 정보
+{
     public static float COLLISION_SIZE = 1.0f; // 블록의 충돌 크기
     public static float vanishTime = 3.0f; // 불 붙고 사라질 때까지의 시간
-    
+
+    // 그리드에서의 좌표를 나타내는 구조체
     public struct iPosition
-    { // 그리드에서의 좌표를 나타내는 구조체
+    {
         public int x; // X 좌표
         public int y; // Y 좌표
     }
 
-    public enum COLOR { // 블록 색상
+    // 블록 색상
+    public enum COLOR
+    {
         NONE = -1, // 색 지정 없음
-        PINK = 0, BLUE, YELLOW, GREEN, // 분홍색, 파란색, 노란색, 녹색
+        RED = 0, BLUE, YELLOW, GREEN, // 분홍색, 파란색, 노란색, 녹색
         MAGENTA, ORANGE, GRAY, // 마젠타, 주황색, 그레이
         NUM, // 컬러가 몇 종류인지 나타냄(=7)
-        FIRST = PINK, LAST = ORANGE,// 초기 컬러(분홍색), 최종 컬러(주황색)
+        FIRST = RED, LAST = ORANGE,// 초기 컬러(분홍색), 최종 컬러(주황색)
         NORMAL_COLOR_NUM = GRAY, // 보통 컬러(회색 이외의 색)의 수
     };
 
+    // 상하좌우 네 방향
     public enum DIR4
-    { // 상하좌우 네 방향
+    {
         NONE = -1, // 방향지정 없음
         RIGHT, LEFT, UP, DOWN, // 우. 좌, 상, 하
         NUM,  // 방향이 몇 종류 있는지 나타냄(=4)
@@ -39,7 +44,7 @@ public class Block
 public class BlockControl : MonoBehaviour
 {
     public Block.COLOR color = (Block.COLOR)0; // 블록 색
-    public BlockRoot blockRoot= null; // 블록의 신
+    public BlockRoot blockRoot = null; // 블록의 신
     public Block.iPosition iPos; // 블록 좌표
 
     public Material opagueMaterial;
@@ -51,15 +56,17 @@ public class BlockControl : MonoBehaviour
         this.nextStep = Block.STEP.IDLE;
     }
 
+    // 특정 color로 블록을 칠함
     public void setColor(Block.COLOR color)
-    { // 특정 color로 블록을 칠함
+    {
         this.color = color; // 이번에 지정된 색을 멤버 변수에 보관
         Color colorValue;  // Color 클래스는 색을 나타냄
+        // 칠할 색에 따라서 갈라짐
         switch (this.color)
-        { // 칠할 색에 따라서 갈라짐
+        {
             default:
-            case Block.COLOR.PINK:
-                colorValue = new Color(1.0f, 0.5f, 0.5f); break;
+            case Block.COLOR.RED:
+                colorValue = Color.red; break;//new Color(1.0f, 0.5f, 0.5f); break;
             case Block.COLOR.BLUE:
                 colorValue = Color.blue; break;
             case Block.COLOR.YELLOW:
@@ -181,7 +188,7 @@ public class BlockControl : MonoBehaviour
                 rate = Mathf.Sin(rate * Mathf.PI / 2.0f);
                 this.positionOffset = Vector3.Lerp(this.positionOffsetInitial, Vector3.zero, rate); break;
             case Block.STEP.FALL:
-                this.fall.velocity += Physics.gravity.y * Time.deltaTime * 0.3f; // 중력의 영향을 부여
+                this.fall.velocity += Physics.gravity.y * Time.deltaTime * 1.5f; // 중력의 영향을 부여
                 this.positionOffset.y += this.fall.velocity * Time.deltaTime; // 세로 방향 위치를 계산
                 if (this.positionOffset.y < 0.0f)
                 { // 다 내려왔다면
@@ -227,32 +234,35 @@ public class BlockControl : MonoBehaviour
     public bool IsVacant()
     { // 블록이 비표시(그리드상의 위치가 텅 빔)로 되어 있다면 true를 반환
         bool isVacant = false;
-        if (this.step == Block.STEP.VACANT && this.nextStep == Block.STEP.NONE) {
+        if (this.step == Block.STEP.VACANT && this.nextStep == Block.STEP.NONE)
+        {
             isVacant = true;
         }
         return (isVacant);
     }
 
+    // 교체 중(슬라이드 중)이라면 true를 반환
     public bool IsSliding()
-    { // 교체 중(슬라이드 중)이라면 true를 반환
+    {
         bool isSliding = (this.positionOffset.x != 0.0f);
         return (isSliding);
     }
 
+    // 잡혔을 때 호출
     public void BeginGrab()
     {
         this.nextStep = Block.STEP.GRABBED;
     }
 
+    // 놓았을 때 호출
     public void EndGrab()
     {
         this.nextStep = Block.STEP.IDLE;
     }
 
-    // 잡혔을 때 호출
-    // 놓았을 때 호출
+    // 잡을 수 있는 상태 인지 판단
     public bool IsGrabbable()
-    { // 잡을 수 있는 상태 인지 판단
+    {
         bool isGrabbable = false;
         switch (this.step)
         {
@@ -263,9 +273,10 @@ public class BlockControl : MonoBehaviour
         }
         return (isGrabbable);
     }
-    // true(잡을 수 있다)를 반환
+
+    // 지정된 마우스 좌표가 자신과 겹치는지 반환
     public bool IsContainedPosition(Vector2 position)
-    { // 지정된 마우스 좌표가 자신과 겹치는지 반환
+    {
         bool ret = false;
         Vector3 center = this.transform.position;
         float h = Block.COLLISION_SIZE / 2.0f;
@@ -277,13 +288,13 @@ public class BlockControl : MonoBehaviour
         } while (false);
         return (ret);
     }
-    public float vanishTimer = -1.0f;
-    public Block.DIR4 slideDir = Block.DIR4.NONE;
-    public float stepTimer = 0.0f;
-    // 블록이 사라질 때까지의 시간
-    // 슬라이드된 방향
-    // 블록이 교체된 때의 이동시간 등
-    public Block.DIR4 CalcSlideDir(Vector2 mousePosition) { // 마우스 위치를 바탕으로 슬라이드된 방향을 구함
+    public float vanishTimer = -1.0f; // 블록이 사라질 때까지의 시간
+    public Block.DIR4 slideDir = Block.DIR4.NONE; // 슬라이드된 방향
+    public float stepTimer = 0.0f; // 블록이 교체된 때의 이동시간 등
+
+    // 마우스 위치를 바탕으로 슬라이드된 방향을 구함
+    public Block.DIR4 CalcSlideDir(Vector2 mousePosition)
+    {
         Block.DIR4 dir = Block.DIR4.NONE;
         Vector2 v = mousePosition - new Vector2(this.transform.position.x, this.transform.position.y); // 지정된 mouse_positio과 현재 위치의 차이
         if (v.magnitude > 0.1f)
@@ -308,8 +319,10 @@ public class BlockControl : MonoBehaviour
         }
         return (dir);
     }
+
+    // 현재 위치와 슬라이드할 곳의 거리가 어느 정도인가 반환
     public float CalcDirOffset(Vector2 position, Block.DIR4 dir)
-    { // 현재 위치와 슬라이드할 곳의 거리가 어느 정도인가 반환
+    {
         float offset = 0.0f;
         Vector2 v = position - new Vector2(this.transform.position.x, this.transform.position.y); // 지정된 위치와 블록의 현재 위치의 차를 나타내는 벡터
         switch (dir)
@@ -321,24 +334,28 @@ public class BlockControl : MonoBehaviour
         }
         return (offset);
     }
+
     public void BeginSlide(Vector3 offset)
     {
         this.positionOffsetInitial = offset;
         this.positionOffset = this.positionOffsetInitial;
         this.nextStep = Block.STEP.SLIDE;
     }
+
     public void ToVanishing()
     {
         // ＇사라질 때까지 걸리는 시간＇을 규정값으로 리셋
         float vanishTime = this.blockRoot.levelControl.GetVanishTime();
         this.vanishTimer = vanishTime;
     }
+
     public bool IsVanishing()
     {
         // vanishTimer가 0보다 크면 true
         bool isVanishing = (this.vanishTimer > 0.0f);
         return (isVanishing);
     }
+
     public void RewindVanishTimer()
     {
         // '사라질 때까지 걸리는 시간'을 규정값으로 리셋
@@ -352,11 +369,13 @@ public class BlockControl : MonoBehaviour
         bool isVisible = this.GetComponent<Renderer>().enabled;
         return (isVisible);
     }
+
     public void SetVisible(bool isVisible)
     {
         // 그리기 가능 설정에 인수를 대입
         this.GetComponent<Renderer>().enabled = isVisible;
     }
+
     public bool IsIdle()
     {
         bool isIdle = false;

@@ -1,9 +1,12 @@
+using System.Threading.Tasks;
+using System.Collections;
 using UnityEngine;
 
 public class BlockRoot : MonoBehaviour
 {
     public GameObject BlockPrefab = null;
     public BlockControl[,] blocks;
+    public BlockControl blockCanBeMatched;
 
     public void InitialSetUp()
     {
@@ -65,29 +68,22 @@ public class BlockRoot : MonoBehaviour
         // 레벨 선택
     }
 
+    // 현재 패턴의 출현 확률을 바탕으로 색을 산출해서 반환
     public Block.COLOR SelectBlockColor()
-    { // 현재 패턴의 출현 확률을 바탕으로 색을 산출해서 반환
+    {
         Block.COLOR color = Block.COLOR.FIRST;
-        // 이번 레벨의 레벨 데이터를 가져옴
-        LevelData level_data = this.levelControl.GetCurrentLevelData();
-        float rand = Random.Range(0.0f, 1.0f);
-        // 0.0~1.0 사이의 난수
-        float sum = 0.0f;
+        LevelData level_data = this.levelControl.GetCurrentLevelData(); // 이번 레벨의 레벨 데이터를 가져옴
+        float rand = Random.Range(0.0f, 1.0f); // 0.0~1.0 사이의 난수
+        float sum = 0.0f; // 출현 확률의 합계
         int i = 0;
-        // 출현 확률의 합계
+
         // 블록의 종류 전체를 처리하는 루프
         for (i = 0; i < level_data.probability.Length - 1; i++)
         {
-            if (level_data.probability[i] == 0.0f)
-            {
-                continue;
-                // 출현 확률이 0이면 루프의 처음으로 점프
-            }
+            // 출현 확률이 0이면 루프의 처음으로 점프
+            if (level_data.probability[i] == 0.0f) continue;
             sum += level_data.probability[i];
-            if (rand < sum)
-            {
-                break;
-            }
+            if (rand < sum) break;
         }
         color = (Block.COLOR)i;
         return (color);
@@ -106,7 +102,8 @@ public class BlockRoot : MonoBehaviour
         Vector2 mousePositionXy = new Vector2(mousePosition.x, mousePosition.y);
         if (this.grabbedBlock == null)
         {
-            if (!this.isHasFallingBlock()) {
+            if (!this.isHasFallingBlock())
+            {
                 if (Input.GetMouseButtonDown(0))
                 {
                     foreach (BlockControl block in this.blocks)
@@ -143,7 +140,7 @@ public class BlockRoot : MonoBehaviour
                 {
                     break;
                 }
-                this.SwapBlock(grabbedBlock, grabbedBlock.slideDir, swapTarget); // 블록을 교체
+                this.SwapBlock(grabbedBlock, swapTarget, grabbedBlock.slideDir); // 블록을 교체
                 this.grabbedBlock = null;
             } while (false);
 
@@ -162,7 +159,7 @@ public class BlockRoot : MonoBehaviour
         else
         {
             int igniteCount = 0; // 불붙은 개수
-                                  // 그리드 안의 모든 블록에 대해서 처리
+                                 // 그리드 안의 모든 블록에 대해서 처리
             foreach (BlockControl block in this.blocks)
             {
                 if (!block.IsIdle())
@@ -205,10 +202,6 @@ public class BlockRoot : MonoBehaviour
             {
                 if (this.HasSlidingBlockInColumn(x))
                 {
-                    // 하나라도 연소 중인 블록이 있는가?.
-                    // 연소 중인 블록이 있다면, 낙하 처리를 실행하지 않는다.
-                    // 교체 중인 블록이 있다면, 낙하 처리를 실행하지 않는다.
-                    // 열에 교체 중인 블록이 있다면 그 열은 처리하지 않고 다음 열로 진행.
                     continue;
                 }
                 for (int y = 0; y < Block.BLOCK_NUM_Y - 1; y++)
@@ -270,9 +263,6 @@ public class BlockRoot : MonoBehaviour
             case Block.DIR4.RIGHT:
                 if (block.iPos.x < Block.BLOCK_NUM_X - 1)
                 {
-                    // 인수로 지정된 블록과 방향으로 블록이 슬라이드할 곳에 어느 블록이 있는지 반환
-                    // 슬라이드할 곳의 블록을 여기에 저장
-                    // 그리드 안이라면
                     nextBlock = this.blocks[block.iPos.x + 1, block.iPos.y];
                 }
                 break;
@@ -314,6 +304,7 @@ public class BlockRoot : MonoBehaviour
         v *= Block.COLLISION_SIZE;
         return (v);
     }
+
     public static Block.DIR4 getOppositDir(Block.DIR4 dir)
     {
         Block.DIR4 opposit = dir;
@@ -327,7 +318,7 @@ public class BlockRoot : MonoBehaviour
         return (opposit);
     }
 
-    public void SwapBlock(BlockControl block0, Block.DIR4 dir, BlockControl block1)
+    public void SwapBlock(BlockControl block0, BlockControl block1, Block.DIR4 dir, bool reswapCheck = true)
     {
         // 각각의 블록 색을 기억
         Block.COLOR color0 = block0.color;
@@ -353,24 +344,53 @@ public class BlockRoot : MonoBehaviour
         block0.BeginSlide(offset0);
         // 원래 블록 이동을 시작
         block1.BeginSlide(offset1);
+        block0.step = Block.STEP.SLIDE;
+        block1.step = Block.STEP.SLIDE;
+
+        // checking이 true일 때만 검사
+        if (reswapCheck && !checkConnection(block0) && !checkConnection(block1))
+        {
+            ReSwap(block0, block1, dir);
+        }
+        else
+        {
+            // Debug.Log(FindCanMatch());
+        }
     }
+
+    private async void ReSwap(BlockControl block0, BlockControl block1, Block.DIR4 dir)
+    {
+        await Task.Delay(300);
+        SwapBlock(block0, block1, dir, reswapCheck: false);
+        await Task.Delay(200);
+        Debug.Log(FindCanMatch());
+    }
+
     // 인수로 받은 블록이 세 개의 블록 안에 들어가는 지 파악하는 메서드
-    public bool checkConnection(BlockControl start)
+    public bool checkConnection(BlockControl start, int[] otherPos = null)
     {
         bool ret = false;
         int normalBlockNum = 0;
+        Block.iPosition pos;
+        if (otherPos == null) pos = start.iPos;
+        else
+        {
+            pos = new();
+            pos.x = otherPos[0];
+            pos.y = otherPos[1];
+        }
         if (!start.IsVanishing())
         {
             // 인수인 블록이 불붙은 다음이 아니면
             normalBlockNum = 1;
         }
-        int rx = start.iPos.x;
-        int lx = start.iPos.x;
+        int rx = pos.x;
+        int lx = pos.x;
         for (int x = lx - 1; x > 0; x--)
         {
             // 그리드 좌표를 기억해 둔다
             // 블록의 왼쪽을 검사
-            BlockControl nextBlock = this.blocks[x, start.iPos.y];
+            BlockControl nextBlock = this.blocks[x, pos.y];
             if (nextBlock.color != start.color) { break; }
             // 색이 다르면, 루프를 빠져나간다
             if (nextBlock.step == Block.STEP.FALL || nextBlock.nextStep == Block.STEP.FALL) { break; } // 낙하 중이면, 루프를 빠져나간다
@@ -386,7 +406,7 @@ public class BlockRoot : MonoBehaviour
         {
             // 검사용 카운터를 증가
             // 블록의 오른쪽을 검사
-            BlockControl nextBlock = this.blocks[x, start.iPos.y];
+            BlockControl nextBlock = this.blocks[x, pos.y];
             if (nextBlock.color != start.color) { break; }
             if (nextBlock.step == Block.STEP.FALL || nextBlock.nextStep == Block.STEP.FALL) { break; }
             if (nextBlock.step == Block.STEP.SLIDE || nextBlock.nextStep == Block.STEP.SLIDE) { break; }
@@ -401,7 +421,7 @@ public class BlockRoot : MonoBehaviour
             // 불붙지 않은 블록이 하나도 없으면, 루프 탈출
             for (int x = lx; x < rx + 1; x++)
             {
-                this.blocks[x, start.iPos.y].ToVanishing();
+                this.blocks[x, pos.y].ToVanishing();
                 ret = true;
             }
         } while (false);
@@ -410,11 +430,11 @@ public class BlockRoot : MonoBehaviour
         {
             normalBlockNum = 1;
         }
-        int uy = start.iPos.y;
-        int dy = start.iPos.y;
+        int uy = pos.y;
+        int dy = pos.y;
         for (int y = dy - 1; y > 0; y--)
         { // 블록의 위쪽을 검사.
-            BlockControl nextBlock = this.blocks[start.iPos.x, y];
+            BlockControl nextBlock = this.blocks[pos.x, y];
             if (nextBlock.color != start.color) { break; }
             if (nextBlock.step == Block.STEP.FALL || nextBlock.nextStep == Block.STEP.FALL) { break; }
             if (nextBlock.step == Block.STEP.SLIDE || nextBlock.nextStep == Block.STEP.SLIDE) { break; }
@@ -423,7 +443,7 @@ public class BlockRoot : MonoBehaviour
         }
         for (int y = uy + 1; y < Block.BLOCK_NUM_Y; y++)
         { // 블록의 아래쪽을 검사.
-            BlockControl nextBlock = this.blocks[start.iPos.x, y];
+            BlockControl nextBlock = this.blocks[pos.x, y];
             if (nextBlock.color != start.color) { break; }
             if (nextBlock.step == Block.STEP.FALL || nextBlock.nextStep == Block.STEP.FALL) { break; }
             if (nextBlock.step == Block.STEP.SLIDE || nextBlock.nextStep == Block.STEP.SLIDE) { break; }
@@ -436,25 +456,112 @@ public class BlockRoot : MonoBehaviour
             if (normalBlockNum == 0) { break; }
             for (int y = dy; y < uy + 1; y++)
             {
-                this.blocks[start.iPos.x, y].ToVanishing();
+                this.blocks[pos.x, y].ToVanishing();
                 ret = true;
             }
         } while (false);
         return (ret);
     }
 
+    private bool CheckCanMatch(BlockControl block, int[] pos = null)
+    {
+        if (pos == null)
+        {
+            pos = new int[] { block.iPos.x, block.iPos.y };
+        }
+
+        Debug.Log($"{block.color} ({pos[0]}, {pos[1]}) 위치 검사 -------");
+
+        // 두 방향으로 탐색 (0: x 방향, 1: y 방향)
+        for (int i = 0; i < 2; i++)
+        {
+            int count = 1; // 시작 블록 포함
+
+            // 좌우 또는 상하 탐색
+            for (int offset = 1; offset <= 2; offset++)
+            {
+                int newX = pos[0] + (i == 0 ? offset : 0); // x 방향 탐색
+                int newY = pos[1] + (i == 1 ? offset : 0); // y 방향 탐색
+
+                if (newX < 0 || newY < 0 || newX >= Block.BLOCK_NUM_X || newY >= Block.BLOCK_NUM_Y) break;
+
+                if (blocks[newX, newY].color == block.color)
+                {
+                    Debug.Log($"{blocks[newX, newY].color} ({newX}, {newY}) 똑같다");
+                    count++;
+                }
+                else break;
+            }
+
+            for (int offset = -1; offset >= -2; offset--)
+            {
+                int newX = pos[0] + (i == 0 ? offset : 0);
+                int newY = pos[1] + (i == 1 ? offset : 0);
+
+                if (newX < 0 || newY < 0 || newX >= Block.BLOCK_NUM_X || newY >= Block.BLOCK_NUM_Y) break;
+
+                if (blocks[newX, newY].color == block.color)
+                {
+                    Debug.Log($"{blocks[newX, newY].color} ({newX}, {newY}) 똑같다");
+                    count++;
+                }
+                else break;
+            }
+
+            if (count >= 3)
+            {
+                Debug.Log($"{count}개 똑같네");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private bool FindCanMatch()
+    {
+        int maxX = Block.BLOCK_NUM_X;
+        int maxY = Block.BLOCK_NUM_Y;
+
+        for (int y = 0; y < maxY; y++)
+        {
+            for (int x = 0; x < maxX; x++)
+            {
+                BlockControl _block = blocks[x, y];
+                Debug.Log($"\nfrom {_block.color} ({x}, {y})");
+                Vector2[] directions = {Vector2.left, Vector2.up, Vector2.right, Vector2.down};
+                foreach (Vector2 offset in directions)
+                {
+                    int newX = x + (int)offset.x;
+                    int newY = y + (int)offset.y;
+
+                    if (newX < 0 || newY < 0 || newX >= maxX || newY >= maxY) continue;
+
+                    if (CheckCanMatch(_block, new int[] { newX, newY }))
+                    {
+                        Debug.Log($"{_block.iPos.x}, {_block.iPos.y}");
+                        blockCanBeMatched = _block;
+                        return true;
+                    }
+                }
+            }
+        }
+        blockCanBeMatched = null;
+        return false;
+    }
+
     // 불붙는 중인 블록이 하나라도 있으면 true를 반환한다.
     private bool HasVanishingBlock()
     {
         bool ret = false;
-        foreach (BlockControl block in this.blocks) {
+        foreach (BlockControl block in this.blocks)
+        {
             if (block.vanishTimer > 0.0f)
             {
                 ret = true;
                 break;
             }
         }
-        return(ret);
+        return (ret);
     }
     // 슬라이드 중인 블록이 하나라도 있으면 true를 반환한다.
     private bool HasSlidingBlock()
@@ -462,7 +569,8 @@ public class BlockRoot : MonoBehaviour
         bool ret = false;
         foreach (BlockControl block in this.blocks)
         {
-            if (block.step == Block.STEP.SLIDE) {
+            if (block.step == Block.STEP.SLIDE)
+            {
                 ret = true;
                 break;
             }
@@ -475,7 +583,8 @@ public class BlockRoot : MonoBehaviour
         bool ret = false;
         foreach (BlockControl block in this.blocks)
         {
-            if (block.step == Block.STEP.FALL) {
+            if (block.step == Block.STEP.FALL)
+            {
                 ret = true;
                 break;
             }

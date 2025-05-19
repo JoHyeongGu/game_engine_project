@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
+     // 점수 관리용 구조체
     public struct Count
-    { // 점수관리용구조체
+    {
         public int ignite; // 연쇄수
         public int score; // 점수
         public int totalSocre; // 합계점수
@@ -25,7 +26,7 @@ public class ScoreCounter : MonoBehaviour
     }
 
     void OnGUI()
-    { // 화면에 텍스트와 이미지 표시
+    {
         int x = 20;
         int y = 50;
         GUI.color = Color.black;
@@ -45,13 +46,13 @@ public class ScoreCounter : MonoBehaviour
         GUI.Label(new Rect(x + 20, y, 100, 20), value.ToString(), guistyle); // 다음 행에 value를 표시
         y += 15;
     }
-    // 연쇄 횟수를가산
+    // 연쇄 횟수를 가산
     public void AddIgniteCount(int count)
     {
         this.last.ignite += count; // 연쇄 수에 count를 합산
         this.UpdateScore(); // 점수 계산
     }
-    // 연쇄 횟수를리셋
+    // 연쇄 횟수를 리셋
     public void ClearIgniteCount()
     {
         this.last.ignite = 0; // 연쇄 횟수 리셋
@@ -66,7 +67,7 @@ public class ScoreCounter : MonoBehaviour
     {
         this.last.totalSocre += this.last.score;
     }
-    // 게임을 클리어했는지 판정 (SceneControl에서 사용)
+    // 게임을 클리어 했는지 판정 (SceneControl에서 사용)
     public bool IsGameClear()
     {
         bool isClear = false;
