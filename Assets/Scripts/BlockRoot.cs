@@ -352,10 +352,6 @@ public class BlockRoot : MonoBehaviour
         {
             ReSwap(block0, block1, dir);
         }
-        else
-        {
-            // Debug.Log(FindCanMatch());
-        }
     }
 
     private async void ReSwap(BlockControl block0, BlockControl block1, Block.DIR4 dir)
@@ -465,54 +461,42 @@ public class BlockRoot : MonoBehaviour
 
     private bool CheckCanMatch(BlockControl block, int[] pos = null)
     {
+        bool isSwap = false;
         if (pos == null)
         {
             pos = new int[] { block.iPos.x, block.iPos.y };
         }
-
-        Debug.Log($"{block.color} ({pos[0]}, {pos[1]}) 위치 검사 -------");
-
-        // 두 방향으로 탐색 (0: x 방향, 1: y 방향)
-        for (int i = 0; i < 2; i++)
+        else isSwap = true;
+        // (0: x 방향, 1: y 방향)
+        for (int axis = 0; axis <= 1; axis++)
         {
-            int count = 1; // 시작 블록 포함
-
-            // 좌우 또는 상하 탐색
-            for (int offset = 1; offset <= 2; offset++)
+            int count = 1; // include self
+            for (int offset = -2; offset <= 2; offset++)
             {
-                int newX = pos[0] + (i == 0 ? offset : 0); // x 방향 탐색
-                int newY = pos[1] + (i == 1 ? offset : 0); // y 방향 탐색
 
-                if (newX < 0 || newY < 0 || newX >= Block.BLOCK_NUM_X || newY >= Block.BLOCK_NUM_Y) break;
+                if (offset == 0) continue;
 
-                if (blocks[newX, newY].color == block.color)
+                // deep copy
+                int[] _pos = new int[] { pos[0], pos[1] };
+                _pos[axis] += offset;
+
+                int newX = _pos[0];
+                int newY = _pos[1];
+
+                if (newX < 0 || newY < 0 || newX >= Block.BLOCK_NUM_X - 1 || newY >= Block.BLOCK_NUM_Y - 1) continue;
+
+                // color swap
+                Block.COLOR color = blocks[newX, newY].color;
+
+                if (isSwap && newX == block.iPos.x && newY == block.iPos.y)
                 {
-                    Debug.Log($"{blocks[newX, newY].color} ({newX}, {newY}) 똑같다");
-                    count++;
+                    Block.COLOR temp = color;
+                    color = blocks[pos[0], pos[1]].color;
                 }
-                else break;
+                if (color == block.color) count++;
+                else if (count >= 2) break;
             }
-
-            for (int offset = -1; offset >= -2; offset--)
-            {
-                int newX = pos[0] + (i == 0 ? offset : 0);
-                int newY = pos[1] + (i == 1 ? offset : 0);
-
-                if (newX < 0 || newY < 0 || newX >= Block.BLOCK_NUM_X || newY >= Block.BLOCK_NUM_Y) break;
-
-                if (blocks[newX, newY].color == block.color)
-                {
-                    Debug.Log($"{blocks[newX, newY].color} ({newX}, {newY}) 똑같다");
-                    count++;
-                }
-                else break;
-            }
-
-            if (count >= 3)
-            {
-                Debug.Log($"{count}개 똑같네");
-                return true;
-            }
+            if (count >= 3) return true;
         }
         return false;
     }
@@ -527,18 +511,22 @@ public class BlockRoot : MonoBehaviour
             for (int x = 0; x < maxX; x++)
             {
                 BlockControl _block = blocks[x, y];
-                Debug.Log($"\nfrom {_block.color} ({x}, {y})");
-                Vector2[] directions = {Vector2.left, Vector2.up, Vector2.right, Vector2.down};
-                foreach (Vector2 offset in directions)
+                for (int i = 0; i < (int)Block.DIR4.NUM; i++)
                 {
+                    Block.DIR4 dir = (Block.DIR4)i;
+                    Vector3 offset = getDirVector(dir);
+
                     int newX = x + (int)offset.x;
                     int newY = y + (int)offset.y;
 
+                    
                     if (newX < 0 || newY < 0 || newX >= maxX || newY >= maxY) continue;
 
-                    if (CheckCanMatch(_block, new int[] { newX, newY }))
+                    bool check = CheckCanMatch(_block, new int[] { newX, newY });
+                    if (check)
                     {
                         Debug.Log($"{_block.iPos.x}, {_block.iPos.y}");
+                        Debug.Log($"드래그 가능 방향: {dir}");
                         blockCanBeMatched = _block;
                         return true;
                     }
