@@ -6,7 +6,9 @@ public class BlockRoot : MonoBehaviour
 {
     public GameObject BlockPrefab = null;
     public BlockControl[,] blocks;
-    public BlockControl blockCanBeMatched;
+    public BlockControl canMatchBlock;
+    public Vector3 canMatchDir;
+    private float noMatchTime = 0.0f;
 
     public void InitialSetUp()
     {
@@ -100,6 +102,15 @@ public class BlockRoot : MonoBehaviour
         Vector3 mousePosition;
         this.UnprojectMousePosition(out mousePosition, Input.mousePosition);
         Vector2 mousePositionXy = new Vector2(mousePosition.x, mousePosition.y);
+        this.noMatchTime += Time.deltaTime;
+        if (this.noMatchTime >= 10.0f)
+        {
+            Debug.Log(Time.deltaTime);
+            //if (Time.deltaTime >= 0.99f)
+            //{
+            //    Debug.Log(this.noMatchTime);
+            //}
+        }
         if (this.grabbedBlock == null)
         {
             if (!this.isHasFallingBlock())
@@ -341,16 +352,27 @@ public class BlockRoot : MonoBehaviour
         // '사라지는 시간'을 교체
         block0.vanishTimer = vanishTimer1;
         block1.vanishTimer = vanishTimer0;
-        block0.BeginSlide(offset0);
+
         // 원래 블록 이동을 시작
+        block0.BeginSlide(offset0);
         block1.BeginSlide(offset1);
+
         block0.step = Block.STEP.SLIDE;
         block1.step = Block.STEP.SLIDE;
 
+        bool checkBlock0 = checkConnection(block0);
+        bool checkBlock1 = checkConnection(block1);
+
         // checking이 true일 때만 검사
-        if (reswapCheck && !checkConnection(block0) && !checkConnection(block1))
+        if (reswapCheck)
         {
-            ReSwap(block0, block1, dir);
+            if (!checkBlock0 && !checkBlock1)
+            {
+                ReSwap(block0, block1, dir);
+            } else
+            {
+                this.noMatchTime = 0.0f;
+            }
         }
     }
 
@@ -359,6 +381,7 @@ public class BlockRoot : MonoBehaviour
         await Task.Delay(300);
         SwapBlock(block0, block1, dir, reswapCheck: false);
         await Task.Delay(200);
+        // 잘못된 방향으로 drag할 때마다, 정답 저장
         Debug.Log(FindCanMatch());
     }
 
@@ -459,6 +482,7 @@ public class BlockRoot : MonoBehaviour
         return (ret);
     }
 
+    // 특정 블록 매치 가능 여부 확인
     private bool CheckCanMatch(BlockControl block, int[] pos = null)
     {
         bool isSwap = false;
@@ -501,6 +525,7 @@ public class BlockRoot : MonoBehaviour
         return false;
     }
 
+    // 전체에서 매치 가능한 블록 찾기
     private bool FindCanMatch()
     {
         int maxX = Block.BLOCK_NUM_X;
@@ -527,13 +552,14 @@ public class BlockRoot : MonoBehaviour
                     {
                         Debug.Log($"{_block.iPos.x}, {_block.iPos.y}");
                         Debug.Log($"드래그 가능 방향: {dir}");
-                        blockCanBeMatched = _block;
+                        canMatchBlock = _block;
+                        canMatchDir = getDirVector(dir);
                         return true;
                     }
                 }
             }
         }
-        blockCanBeMatched = null;
+        canMatchBlock = null;
         return false;
     }
 
