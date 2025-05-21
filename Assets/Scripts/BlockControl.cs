@@ -196,7 +196,7 @@ public class BlockControl : MonoBehaviour
                 }
                 break;
         }
-        Vector3 position = BlockRoot.CalcBlockPosition(this.iPos) + this.positionOffset;
+        Vector3 position = blockRoot.CalcBlockPosition(this.iPos) + this.positionOffset;
         this.transform.position = position;
         this.setColor(this.color);
         if (this.vanishTimer >= 0.0f)

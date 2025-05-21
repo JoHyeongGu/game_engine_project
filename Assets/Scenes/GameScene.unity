@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BlockPrefab: {fileID: 7064368780360772222, guid: 424ea16fc3f741a46ae0dfe20e4c36ae, type: 3}
+  startPos: {x: 6, y: 1}
   levelData: {fileID: 4900000, guid: 67ea787a9a5b9b34ca6e323ec6b829e7, type: 3}
 --- !u!114 &583268876
 MonoBehaviour:

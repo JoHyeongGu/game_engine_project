@@ -6,9 +6,13 @@ public class BlockRoot : MonoBehaviour
 {
     public GameObject BlockPrefab = null;
     public BlockControl[,] blocks;
-    public BlockControl canMatchBlock;
-    public Vector3 canMatchDir;
+    public Vector2 startPos = new Vector2(6.0f, 1.0f);
+
+    private BlockControl canMatchBlock;
+    private Vector3 canMatchDir;
     private float noMatchTime = 0.0f;
+    private bool noMatchTimeFlow = true;
+    private IEnumerator showHintRoutine;
 
     public void InitialSetUp()
     {
@@ -27,7 +31,7 @@ public class BlockRoot : MonoBehaviour
                 block.iPos.x = x;
                 block.iPos.y = y;
                 block.blockRoot = this;
-                Vector3 position = BlockRoot.CalcBlockPosition(block.iPos);
+                Vector3 position = CalcBlockPosition(block.iPos);
                 block.transform.position = position;
 
                 // 현재 출현 확률을 바탕으로 색을 결정
@@ -41,14 +45,20 @@ public class BlockRoot : MonoBehaviour
     }
 
     // 지정된 그리드 좌표로 씬에서의 좌표를 구함
-    public static Vector3 CalcBlockPosition(Block.iPosition iPos)
+    public Vector3 CalcBlockPosition(Block.iPosition iPos)
     {
         // 배치할 왼쪽 위 구석 위치를 초기값으로 설정
         Vector3 position = new Vector3(-(Block.BLOCK_NUM_X / 2.0f - 0.5f), -(Block.BLOCK_NUM_Y / 2.0f - 0.5f), 0.0f);
+
         // 초깃값 + 그리드 좌표 × 블록 크기
         position.x += (float)iPos.x * Block.COLLISION_SIZE;
         position.y += (float)iPos.y * Block.COLLISION_SIZE;
-        return (position); // 씬에서의 좌표를 반환
+
+        // 판 위치 설정
+        position.x += startPos.x;
+        position.y += startPos.y;
+
+        return position;
     }
 
     private GameObject mainCamera = null;
@@ -60,14 +70,14 @@ public class BlockRoot : MonoBehaviour
     public TextAsset levelData = null;
     public LevelControl levelControl;
 
+    // 레벨 데이터의 초기화, 로드, 패턴 설정까지 시행
     public void Create()
-    { // 레벨 데이터의 초기화, 로드, 패턴 설정까지 시행
+    {
+        // 레벨 데이터 초기화
         this.levelControl = new LevelControl();
         this.levelControl.initialize();
-        // 레벨 데이터 초기화
         this.levelControl.loadLevelData(this.levelData); // 데이터 읽기
-        this.levelControl.SelectLevel();
-        // 레벨 선택
+        this.levelControl.SelectLevel(); // 레벨 선택
     }
 
     // 현재 패턴의 출현 확률을 바탕으로 색을 산출해서 반환
@@ -95,6 +105,7 @@ public class BlockRoot : MonoBehaviour
     {
         this.mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         this.scoreCounter = this.gameObject.GetComponent<ScoreCounter>();
+        this.showHintRoutine = showHint();
     }
 
     void Update()
@@ -102,14 +113,15 @@ public class BlockRoot : MonoBehaviour
         Vector3 mousePosition;
         this.UnprojectMousePosition(out mousePosition, Input.mousePosition);
         Vector2 mousePositionXy = new Vector2(mousePosition.x, mousePosition.y);
-        this.noMatchTime += Time.deltaTime;
-        if (this.noMatchTime >= 10.0f)
+        if (this.noMatchTimeFlow)
         {
-            Debug.Log(Time.deltaTime);
-            //if (Time.deltaTime >= 0.99f)
-            //{
-            //    Debug.Log(this.noMatchTime);
-            //}
+            this.noMatchTime += Time.deltaTime;
+        }
+        if (this.noMatchTime >= 5.0f)
+        {
+            StartCoroutine(showHintRoutine);
+            this.noMatchTimeFlow = false;
+            this.noMatchTime = 0.0f;
         }
         if (this.grabbedBlock == null)
         {
@@ -181,6 +193,12 @@ public class BlockRoot : MonoBehaviour
                 if (this.checkConnection(block))
                 {
                     igniteCount++; // 불붙은 개수를 증가
+                    this.noMatchTime = 0.0f;
+                    this.noMatchTimeFlow = true;
+                    if (showHintRoutine != null)
+                    {
+                        StopCoroutine(showHintRoutine);
+                    }
                 }
             }
             if (igniteCount > 0)
@@ -369,9 +387,6 @@ public class BlockRoot : MonoBehaviour
             if (!checkBlock0 && !checkBlock1)
             {
                 ReSwap(block0, block1, dir);
-            } else
-            {
-                this.noMatchTime = 0.0f;
             }
         }
     }
@@ -382,7 +397,7 @@ public class BlockRoot : MonoBehaviour
         SwapBlock(block0, block1, dir, reswapCheck: false);
         await Task.Delay(200);
         // 잘못된 방향으로 drag할 때마다, 정답 저장
-        Debug.Log(FindCanMatch());
+        FindCanMatch();
     }
 
     // 인수로 받은 블록이 세 개의 블록 안에 들어가는 지 파악하는 메서드
@@ -544,14 +559,12 @@ public class BlockRoot : MonoBehaviour
                     int newX = x + (int)offset.x;
                     int newY = y + (int)offset.y;
 
-                    
+
                     if (newX < 0 || newY < 0 || newX >= maxX || newY >= maxY) continue;
 
                     bool check = CheckCanMatch(_block, new int[] { newX, newY });
                     if (check)
                     {
-                        Debug.Log($"{_block.iPos.x}, {_block.iPos.y}");
-                        Debug.Log($"드래그 가능 방향: {dir}");
                         canMatchBlock = _block;
                         canMatchDir = getDirVector(dir);
                         return true;
@@ -560,6 +573,7 @@ public class BlockRoot : MonoBehaviour
             }
         }
         canMatchBlock = null;
+        InitialSetUp();
         return false;
     }
 
@@ -647,5 +661,16 @@ public class BlockRoot : MonoBehaviour
             }
         }
         return (ret);
+    }
+
+    private IEnumerator showHint()
+    {
+        while (true)
+        {
+            FindCanMatch();
+            if (!noMatchTimeFlow)
+                canMatchBlock.BeginSlide(canMatchDir);
+            yield return new WaitForSeconds(1);
+        }
     }
 }

@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-     // 점수 관리용 구조체
-    public struct Count
-    {
-        public int ignite; // 연쇄수
-        public int score; // 점수
-        public int totalSocre; // 합계점수
-    };
+    
 
     public Count last; // 마지막(이번) 점수
     public Count best; // 최고점수
