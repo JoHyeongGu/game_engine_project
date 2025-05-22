@@ -4,40 +4,59 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-    
+    public struct Count
+    {
+        public int ignite;
+        public int score;
+        public int totalSocre;
+    };
+
+    public Vector2 posOffset = new Vector2(270.0f, 85.0f);
 
     public Count last; // 마지막(이번) 점수
     public Count best; // 최고점수
     public static int QUOTA_SCORE = 1000; // 클리어하는데필요한점수
     public GUIStyle guistyle; // 폰트스타일
 
+    public Dictionary<Block.COLOR, int> score = new Dictionary<Block.COLOR, int>();
+
     void Start()
     {
-        this.last.ignite = 0;
         this.last.score = 0;
+        this.last.ignite = 0;
         this.last.totalSocre = 0;
         this.guistyle.fontSize = 16;
+        InitScore();
+    }
+
+    void InitScore()
+    {
+        for (int i = 0; i <= (int)Block.COLOR.LAST; i++)
+        {
+            score[(Block.COLOR)i] = 0;
+        }
     }
 
     void OnGUI()
     {
-        int x = 20;
-        int y = 50;
+        float x = posOffset.x;
+        float y = posOffset.y;
         GUI.color = Color.black;
-        this.printValue(x + 20, y, "연쇄 카운트", this.last.ignite);
-        y += 30;
-        this.printValue(x + 20, y, "가산 스코어", this.last.score);
-        y += 30;
-        this.printValue(x + 20, y, "합계 스코어", this.last.totalSocre);
-        y += 30;
+        foreach (KeyValuePair<Block.COLOR, int> data in score)
+        {
+            this.printValue(x, y, $"{data.Key}", data.Value);
+            y += 30;
+        }
     }
 
     // 지정된 두 개의 데이터를 두 개의 행에 나눠 표시.
-    public void printValue(int x, int y, string label, int value)
+    public void printValue(float x, float y, string label, int value)
     {
-        GUI.Label(new Rect(x, y, 100, 20), label, guistyle); // label을 표시
+        float labelWidth = 100.0f;
+        float _x = (Screen.width - labelWidth) / 2f + x;
+        GUI.Label(new Rect(_x, y, labelWidth, 20), label, guistyle); // label을 표시
         y += 15;
-        GUI.Label(new Rect(x + 20, y, 100, 20), value.ToString(), guistyle); // 다음 행에 value를 표시
+        GUI.Label(new Rect(_x, y, labelWidth, 20), value.ToString(), guistyle); // 다음 행에 value를 표시
         y += 15;
     }
     // 연쇄 횟수를 가산
@@ -71,5 +90,10 @@ public class ScoreCounter : MonoBehaviour
             isClear = true;
         }
         return (isClear);
+    }
+
+    public void PointUp(Block.COLOR key, int count = 1)
+    {
+        this.score[key] += count;
     }
 }

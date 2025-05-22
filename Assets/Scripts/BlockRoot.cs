@@ -449,10 +449,10 @@ public class BlockRoot : MonoBehaviour
         }
         do
         {
-            if (rx - lx + 1 < 3) { break; }
             // 오른쪽 블록의 그리드 번호 - 왼쪽 블록의 그리드 번호 + 중앙 블록(1)을 더한 수가 3 미만이면, 루프 탈출
-            if (normalBlockNum == 0) { break; }
+            if (rx - lx + 1 < 3) { break; }
             // 불붙지 않은 블록이 하나도 없으면, 루프 탈출
+            if (normalBlockNum == 0) { break; }
             for (int x = lx; x < rx + 1; x++)
             {
                 this.blocks[x, pos.y].ToVanishing();
@@ -535,7 +535,10 @@ public class BlockRoot : MonoBehaviour
                 if (color == block.color) count++;
                 else if (count >= 2) break;
             }
-            if (count >= 3) return true;
+            if (count >= 3)
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -672,5 +675,10 @@ public class BlockRoot : MonoBehaviour
                 canMatchBlock.BeginSlide(canMatchDir);
             yield return new WaitForSeconds(1);
         }
+    }
+
+    public void PointUp(Block.COLOR color, int count = 1)
+    {
+        scoreCounter.PointUp(color, count);
     }
 }

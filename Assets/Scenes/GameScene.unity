@@ -265,6 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b45552a1fb8820c49a67678a7034d2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  posOffset: {x: 0, y: 85}
   guistyle:
     m_Name: 
     m_Normal:

@@ -231,8 +231,9 @@ public class BlockControl : MonoBehaviour
         this.setColor(color);
     }
 
+    // 블록이 비표시(그리드상의 위치가 텅 빔)로 되어 있다면 true를 반환
     public bool IsVacant()
-    { // 블록이 비표시(그리드상의 위치가 텅 빔)로 되어 있다면 true를 반환
+    {
         bool isVacant = false;
         if (this.step == Block.STEP.VACANT && this.nextStep == Block.STEP.NONE)
         {
@@ -344,6 +345,7 @@ public class BlockControl : MonoBehaviour
 
     public void ToVanishing()
     {
+        blockRoot.PointUp(color);
         // ＇사라질 때까지 걸리는 시간＇을 규정값으로 리셋
         float vanishTime = this.blockRoot.levelControl.GetVanishTime();
         this.vanishTimer = vanishTime;
