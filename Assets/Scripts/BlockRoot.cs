@@ -8,11 +8,13 @@ public class BlockRoot : MonoBehaviour
     public BlockControl[,] blocks;
     public Vector2 startPos = new Vector2(6.0f, 1.0f);
 
+    public Vector3 mousePosition;
+
     private BlockControl canMatchBlock;
     private Vector3 canMatchDir;
     private float noMatchTime = 0.0f;
     private bool noMatchTimeFlow = true;
-    private IEnumerator showHintRoutine;
+    private Coroutine showHintRoutine;
 
     public void InitialSetUp()
     {
@@ -105,12 +107,10 @@ public class BlockRoot : MonoBehaviour
     {
         this.mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         this.scoreCounter = this.gameObject.GetComponent<ScoreCounter>();
-        this.showHintRoutine = showHint();
     }
 
     void Update()
     {
-        Vector3 mousePosition;
         this.UnprojectMousePosition(out mousePosition, Input.mousePosition);
         Vector2 mousePositionXy = new Vector2(mousePosition.x, mousePosition.y);
         if (this.noMatchTimeFlow)
@@ -119,9 +119,9 @@ public class BlockRoot : MonoBehaviour
         }
         if (this.noMatchTime >= 5.0f)
         {
-            StartCoroutine(showHintRoutine);
-            this.noMatchTimeFlow = false;
             this.noMatchTime = 0.0f;
+            this.noMatchTimeFlow = false;
+            showHintRoutine = StartCoroutine(showHint());
         }
         if (this.grabbedBlock == null)
         {
@@ -277,6 +277,7 @@ public class BlockRoot : MonoBehaviour
         }
         return (ret); // 카메라를 통과하는 광선이 블록에 닿았는지를 반환
     }
+    
     public BlockControl getNextBlock(BlockControl block, Block.DIR4 dir)
     {
         BlockControl nextBlock = null;
@@ -663,9 +664,9 @@ public class BlockRoot : MonoBehaviour
     {
         while (true)
         {
+            if (noMatchTimeFlow) break;
             FindCanMatch();
-            if (!noMatchTimeFlow)
-                canMatchBlock.BeginSlide(canMatchDir);
+            canMatchBlock.BeginSlide(canMatchDir);
             yield return new WaitForSeconds(1);
         }
     }
@@ -673,5 +674,6 @@ public class BlockRoot : MonoBehaviour
     public void PointUp(Block.COLOR color, int count = 1)
     {
         scoreCounter.PointUp(color, count);
+        noMatchTimeFlow = true;
     }
 }

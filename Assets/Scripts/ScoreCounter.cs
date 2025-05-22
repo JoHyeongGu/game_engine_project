@@ -34,7 +34,6 @@ public class ScoreCounter : MonoBehaviour
         }
     }
 
-    // 지정된 두 개의 데이터를 두 개의 행에 나눠 표시.
     public void printValue(float x, float y, string label, int value)
     {
         float labelWidth = 100.0f;
@@ -48,5 +47,10 @@ public class ScoreCounter : MonoBehaviour
     public void PointUp(Block.COLOR key, int count = 1)
     {
         this.score[key] += count;
+    }
+
+    public float GetPoint(Block.COLOR key)
+    {
+        return this.score[key];
     }
 }

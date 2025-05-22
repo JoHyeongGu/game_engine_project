@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,6 +18,10 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (agent.remainingDistance <= 0.5f)
+        {
+            ArriveToGoal();
+        }
     }
 
     private void InitAgent()
@@ -31,5 +36,10 @@ public class Enemy : MonoBehaviour
         GameObject desObj = GameObject.FindGameObjectWithTag("Destination");
         goal = desObj.transform.position;
         agent.destination = goal;
+    }
+
+    private void ArriveToGoal()
+    {
+        Destroy(this.gameObject);
     }
 }
