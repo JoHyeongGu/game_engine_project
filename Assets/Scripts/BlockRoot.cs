@@ -203,13 +203,6 @@ public class BlockRoot : MonoBehaviour
             }
             if (igniteCount > 0)
             {
-                if (!this.isVanishingPrev)
-                {
-                    this.scoreCounter.ClearIgniteCount();
-                }
-                this.scoreCounter.AddIgniteCount(igniteCount);// 점화 횟수를 증가
-                this.scoreCounter.UpdateTotalScore();
-
                 int blockCount = 0;
 
                 foreach (BlockControl block in this.blocks)

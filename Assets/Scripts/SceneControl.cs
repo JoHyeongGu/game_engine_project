@@ -41,16 +41,6 @@ public class SceneControl : MonoBehaviour
                 break;
         }
 
-        if (this.nextStep == STEP.NONE)
-        {// 상태 변화 대기-----.
-            switch (this.step)
-            {
-                case STEP.PLAY:
-                    if (this.scoreCounter.IsGameClear()) { this.nextStep = STEP.CLEAR; } // 클리어 조건을 만족하면, 클리어 상태로 이행
-                    break;
-            }
-        }
-
         while (this.nextStep != STEP.NONE)
         {
             this.step = this.nextStep;
