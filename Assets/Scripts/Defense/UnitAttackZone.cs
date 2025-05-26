@@ -14,7 +14,6 @@ public class UnitAttackZone : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (!parent.isActive) return;
-        Debug.Log("자식이 감지한 충돌 대상: " + other.name);
         GameObject otherObj = other.gameObject;
         if (otherObj.CompareTag("Enemy"))
         {

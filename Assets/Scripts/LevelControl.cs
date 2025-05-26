@@ -54,11 +54,20 @@ public class LevelData
 
 public class LevelControl
 {
+    public int stage;
+    public int wave;
+
+    private int maxWave;
     private List<LevelData> levelDatas = null; // 각 레벨의 레벨 데이터
     private int selectLevel = 0; // 선택된 레벨
 
-    public void initialize() { 
-        this.levelDatas = new List<LevelData>(); 
+
+    public void initialize(int stage, int wave, int maxWave)
+    {
+        this.stage = stage;
+        this.wave = wave;
+        this.maxWave = maxWave;
+        this.levelDatas = new List<LevelData>();
     }
     
     // 텍스트 데이터를 읽어와서 그 내용을 해석하고 데이터를 보관
@@ -120,9 +129,7 @@ public class LevelControl
     // 몇 개의 레벨 패턴에서 지금 사용할 패턴을 선택        
     public void SelectLevel()
     { 
-        // 0~패턴 사이의 값을 임의로 선택
-        this.selectLevel = Random.Range(0, this.levelDatas.Count);
-        Debug.Log("select level = " + this.selectLevel.ToString());
+        this.selectLevel = ((stage - 1) * maxWave) + (wave - 1);
     }
 
     // 선택되어 있는 레벨 패턴의 레벨 데이터를 반환

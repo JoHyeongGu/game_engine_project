@@ -8,6 +8,7 @@ TagManager:
   - Map
   - Wall
   - Enemy
+  - Unit
   layers:
   - Default
   - TransparentFX

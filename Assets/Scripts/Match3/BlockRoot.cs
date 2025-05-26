@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockRoot : MonoBehaviour
@@ -10,6 +11,7 @@ public class BlockRoot : MonoBehaviour
 
     public Vector3 mousePosition;
 
+    private List<GameObject> prefabList;
     private BlockControl canMatchBlock;
     private Vector3 canMatchDir;
     private float noMatchTime = 0.0f;
@@ -18,6 +20,17 @@ public class BlockRoot : MonoBehaviour
 
     public void InitialSetUp()
     {
+        if (this.prefabList == null)
+        {
+            this.prefabList = new List<GameObject>();
+        }
+        if (this.prefabList.Count > 0)
+        {
+            foreach (GameObject prefab in this.prefabList)
+            {
+                Destroy(prefab);
+            }
+        }
         this.blocks = new BlockControl[Block.BLOCK_NUM_X, Block.BLOCK_NUM_Y]; // 그리드의 크기를 9×9로
         int colorIndex = 0;
 
@@ -28,6 +41,7 @@ public class BlockRoot : MonoBehaviour
             for (int x = 0; x < Block.BLOCK_NUM_X; x++)
             {
                 GameObject gameObject = Instantiate(this.BlockPrefab) as GameObject;
+                this.prefabList.Add(gameObject);
                 BlockControl block = gameObject.GetComponent<BlockControl>(); // 블록의 BlockControl 클래스를 가져옴
                 this.blocks[x, y] = block;
                 block.iPos.x = x;
@@ -73,11 +87,16 @@ public class BlockRoot : MonoBehaviour
     public LevelControl levelControl;
 
     // 레벨 데이터의 초기화, 로드, 패턴 설정까지 시행
-    public void Create()
+    public void Create(int stage, int wave, int maxWave)
     {
         // 레벨 데이터 초기화
         this.levelControl = new LevelControl();
-        this.levelControl.initialize();
+        SetLevelData(stage, wave, maxWave);
+    }
+
+    public void SetLevelData(int stage, int wave, int maxWave)
+    {
+        this.levelControl.initialize(stage, wave, maxWave);
         this.levelControl.loadLevelData(this.levelData); // 데이터 읽기
         this.levelControl.SelectLevel(); // 레벨 선택
     }
@@ -173,11 +192,8 @@ public class BlockRoot : MonoBehaviour
                 this.grabbedBlock = null;
             }
         }
-        // 낙하 중 또는 슬라이드 중이면
         if (this.isHasFallingBlock() || this.HasSlidingBlock())
         {
-            // 아무것도 하지 않는다
-            // 낙하 중도 슬라이드 중도 아니면
         }
         else
         {
@@ -277,7 +293,7 @@ public class BlockRoot : MonoBehaviour
         }
         return (ret); // 카메라를 통과하는 광선이 블록에 닿았는지를 반환
     }
-    
+
     public BlockControl getNextBlock(BlockControl block, Block.DIR4 dir)
     {
         BlockControl nextBlock = null;

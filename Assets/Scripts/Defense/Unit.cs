@@ -33,7 +33,6 @@ public class Unit : MonoBehaviour
         }
         else if (targetList.Count > 0)
         {
-            Debug.Log("공격!!");
             if (!isAttacking)
             {
                 AttackRoutine = StartCoroutine(Attack());
@@ -100,8 +99,23 @@ public class Unit : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             if (targetList.Count == 0) break;
-            Destroy(targetList[0]);
-            targetList.Remove(targetList[0]);
+            GameObject firstEnemy = targetList[0];
+            if (firstEnemy == null)
+            {
+                targetList.Remove(targetList[0]);
+                continue;
+            }
+            Enemy enemyClass = firstEnemy.GetComponent<Enemy>();
+            if (enemyClass == null)
+            {
+                targetList.Remove(targetList[0]);
+                continue;
+            }
+            enemyClass.hp--;
+            if (enemyClass.hp <= 0)
+            {
+                targetList.Remove(targetList[0]);
+            }
         }
     }
 }

@@ -3,7 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneControl : MonoBehaviour
 {
-    private ScoreCounter scoreCounter = null;
+    public int stage = 1;
+    public int wave = 1;
+    public int maxStage = 3;
+    public int maxWave = 5;
+    public float maxTime = 30.0f;
+    public GameObject[] defenseMapList;
+
     public enum STEP
     {
         NONE = -1, PLAY = 0, CLEAR, NUM,
@@ -15,22 +21,43 @@ public class SceneControl : MonoBehaviour
     public GUIStyle guistyle;
 
     private BlockRoot blockRoot = null;
+    private GameObject defenseMap;
+    private EnemySpawner spawner;
 
     void Start()
     {
         this.blockRoot = this.gameObject.GetComponent<BlockRoot>();
-        this.blockRoot.Create();
+        this.blockRoot.Create(stage, wave, maxWave);
         this.blockRoot.InitialSetUp();
-        this.scoreCounter = this.gameObject.GetComponent<ScoreCounter>(); // ScoreCounter 가져오기
+        CreateRandomDefenseMap();
         this.nextStep = STEP.PLAY;
-        // 다음 상태를 '플레이 중'으로
         this.guistyle.fontSize = 24;
     }
 
     void Update()
     {
         this.stepTimer += Time.deltaTime;
-        
+
+        if (this.stepTimer / this.maxTime >= this.wave)
+        {
+            this.wave++;
+            if (this.stage > this.maxStage)
+            {
+                this.step = STEP.CLEAR;
+            }
+            else
+            {
+                if (this.wave > this.maxWave)
+                {
+                    this.stage++;
+                    this.wave = 1;
+                    this.stepTimer = 0.0f;
+                    CreateRandomDefenseMap();
+                }
+                ResetLevelData();
+            }
+        }
+
         switch (this.step)
         {
             case STEP.CLEAR:
@@ -63,8 +90,9 @@ public class SceneControl : MonoBehaviour
         {
             case STEP.PLAY:
                 GUI.color = Color.black;
-                // 경과 시간을 표시
-                GUI.Label(new Rect(40.0f, 10.0f, 200.0f, 20.0f), "시간" + Mathf.CeilToInt(this.stepTimer).ToString() + "초", guistyle);
+                GUI.Label(new Rect(10.0f, 10.0f, 200.0f, 20.0f), $"Stage {this.stage}", guistyle);
+                GUI.Label(new Rect(10.0f, 40.0f, 200.0f, 20.0f), $"Wave {this.wave}", guistyle);
+                GUI.Label(new Rect(10.0f, 70.0f, 200.0f, 20.0f), Mathf.CeilToInt(this.stepTimer).ToString() + " 초", guistyle);
                 GUI.color = Color.white;
                 break;
             case STEP.CLEAR:
@@ -76,5 +104,27 @@ public class SceneControl : MonoBehaviour
                 GUI.color = Color.white;
                 break;
         }
+    }
+
+    private void ResetLevelData()
+    {
+        this.blockRoot.SetLevelData(stage, wave, maxWave);
+        this.spawner.SetSpawnData(stage, wave);
+    }
+
+    private void CreateRandomDefenseMap()
+    {
+        if (this.defenseMap != null)
+        {
+            Destroy(this.defenseMap);
+        }
+        int index = this.stage - 1;
+        if (index >= defenseMapList.Length)
+        {
+            index = Random.Range(0, defenseMapList.Length);
+        }
+        this.defenseMap = Instantiate(defenseMapList[index]);
+        this.spawner = this.defenseMap.GetComponentInChildren<EnemySpawner>();
+        this.spawner.ClearSpawnedList();
     }
 }

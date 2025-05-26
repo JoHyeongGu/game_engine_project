@@ -43,6 +43,7 @@ public class Block
 
 public class BlockControl : MonoBehaviour
 {
+    public bool isForTutorial = false;
     public Block.COLOR color = (Block.COLOR)0; // 블록 색
     public BlockRoot blockRoot = null; // 블록의 신
     public Block.iPosition iPos; // 블록 좌표
@@ -92,6 +93,7 @@ public class BlockControl : MonoBehaviour
 
     void Update()
     {
+        if (this.isForTutorial) return;
         Vector3 mousePosition;
         this.blockRoot.UnprojectMousePosition(out mousePosition, Input.mousePosition);
         Vector2 mousePositionXy = new Vector2(mousePosition.x, mousePosition.y);
@@ -218,8 +220,7 @@ public class BlockControl : MonoBehaviour
     public void BeginFall(BlockControl start)
     { // 낙하 시작 처리
         this.nextStep = Block.STEP.FALL;
-        this.positionOffset.y = (float)(start.iPos.y - this.iPos.y)
-       * Block.COLLISION_SIZE; // 지정된 블록에서 좌표를 계산
+        this.positionOffset.y = (float)(start.iPos.y - this.iPos.y) * Block.COLLISION_SIZE; // 지정된 블록에서 좌표를 계산
     }
 
     public void BeginRespawn(int startIposY)
