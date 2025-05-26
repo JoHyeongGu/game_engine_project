@@ -52,6 +52,8 @@ public class Enemy : MonoBehaviour
 
     private void ArriveToGoal()
     {
+        SceneControl scene = GameObject.FindWithTag("Root").GetComponent<SceneControl>();
+        scene.hp--;
         Destroy(this.gameObject);
     }
 

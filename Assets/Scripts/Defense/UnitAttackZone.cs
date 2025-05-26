@@ -11,11 +11,11 @@ public class UnitAttackZone : MonoBehaviour
         parent = transform.parent.GetComponent<Unit>();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (!parent.isActive) return;
         GameObject otherObj = other.gameObject;
-        if (otherObj.CompareTag("Enemy"))
+        if (otherObj.CompareTag("Enemy") && !parent.targetList.Contains(otherObj))
         {
             parent.targetList.Add(otherObj);
         }

@@ -14,6 +14,7 @@ public struct UnitItem
 {
     public GameObject prefab;
     public Texture2D image;
+    public Texture2D unableImage;
     public Price[] price;
 }
 
@@ -84,7 +85,7 @@ public class UnitStore : MonoBehaviour
             }
             if (!canBuy)
             {
-                GUI.Box(rect, new GUIContent(unit.image));
+                GUI.Box(rect, new GUIContent(unit.unableImage));
             }
             else
             {

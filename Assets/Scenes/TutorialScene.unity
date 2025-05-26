@@ -210,6 +210,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &55570166
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -298,6 +299,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &60267509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -386,6 +388,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &125652277
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -474,6 +477,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &130614362
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -562,6 +566,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &173800654
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -652,6 +657,7 @@ MonoBehaviour:
   - {fileID: 1814999453}
   - {fileID: 251527665}
   store: {fileID: 1810748690}
+  tutorialUI: {fileID: 1810748691}
 --- !u!1001 &183842428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -740,6 +746,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &225888169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -828,6 +835,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &229398960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -916,6 +924,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &233768557
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1004,6 +1013,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &244342462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1092,6 +1102,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &251527663
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1180,6 +1191,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &285399168
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1268,6 +1280,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &289490385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1356,6 +1369,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &310795473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1444,6 +1458,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &359207105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1532,6 +1547,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &430696164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1620,6 +1636,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &453191657
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1708,6 +1725,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &482568145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1796,6 +1814,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &493345348
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1884,6 +1903,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &496910789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1972,6 +1992,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &523499859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2060,6 +2081,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &525256030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2148,6 +2170,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &537249286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2236,6 +2259,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &539353086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2324,6 +2348,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &577318478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2412,6 +2437,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1 &583269211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,6 +2620,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &589673396
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2682,6 +2709,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &615478380
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2770,6 +2798,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &697420236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2858,6 +2887,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &714722142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2946,6 +2976,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &743132083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3034,6 +3065,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &756782310
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3122,6 +3154,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &816362368
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3210,6 +3243,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &831600449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3298,6 +3332,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &861613114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3386,6 +3421,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &912034653
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3474,6 +3510,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &931522722
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3562,6 +3599,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &950752056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3650,6 +3688,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &979220511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3660,7 +3699,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4522856774485349773, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.27
+      value: -7.54
       objectReference: {fileID: 0}
     - target: {fileID: 4522856774485349773, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3668,7 +3707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4522856774485349773, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4522856774485349773, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3891,6 +3930,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1090857514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3979,6 +4019,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1111388838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4067,6 +4108,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1111779289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4155,6 +4197,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1148134021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4243,6 +4286,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1163809204
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4331,6 +4375,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1178877010
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4419,6 +4464,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1192334155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4507,6 +4553,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1215080031
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4595,6 +4642,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1246952660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4683,6 +4731,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1268049608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4771,6 +4820,18 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
+--- !u!114 &1290039601 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8655439246647318159, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
+  m_PrefabInstance: {fileID: 979220511}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1454831e5a17c24a856281011e4329f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1298632587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4859,6 +4920,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1328573115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4947,6 +5009,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1342360189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5035,6 +5098,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1365822865
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5123,6 +5187,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1382792233
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5211,6 +5276,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1439705863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5299,6 +5365,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1464322893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5387,6 +5454,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1 &1479495528
 GameObject:
   m_ObjectHideFlags: 0
@@ -5587,6 +5655,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1582704044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5675,6 +5744,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1588216684
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5763,6 +5833,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1597802126
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5851,6 +5922,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1603609510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5939,6 +6011,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1704927925
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6027,6 +6100,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1719484544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6115,6 +6189,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1721963137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6203,6 +6278,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1724426502
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6291,6 +6367,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1731191351
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6379,6 +6456,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1732238412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6467,6 +6545,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1745007734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6555,6 +6634,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1 &1810748688
 GameObject:
   m_ObjectHideFlags: 0
@@ -6600,6 +6680,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d155db1a879a7034fac1ee4b5edb5d90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  units:
+  - prefab: {fileID: 3509506487342159816, guid: 0815bc8a755950144b89922fd042d866, type: 3}
+    image: {fileID: 2800000, guid: b395bc0bc6393db48acb805595f4f739, type: 3}
+    unableImage: {fileID: 0}
+    price:
+    - key: 0
+      value: 10
+  spawner: {fileID: 1290039601}
+  tutorialUI: {fileID: 1810748691}
 --- !u!114 &1810748691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6616,13 +6705,35 @@ MonoBehaviour:
   tutoRectSize: {x: 0, y: 0}
   stepIndex: 0
   tutoInfos:
-  - rectPos: {x: 390, y: 30}
+  - rectPos: {x: 390, y: 40}
     rectSize: {x: 450, y: 330}
-    titlePos: {x: 60, y: 100}
-    descPos: {x: 100, y: 200}
-    descContent: "\uBE14\uB85D\uC744 \uB9E4\uCE58\uD558\uC5EC \uC790\uC6D0 \uC218\uC9D1\uC744\\n\uD560
-      \uC218 \uC788\uC2B5\uB2C8\uB2E4.\\n\uBE68\uAC04 \uBE14\uB85D\uC744 \uC624\uB978\uCABD\uC73C\uB85C\\n\uB4DC\uB798\uADF8
-      \uD574\uBCFC\uAE4C\uC694?\\n(\uC88C\uD074\uB9AD \uB4DC\uB798\uADF8)"
+    titlePos: {x: 80, y: 100}
+    descPos: {x: 120, y: 200}
+    descContent: "\uBE14\uB85D\uC744 3\uAC1C \uB9E4\uCE58\uD558\uC5EC\\n\uC790\uC6D0\uC744
+      \uC218\uC9D1 \uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.\\n\uBE68\uAC04 \uBE14\uB85D\uC744
+      \uC624\uB978\uCABD\uC73C\uB85C \uB4DC\uB798\uADF8 \uD574\uBCFC\uAE4C\uC694?\\n(\uC88C\uD074\uB9AD
+      \uB4DC\uB798\uADF8)"
+  - rectPos: {x: 390, y: 80}
+    rectSize: {x: 100, y: 40}
+    titlePos: {x: 312, y: 36}
+    descPos: {x: 170, y: 96}
+    descContent: "10\uAC1C\uC758 \uD3EC\uC778\uD2B8\uB97C \uBAA8\uC558\uB124\uC694!\\n\uC774\uC81C
+      \uC720\uB2DB\uC744 \uC0B4 \uC218 \uC788\uACA0\uC5B4\uC694!"
+  - rectPos: {x: 4.3, y: 36.2}
+    rectSize: {x: 478.4, y: 390.3}
+    titlePos: {x: 534.7, y: 224.8}
+    descPos: {x: 588, y: 315.8}
+    descContent: "\uBC11\uC5D0 \uC788\uB294 \uC0C1\uC810\uC5D0\uC11C\\n\uAD6C\uB9E4\uD560
+      \uC218 \uC788\uB294 \uC720\uB2DB\uC744 \uC88C\uD074\uB9AD \uD558\uACE0\\n\uC5F0\uAC08\uC0C9\uC758
+      \uC601\uC5ED\uC5D0 \uB2E4\uC2DC \uC88C\uD074\uB9AD\uD558\uC5EC\\n\uC720\uB2DB\uC744
+      \uBC30\uCE58\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+  - rectPos: {x: 4.5, y: 3.8}
+    rectSize: {x: 358.9, y: 169.9}
+    titlePos: {x: 93.6, y: 201.6}
+    descPos: {x: 138.9, y: 265.4}
+    descContent: "\uC2A4\uD14C\uC774\uC9C0\uB294 \uCD1D 3\uAC1C \uC788\uC2B5\uB2C8\uB2E4!\\n\uD55C
+      \uC2A4\uD14C\uC774\uC9C0 \uB2F9 100\uCD08 \uB3D9\uC548 \uC0B4\uC544\uB0A8\uC73C\uC138\uC694!\\n(\uB9C8\uC6B0\uC2A4
+      \uC88C\uD074\uB9AD \uC2DC \uD0C0\uC774\uD2C0 \uC52C\uC73C\uB85C \uC774\uB3D9)"
 --- !u!1001 &1814999451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6711,6 +6822,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1821185460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6799,6 +6911,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1897924319
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6887,6 +7000,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1915230354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6975,6 +7089,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1939365304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7063,6 +7178,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &1943664710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7151,6 +7267,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &2046264991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7239,6 +7356,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &2073435579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7327,6 +7445,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &2102735163
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7415,6 +7534,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &2104240782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7503,6 +7623,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &2129366042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7591,6 +7712,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1001 &2146631000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7679,6 +7801,7 @@ MonoBehaviour:
   sideObject: {fileID: 0}
   togethers: []
   store: {fileID: 0}
+  tutorialUI: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

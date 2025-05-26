@@ -10,6 +10,7 @@ public class BlockTutorial : MonoBehaviour
     public GameObject sideObject;
     public GameObject[] togethers;
     public StoreTutorial store;
+    public TutorialUI tutorialUI;
 
     private Vector3 mousePos;
     private Vector3 startPos;
@@ -23,11 +24,7 @@ public class BlockTutorial : MonoBehaviour
     void Start()
     {
         SetColor();
-        if (this.store != null && this.togethers != null)
-        {
-            this.store.datas[this.color] = 10 - (this.togethers.Length + 1);
-        }
-        SetTargetsColor();
+        LateInit();
     }
 
     void Update()
@@ -126,15 +123,19 @@ public class BlockTutorial : MonoBehaviour
             Destroy(together);
         }
         Destroy(this.gameObject);
+        tutorialUI.stepIndex++;
     }
 
-    private async void SetTargetsColor()
+    private async void LateInit()
     {
         await Task.Delay(100);
         foreach (GameObject together in this.togethers)
         {
             together.GetComponent<Renderer>().material.color = colorValue;
-            Debug.Log(together.GetComponent<Renderer>().material.color);
+        }
+        if (this.store != null && this.togethers != null)
+        {
+            this.store.datas[this.color] = 10 - (this.togethers.Length + 1);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 [System.Serializable]
@@ -26,8 +27,12 @@ public class TutorialUI : MonoBehaviour
     void Start()
     {
         tutoRectSize = new Vector2(Screen.width, Screen.height);
-        destPos = tutoInfos[0].rectPos;
-        destSize = tutoInfos[0].rectSize;
+    }
+
+    void Update()
+    {
+        destPos = tutoInfos[stepIndex].rectPos;
+        destSize = tutoInfos[stepIndex].rectSize;
     }
 
     void OnGUI()
@@ -35,6 +40,7 @@ public class TutorialUI : MonoBehaviour
         DrawTutoRect();
         Title();
         Description();
+        NextButton();
     }
 
     void Title()
@@ -79,5 +85,28 @@ public class TutorialUI : MonoBehaviour
         float yOffset = this.tutoRectPos.y + this.tutoRectSize.y;
         GUI.Box(new Rect(this.tutoRectPos.x, 0.0f, this.tutoRectSize.x, this.tutoRectPos.y), "", guistyle);
         GUI.Box(new Rect(this.tutoRectPos.x, yOffset, this.tutoRectSize.x, Screen.height - yOffset), "", guistyle);
+    }
+
+    void NextButton()
+    {
+        if (stepIndex == 1)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                stepIndex++;
+            }
+            Rect rect = new Rect(tutoInfos[1].descPos.x + 140f, tutoInfos[1].descPos.y + 50f, 50.0f, 30.0f);
+            if (GUI.Button(rect, "다음"))
+            {
+                stepIndex++;
+            }
+        }
+        else if (stepIndex == 3)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                SceneManager.LoadScene("TitleScene");
+            }
+        }
     }
 }

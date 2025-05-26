@@ -8,14 +8,14 @@ public class Unit : MonoBehaviour
     public bool canPlaced = false;
     public List<GameObject> targetList;
 
-    private Vector3 mousePosition;
-    private Renderer render;
+    protected Vector3 mousePosition;
+    protected Renderer render;
 
-    private float invisible = 0.3f;
-    private float visible = 1.0f;
-    private float canOpacity = 0.7f;
-    private bool isAttacking = false;
-    private Coroutine AttackRoutine;
+    protected float invisible = 0.3f;
+    protected float visible = 1.0f;
+    protected float canOpacity = 0.7f;
+    protected bool isAttacking = false;
+    protected Coroutine AttackRoutine;
 
     void Start()
     {
@@ -92,7 +92,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private IEnumerator Attack()
+    protected virtual IEnumerator Attack()
     {
         isAttacking = true;
         while (true)

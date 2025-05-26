@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneControl : MonoBehaviour
 {
+    public int hp = 3;
     public int stage = 1;
     public int wave = 1;
     public int maxStage = 3;
@@ -36,26 +37,31 @@ public class SceneControl : MonoBehaviour
 
     void Update()
     {
+        if (this.hp <= 0)
+        {
+            SceneManager.LoadScene("FailScene");
+        }
+
         this.stepTimer += Time.deltaTime;
 
         if (this.stepTimer / this.maxTime >= this.wave)
         {
             this.wave++;
-            if (this.stage > this.maxStage)
+            if (this.wave > this.maxWave)
             {
-                this.step = STEP.CLEAR;
-            }
-            else
-            {
-                if (this.wave > this.maxWave)
+                this.stage++;
+                if (this.stage > this.maxStage)
                 {
-                    this.stage++;
+                    this.step = STEP.CLEAR;
+                }
+                else
+                {
                     this.wave = 1;
                     this.stepTimer = 0.0f;
                     CreateRandomDefenseMap();
                 }
-                ResetLevelData();
             }
+            ResetLevelData();
         }
 
         switch (this.step)
@@ -93,15 +99,19 @@ public class SceneControl : MonoBehaviour
                 GUI.Label(new Rect(10.0f, 10.0f, 200.0f, 20.0f), $"Stage {this.stage}", guistyle);
                 GUI.Label(new Rect(10.0f, 40.0f, 200.0f, 20.0f), $"Wave {this.wave}", guistyle);
                 GUI.Label(new Rect(10.0f, 70.0f, 200.0f, 20.0f), Mathf.CeilToInt(this.stepTimer).ToString() + " 초", guistyle);
+                GUI.Label(new Rect(10.0f, 100.0f, 200.0f, 20.0f), $"HP: {this.hp}", guistyle);
                 GUI.color = Color.white;
                 break;
             case STEP.CLEAR:
-                GUI.color = Color.black;
-                // 「☆클리어-！☆」라는 문자열을 표시
-                GUI.Label(new Rect(Screen.width / 2.0f - 80.0f, 20.0f, 200.0f, 20.0f), "☆클리어-!☆", guistyle);
-                // 클리어 시간을 표시
-                GUI.Label(new Rect(Screen.width / 2.0f - 80.0f, 40.0f, 200.0f, 20.0f), "클리어 시간" + Mathf.CeilToInt(this.clearTime).ToString() + "초", guistyle);
-                GUI.color = Color.white;
+                var background = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+                background.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.6f));
+                background.Apply();
+                guistyle.normal.textColor = Color.white;
+                guistyle.normal.background = background;
+                guistyle.fontStyle = FontStyle.Bold;
+                GUI.Box(new Rect(0f, 0.0f, Screen.width, Screen.height), "", guistyle);
+                GUI.Label(new Rect(Screen.width / 2.0f - 80.0f, Screen.height / 2.0f - 70f, 200.0f, 20.0f), "☆클리어-!☆", guistyle);
+                GUI.Button(new Rect(Screen.width / 2.0f - 110.0f, Screen.height / 2.0f, 200.0f, 40f), "Go back Title");
                 break;
         }
     }

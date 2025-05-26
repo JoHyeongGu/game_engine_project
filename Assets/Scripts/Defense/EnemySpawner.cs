@@ -48,6 +48,7 @@ public class EnemySpawner : MonoBehaviour
             spawnData = new Dictionary<string, SpawnInfo>();
             InitSpawnData();
         }
+        if (!spawnData.ContainsKey(key)) return;
         SpawnInfo data = spawnData[key];
         this.minCooltime = data.minCooltime;
         this.maxCooltime = data.maxCooltime;
