@@ -9,7 +9,7 @@ public class Unit_4 : Unit
         isAttacking = true;
         while (true)
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(1.5f);
             if (targetList.Count == 0) break;
             GameObject firstEnemy = targetList[0];
             if (firstEnemy == null)

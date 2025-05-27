@@ -14,7 +14,7 @@ public class Unit_3 : Unit
             CheckCanPlaced();
         }
         attackTime += Time.deltaTime;
-        if (attackTime >= 10.0f)
+        if (attackTime >= 5.0f)
         {
             AttackEnemy();
             attackTime = 0.0f;
@@ -36,7 +36,7 @@ public class Unit_3 : Unit
             targetList.Remove(_enemy);
             return;
         }
-        enemyClass.hp -= 10;
+        enemyClass.hp -= 30;
         if (enemyClass.hp <= 0)
         {
             targetList.Remove(_enemy);

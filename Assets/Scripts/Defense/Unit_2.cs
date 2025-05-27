@@ -25,7 +25,7 @@ public class Unit_2 : Unit
                     targetList.Remove(_enemy);
                     continue;
                 }
-                _class.hp -= 0.1f;
+                _class.hp -= 0.3f;
                 if (_class.hp <= 0)
                 {
                     targetList.Remove(_enemy);

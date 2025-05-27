@@ -43,14 +43,19 @@ public class SceneControl : MonoBehaviour
             SceneManager.LoadScene("FailScene");
         }
 
+        if (wave > maxWave)
+        {
+            wave = maxWave;
+        }
+
         if (waveComplete && spawner.activate)
-        {
-            spawner.activate = false;
-        }
-        else if (waveComplete && GetEnemyCount() == 0)
-        {
-            NextStage();
-        }
+            {
+                spawner.activate = false;
+            }
+            else if (waveComplete && GetEnemyCount() == 0)
+            {
+                NextStage();
+            }
 
         if (this.stepTimer >= this.maxTime * this.maxWave)
         {

@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-        else if (agent.remainingDistance <= 0.5f)
+        else if (agent.remainingDistance <= 0.01f)
         {
             ArriveToGoal();
         }
@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
         {
             GameObject clone = Instantiate(this.gameObject);
             clone.transform.localScale = newSize;
-            float posOffset = (i - 1) * Random.value;
+            float posOffset = (i - 1) * Random.Range(0.01f, 0.15f);
             clone.transform.position = new Vector3(pos.x + posOffset, pos.y + posOffset, pos.z + posOffset);
             Enemy _class = clone.GetComponent<Enemy>();
             _class.hp = newHp;
