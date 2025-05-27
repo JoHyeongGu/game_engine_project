@@ -86,6 +86,8 @@ public class BlockRoot : MonoBehaviour
     public TextAsset levelData = null;
     public LevelControl levelControl;
 
+    public Dictionary<Block.COLOR, int> matchCount = new Dictionary<Block.COLOR, int>();
+
     // 레벨 데이터의 초기화, 로드, 패턴 설정까지 시행
     public void Create(int stage, int wave, int maxWave)
     {
@@ -398,6 +400,99 @@ public class BlockRoot : MonoBehaviour
             {
                 ReSwap(block0, block1, dir);
             }
+            else CountMatchBlock();
+        }
+    }
+
+    private async void CountMatchBlock()
+    {
+        await Task.Delay(500);
+        int _matchCount = 0;
+        foreach (KeyValuePair<Block.COLOR, int> item in matchCount)
+        {
+            if (_matchCount < item.Value)
+            {
+                _matchCount = item.Value;
+            }
+        }
+        if (_matchCount < 4)
+        {
+            _matchCount = 0;
+            return;
+        }
+
+        if (_matchCount >= 6)
+        {
+            FireEnemies();
+            FreezeEnemies();
+        }
+        else if (_matchCount >= 5)
+        {
+            FireEnemies();
+        }
+        else if (_matchCount >= 4)
+        {
+            FreezeEnemies();
+        }
+        matchCount.Clear();
+    }
+
+    private async void FreezeEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<float> speedList = new List<float>();
+        List<Color> originalColors = new List<Color>();
+
+        foreach (GameObject obj in enemies)
+        {
+            if (obj == null) continue;
+            Enemy enemy = obj.GetComponent<Enemy>();
+            Renderer render = obj.GetComponent<Renderer>();
+            originalColors.Add(render.material.color);
+            speedList.Add(enemy.speed);
+            enemy.agent.speed /= 3;
+            render.material.color *= Color.cyan;
+        }
+        await Task.Delay(5000);
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i] == null) continue;
+            Enemy enemy = enemies[i].GetComponent<Enemy>();
+            Renderer render = enemies[i].GetComponent<Renderer>();
+            enemy.agent.speed = speedList[i];
+            render.material.color = originalColors[i];
+        }
+    }
+
+    private async void FireEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<Color> originalColors = new List<Color>();
+        foreach (GameObject obj in enemies)
+        {
+            if (obj == null) continue;
+            Enemy enemy = obj.GetComponent<Enemy>();
+            Renderer render = obj.GetComponent<Renderer>();
+            originalColors.Add(render.material.color);
+            render.material.color *= Color.red;
+        }
+        for (int i = 0; i < 10; i++)
+        {
+            await Task.Delay(500);
+            foreach (GameObject obj in enemies)
+            {
+                if (obj == null) continue;
+                Enemy enemy = obj.GetComponent<Enemy>();
+                enemy.hp -= 0.2f;
+            }
+        }
+        await Task.Delay(500);
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            if (enemies[i] == null) continue;
+            Enemy enemy = enemies[i].GetComponent<Enemy>();
+            Renderer render = enemies[i].GetComponent<Renderer>();
+            render.material.color = originalColors[i];
         }
     }
 

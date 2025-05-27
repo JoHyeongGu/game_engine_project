@@ -24,6 +24,7 @@ public class SceneControl : MonoBehaviour
     private BlockRoot blockRoot = null;
     private GameObject defenseMap;
     private EnemySpawner spawner;
+    private bool waveComplete = false;
 
     void Start()
     {
@@ -42,25 +43,25 @@ public class SceneControl : MonoBehaviour
             SceneManager.LoadScene("FailScene");
         }
 
+        if (waveComplete && spawner.activate)
+        {
+            spawner.activate = false;
+        }
+        else if (waveComplete && GetEnemyCount() == 0)
+        {
+            NextStage();
+        }
+
+        if (this.stepTimer >= this.maxTime * this.maxWave)
+        {
+            waveComplete = true;
+        }
+
         this.stepTimer += Time.deltaTime;
 
-        if (this.stepTimer / this.maxTime >= this.wave)
+        if (!waveComplete && this.stepTimer / this.maxTime >= this.wave)
         {
             this.wave++;
-            if (this.wave > this.maxWave)
-            {
-                this.stage++;
-                if (this.stage > this.maxStage)
-                {
-                    this.step = STEP.CLEAR;
-                }
-                else
-                {
-                    this.wave = 1;
-                    this.stepTimer = 0.0f;
-                    CreateRandomDefenseMap();
-                }
-            }
             ResetLevelData();
         }
 
@@ -89,7 +90,28 @@ public class SceneControl : MonoBehaviour
         }
     }
 
-    // 화면에 클리어한 시간과 메시지를 표시
+    private void NextStage()
+    {
+        this.waveComplete = false;
+        this.stage++;
+        if (this.stage > this.maxStage)
+        {
+            this.step = STEP.CLEAR;
+        }
+        else
+        {
+            this.wave = 1;
+            this.stepTimer = 0.0f;
+            CreateRandomDefenseMap();
+        }
+    }
+
+    private int GetEnemyCount()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        return enemies.Length;
+    }
+
     void OnGUI()
     {
         switch (this.step)

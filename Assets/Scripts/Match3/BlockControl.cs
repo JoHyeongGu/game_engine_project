@@ -254,6 +254,7 @@ public class BlockControl : MonoBehaviour
     public void BeginGrab()
     {
         this.nextStep = Block.STEP.GRABBED;
+        this.blockRoot.matchCount.Clear();
     }
 
     // 놓았을 때 호출
@@ -346,6 +347,8 @@ public class BlockControl : MonoBehaviour
 
     public void ToVanishing()
     {
+        if (!blockRoot.matchCount.ContainsKey(color)) { blockRoot.matchCount[color] = 1; }
+        else blockRoot.matchCount[color]++;
         blockRoot.PointUp(color);
         // ＇사라질 때까지 걸리는 시간＇을 규정값으로 리셋
         float vanishTime = this.blockRoot.levelControl.GetVanishTime();

@@ -134,7 +134,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -181,6 +181,7 @@ MonoBehaviour:
   speed: 0.7
   goal: {x: 0, y: 0, z: 0}
   splitCount: 3
+  agent: {fileID: 0}
 --- !u!1 &5257198888571774276
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +193,6 @@ GameObject:
   - component: {fileID: 6600206355732723822}
   - component: {fileID: 8014721007280314092}
   - component: {fileID: 5399364979710369516}
-  - component: {fileID: 3694488253513445196}
   m_Layer: 0
   m_Name: Hp
   m_TagString: Untagged
@@ -265,29 +265,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &3694488253513445196
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5257198888571774276}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8745124741222879450
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +276,6 @@ GameObject:
   - component: {fileID: 8630201893757363514}
   - component: {fileID: 6334762101770618294}
   - component: {fileID: 6783631933629154758}
-  - component: {fileID: 8196680075637966370}
   - component: {fileID: 2980881541411807087}
   m_Layer: 0
   m_Name: HpFrame
@@ -374,29 +350,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8196680075637966370
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8745124741222879450}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2980881541411807087
 MonoBehaviour:
   m_ObjectHideFlags: 0

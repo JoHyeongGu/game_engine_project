@@ -28,6 +28,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Dictionary<string, SpawnInfo> spawnData;
     private Coroutine routine;
+    private bool routineIsRunning = false;
 
     void Start()
     {
@@ -35,6 +36,14 @@ public class EnemySpawner : MonoBehaviour
         InitSpawnData();
         SetSpawnData(stage, 1);
         if (activate)
+        {
+            routine = StartCoroutine(SpawnRoutine());
+        }
+    }
+
+    void Update()
+    {
+        if (this.activate && !routineIsRunning)
         {
             routine = StartCoroutine(SpawnRoutine());
         }
@@ -60,8 +69,14 @@ public class EnemySpawner : MonoBehaviour
 
     private IEnumerator SpawnRoutine()
     {
+        routineIsRunning = true;
         while (true)
         {
+            if (!this.activate)
+            {
+                routineIsRunning = false;
+                break;
+            }
             GameObject enemy = GetRandomEnemy();
             GameObject instance = Instantiate(enemy, transform.position, transform.rotation);
             yield return new WaitForSeconds(Random.Range(minCooltime, maxCooltime));

@@ -4,47 +4,60 @@ using UnityEngine;
 
 public class Unit_3 : Unit
 {
-    protected override IEnumerator Attack()
+    private float attackTime = 0.0f;
+
+    protected override void Update()
     {
-        isAttacking = true;
-        while (true)
+        if (!isActive)
         {
-            yield return new WaitForSeconds(10);
-            if (targetList.Count == 0) break;
-            GameObject _enemy = GetFullHpEnemy();
-            if (_enemy == null)
-            {
-                targetList.Remove(_enemy);
-                continue;
-            }
-            Enemy enemyClass = _enemy.GetComponent<Enemy>();
-            if (enemyClass == null)
-            {
-                targetList.Remove(_enemy);
-                continue;
-            }
-            enemyClass.hp -= 10;
-            if (enemyClass.hp <= 0)
-            {
-                targetList.Remove(_enemy);
-            }
+            this.transform.position = mousePosition;
+            CheckCanPlaced();
+        }
+        attackTime += Time.deltaTime;
+        if (attackTime >= 10.0f)
+        {
+            AttackEnemy();
+            attackTime = 0.0f;
+        }
+    }
+
+    private void AttackEnemy()
+    {
+        if (targetList.Count == 0) return;
+        GameObject _enemy = GetFullHpEnemy();
+        if (_enemy == null)
+        {
+            targetList.Remove(_enemy);
+            return;
+        }
+        Enemy enemyClass = _enemy.GetComponent<Enemy>();
+        if (enemyClass == null)
+        {
+            targetList.Remove(_enemy);
+            return;
+        }
+        enemyClass.hp -= 10;
+        if (enemyClass.hp <= 0)
+        {
+            targetList.Remove(_enemy);
         }
     }
 
     private GameObject GetFullHpEnemy()
     {
         GameObject fullHpEnemy = null;
-        int hp = 0;
+        float hp = 0;
         foreach (GameObject _enemy in targetList)
         {
+            if (_enemy == null) continue;
             Enemy _class = _enemy.GetComponent<Enemy>();
+            if (_class == null) continue;
             if (_class.hp >= hp)
             {
                 fullHpEnemy = _enemy;
                 hp = _class.hp;
             }
         }
-        Debug.Log($"{hp}");
         return fullHpEnemy;
     }
 }

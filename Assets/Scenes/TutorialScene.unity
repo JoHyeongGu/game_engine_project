@@ -6682,12 +6682,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   units:
   - prefab: {fileID: 3509506487342159816, guid: 0815bc8a755950144b89922fd042d866, type: 3}
-    image: {fileID: 2800000, guid: b395bc0bc6393db48acb805595f4f739, type: 3}
-    unableImage: {fileID: 0}
+    image: {fileID: 2800000, guid: 7a64df5b251479944961eb0629df3a3f, type: 3}
+    unableImage: {fileID: 2800000, guid: 21558e9462d97364aaaace11c087604c, type: 3}
     price:
     - key: 0
       value: 10
-  spawner: {fileID: 1290039601}
   tutorialUI: {fileID: 1810748691}
 --- !u!114 &1810748691
 MonoBehaviour:
@@ -6701,6 +6700,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b13d12b9c1e8594fb9bab14924558ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawner: {fileID: 1290039601}
   tutoRectPos: {x: 0, y: 0}
   tutoRectSize: {x: 0, y: 0}
   stepIndex: 0
@@ -6729,11 +6729,12 @@ MonoBehaviour:
       \uBC30\uCE58\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4."
   - rectPos: {x: 4.5, y: 3.8}
     rectSize: {x: 358.9, y: 169.9}
-    titlePos: {x: 93.6, y: 201.6}
-    descPos: {x: 138.9, y: 265.4}
-    descContent: "\uC2A4\uD14C\uC774\uC9C0\uB294 \uCD1D 3\uAC1C \uC788\uC2B5\uB2C8\uB2E4!\\n\uD55C
-      \uC2A4\uD14C\uC774\uC9C0 \uB2F9 100\uCD08 \uB3D9\uC548 \uC0B4\uC544\uB0A8\uC73C\uC138\uC694!\\n(\uB9C8\uC6B0\uC2A4
-      \uC88C\uD074\uB9AD \uC2DC \uD0C0\uC774\uD2C0 \uC52C\uC73C\uB85C \uC774\uB3D9)"
+    titlePos: {x: 523.5, y: 156.2}
+    descPos: {x: 568.9, y: 254.2}
+    descContent: "\uC2A4\uD14C\uC774\uC9C0\uB294 \uCD1D 3\uAC1C \uC788\uC2B5\uB2C8\uB2E4!\\n5\uAC1C\uC758
+      Wave \uB3D9\uC548 \uC801\uC774 \uBAA9\uC801\uC9C0\uC5D0 \uB3C4\uCC29\uD558\uC9C0
+      \uBABB \uD558\uAC8C \uB9C9\uC73C\uC138\uC694!\\n\\n(\uB9C8\uC6B0\uC2A4 \uC88C\uD074\uB9AD
+      \uC2DC \uD0C0\uC774\uD2C0 \uC52C\uC73C\uB85C \uC774\uB3D9)"
 --- !u!1001 &1814999451
 PrefabInstance:
   m_ObjectHideFlags: 0

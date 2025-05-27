@@ -24,7 +24,7 @@ public class Unit : MonoBehaviour
         this.SetOpacity(invisible);
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (!isActive)
         {
@@ -66,7 +66,7 @@ public class Unit : MonoBehaviour
         render.material.color = newColor;
     }
 
-    private void CheckCanPlaced()
+    protected void CheckCanPlaced()
     {
         Ray ray = new Ray(transform.position, Vector3.forward);
         RaycastHit hit;
@@ -111,7 +111,7 @@ public class Unit : MonoBehaviour
                 targetList.Remove(targetList[0]);
                 continue;
             }
-            enemyClass.hp--;
+            enemyClass.hp -= 0.5f;
             if (enemyClass.hp <= 0)
             {
                 targetList.Remove(targetList[0]);

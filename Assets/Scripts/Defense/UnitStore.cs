@@ -83,19 +83,63 @@ public class UnitStore : MonoBehaviour
                     canBuy = false;
                 }
             }
+            GUIStyle style = new GUIStyle(GUI.skin.button);
+            style.fontSize = 12;
             if (!canBuy)
             {
-                GUI.Box(rect, new GUIContent(unit.unableImage));
+                GUI.Box(rect, new GUIContent(unit.unableImage), style);
+                DrawPrice(unit.price, new Vector2(xPos, yPos));
             }
             else
             {
-                if (GUI.Button(rect, new GUIContent(unit.image)))
+                if (GUI.Button(rect, new GUIContent(unit.image), style))
                 {
                     this.BuyUnit(unit);
                     GameObject unitObject = Instantiate(unit.prefab, blockRoot.mousePosition, Quaternion.Euler(-90.0f, 0, 0));
                     SelectedUnit = unitObject.GetComponent<Unit>();
                 }
+                DrawPrice(unit.price, new Vector2(xPos, yPos));
             }
+        }
+    }
+
+    private Color GetColorFromBlock(Block.COLOR color)
+    {
+        switch (color)
+        {
+            case Block.COLOR.RED: return Color.red;
+            case Block.COLOR.BLUE: return Color.blue;
+            case Block.COLOR.GREEN: return Color.green;
+            case Block.COLOR.YELLOW: return Color.yellow;
+            case Block.COLOR.MAGENTA: return Color.magenta;
+            case Block.COLOR.ORANGE: return new Color(1.0f, 0.46f, 0.0f);
+            default: return Color.gray;
+        }
+    }
+
+    private void DrawPrice(Price[] datas, Vector2 startPosition)
+    {
+        float lineHeight = 20f;
+        float boxSize = 16f;
+        float spacing = 6f;
+
+        GUIStyle textStyle = new GUIStyle();
+        textStyle.normal.textColor = Color.white;
+        textStyle.fontStyle = FontStyle.Bold;
+        textStyle.fontSize = 17;
+
+        for (int i = 0; i < datas.Length; i++)
+        {
+            Price data = datas[i];
+
+            float y = startPosition.y + i * (lineHeight + 4f);
+            Rect colorBoxRect = new Rect(startPosition.x, y + 4, boxSize, boxSize);
+            GUI.color = GetColorFromBlock(data.key);
+            GUI.DrawTexture(colorBoxRect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+            string priceText = $"{data.value}";
+            Rect textRect = new Rect(startPosition.x + boxSize + spacing, y, 100, lineHeight);
+            GUI.Label(textRect, priceText, textStyle);
         }
     }
 

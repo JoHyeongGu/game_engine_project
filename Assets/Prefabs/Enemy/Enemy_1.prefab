@@ -102,7 +102,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -149,6 +149,7 @@ MonoBehaviour:
   speed: 1
   goal: {x: 0, y: 0, z: 0}
   splitCount: 0
+  agent: {fileID: 0}
 --- !u!1 &1143319978835310373
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +161,6 @@ GameObject:
   - component: {fileID: 5177332251365808508}
   - component: {fileID: 2230270841866937255}
   - component: {fileID: 2959736041119672984}
-  - component: {fileID: 9022558864187669409}
   - component: {fileID: 9008176165726140452}
   m_Layer: 0
   m_Name: HpFrame
@@ -235,29 +235,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &9022558864187669409
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1143319978835310373}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &9008176165726140452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +260,6 @@ GameObject:
   - component: {fileID: 8529791117753408807}
   - component: {fileID: 2060321051663781256}
   - component: {fileID: 2181424399317634916}
-  - component: {fileID: 6403208674493633347}
   m_Layer: 0
   m_Name: Hp
   m_TagString: Untagged
@@ -356,29 +332,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6403208674493633347
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7222292419076916314}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7245660920546111807
 GameObject:
   m_ObjectHideFlags: 0

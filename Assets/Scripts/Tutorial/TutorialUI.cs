@@ -15,11 +15,13 @@ public struct TutoInfo
 
 public class TutorialUI : MonoBehaviour
 {
+    public EnemySpawner spawner;
     public Vector2 tutoRectPos;
     public Vector2 tutoRectSize;
 
     private Vector2 destPos;
     private Vector2 destSize;
+    private StoreTutorial store;
 
     public int stepIndex = 0;
     public TutoInfo[] tutoInfos;
@@ -27,16 +29,23 @@ public class TutorialUI : MonoBehaviour
     void Start()
     {
         tutoRectSize = new Vector2(Screen.width, Screen.height);
+        store = GetComponent<StoreTutorial>();
     }
 
     void Update()
     {
         destPos = tutoInfos[stepIndex].rectPos;
         destSize = tutoInfos[stepIndex].rectSize;
+
+        if (stepIndex == 3 && !spawner.activate)
+        {
+            spawner.activate = true;
+        }
     }
 
     void OnGUI()
     {
+        store.DrawGUI();
         DrawTutoRect();
         Title();
         Description();

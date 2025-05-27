@@ -6,12 +6,12 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public int hp;
-    public int maxHp;
+    public float hp;
+    public float maxHp;
     public float speed;
     public Vector3 goal;
     public int splitCount = 0;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     void Start()
     {
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour
     private void ArriveToGoal()
     {
         SceneControl scene = GameObject.FindWithTag("Root").GetComponent<SceneControl>();
-        scene.hp--;
+        if (scene.stepTimer >= 0.1f) scene.hp--;
         Destroy(this.gameObject);
     }
 

@@ -9,7 +9,7 @@ public class Unit_2 : Unit
         isAttacking = true;
         while (true)
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.5f);
             if (targetList.Count == 0) break;
             for (int i = targetList.Count - 1; i >= 0; i--)
             {
@@ -25,7 +25,7 @@ public class Unit_2 : Unit
                     targetList.Remove(_enemy);
                     continue;
                 }
-                _class.hp--;
+                _class.hp -= 0.1f;
                 if (_class.hp <= 0)
                 {
                     targetList.Remove(_enemy);

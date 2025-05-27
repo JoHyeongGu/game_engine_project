@@ -174,7 +174,7 @@ MonoBehaviour:
   wave: 1
   maxStage: 3
   maxWave: 5
-  maxTime: 20
+  maxTime: 10
   defenseMapList:
   - {fileID: 5771282464016408193, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
   - {fileID: 2533781801306245280, guid: d788fc6d58aefae469687896c9b52827, type: 3}
@@ -359,28 +359,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   units:
   - prefab: {fileID: 3509506487342159816, guid: 0815bc8a755950144b89922fd042d866, type: 3}
-    image: {fileID: 2800000, guid: a18646bf14927454eacf5d8fd7549e91, type: 3}
-    unableImage: {fileID: 2800000, guid: b643c6d94aaa0194f84f9948385fe935, type: 3}
+    image: {fileID: 2800000, guid: 7a64df5b251479944961eb0629df3a3f, type: 3}
+    unableImage: {fileID: 2800000, guid: 21558e9462d97364aaaace11c087604c, type: 3}
     price:
     - key: 0
       value: 10
   - prefab: {fileID: 3509506487342159816, guid: f331e8247bc2efd4e893a9ab408d9aa7, type: 3}
-    image: {fileID: 2800000, guid: 056283640b8f7004781cbc0a6a27183c, type: 3}
-    unableImage: {fileID: 2800000, guid: 557b736589ed0b64fa68d14ff564d22b, type: 3}
+    image: {fileID: 2800000, guid: e0853072e70ce044d995818e33d920d0, type: 3}
+    unableImage: {fileID: 2800000, guid: 2674c2ac2dd6a514f82024eccccfd782, type: 3}
     price:
-    - key: 2
-      value: 5
     - key: 1
       value: 10
-  - prefab: {fileID: 3509506487342159816, guid: d8d0c7816049a794691106186b2e08c7, type: 3}
-    image: {fileID: 2800000, guid: beb0741a902628f48809b03b3eb92e59, type: 3}
-    unableImage: {fileID: 2800000, guid: 62c99f4e974110d4fafc181e9dbaecbe, type: 3}
-    price:
-    - key: 3
+    - key: 2
       value: 5
+  - prefab: {fileID: 3509506487342159816, guid: d8d0c7816049a794691106186b2e08c7, type: 3}
+    image: {fileID: 2800000, guid: 69197fe6c0d9b25448f44702a49433b0, type: 3}
+    unableImage: {fileID: 2800000, guid: 70e632af4c027ec4697e7a3aef10525c, type: 3}
+    price:
     - key: 4
       value: 5
+    - key: 2
+      value: 5
     - key: 5
+      value: 5
+  - prefab: {fileID: 3509506487342159816, guid: 727dcc810339b9c4c9dbe7cff92f9f05, type: 3}
+    image: {fileID: 2800000, guid: 9a0cc845e38ab964cae6d43312d0c2af, type: 3}
+    unableImage: {fileID: 2800000, guid: 2b21d0c62a01c0d41843fdd172687f60, type: 3}
+    price:
+    - key: 3
+      value: 12
+    - key: 2
       value: 5
   target: {fileID: 0}
 --- !u!1 &705507993

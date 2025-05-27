@@ -6,7 +6,6 @@ using UnityEngine;
 public class StoreTutorial : MonoBehaviour
 {
     public UnitItem[] units;
-    public EnemySpawner spawner;
     public TutorialUI tutorialUI;
     public Dictionary<Block.COLOR, int> datas = new Dictionary<Block.COLOR, int>();
 
@@ -34,7 +33,6 @@ public class StoreTutorial : MonoBehaviour
         {
             SelectedUnit.Active();
             SelectedUnit = null;
-            spawner.activate = true;
             tutorialUI.stepIndex++;
         }
         if (SelectedUnit != null)
@@ -56,7 +54,7 @@ public class StoreTutorial : MonoBehaviour
         }
     }
 
-    void OnGUI()
+    public void DrawGUI()
     {
         guistyle.fontSize = 16;
         float x = 0.0f;
@@ -73,6 +71,7 @@ public class StoreTutorial : MonoBehaviour
         GUI.Label(new Rect(10.0f, 10.0f, 200.0f, 20.0f), $"Stage 1", guistyle);
         GUI.Label(new Rect(10.0f, 40.0f, 200.0f, 20.0f), $"Wave {wave}", guistyle);
         GUI.Label(new Rect(10.0f, 70.0f, 200.0f, 20.0f), $"{(int)time} 초", guistyle);
+        GUI.Label(new Rect(10.0f, 100.0f, 200.0f, 20.0f), $"HP: 3", guistyle);
         GUI.color = Color.white;
 
         float[] panelInfo = DrawStorePanel();
@@ -119,6 +118,7 @@ public class StoreTutorial : MonoBehaviour
                 GameObject unitObject = Instantiate(unit.prefab, this.mousePosition, Quaternion.Euler(-90.0f, 0, 0));
                 SelectedUnit = unitObject.GetComponent<Unit>();
             }
+            DrawPrice(unit.price, new Vector2(xPos, yPos));
         }
     }
 
@@ -139,5 +139,46 @@ public class StoreTutorial : MonoBehaviour
             ret = false;
         }
         return (ret);
+    }
+
+
+    private Color GetColorFromBlock(Block.COLOR color)
+    {
+        switch (color)
+        {
+            case Block.COLOR.RED: return Color.red;
+            case Block.COLOR.BLUE: return Color.blue;
+            case Block.COLOR.GREEN: return Color.green;
+            case Block.COLOR.YELLOW: return Color.yellow;
+            case Block.COLOR.MAGENTA: return Color.magenta;
+            case Block.COLOR.ORANGE: return new Color(1.0f, 0.46f, 0.0f);
+            default: return Color.gray;
+        }
+    }
+
+    private void DrawPrice(Price[] datas, Vector2 startPosition)
+    {
+        float lineHeight = 20f;
+        float boxSize = 16f;
+        float spacing = 6f;
+
+        GUIStyle textStyle = new GUIStyle();
+        textStyle.normal.textColor = Color.white;
+        textStyle.fontStyle = FontStyle.Bold;
+        textStyle.fontSize = 17;
+
+        for (int i = 0; i < datas.Length; i++)
+        {
+            Price data = datas[i];
+
+            float y = startPosition.y + i * (lineHeight + 4f);
+            Rect colorBoxRect = new Rect(startPosition.x, y + 4, boxSize, boxSize);
+            GUI.color = GetColorFromBlock(data.key);
+            GUI.DrawTexture(colorBoxRect, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+            string priceText = $"{data.value}";
+            Rect textRect = new Rect(startPosition.x + boxSize + spacing, y, 100, lineHeight);
+            GUI.Label(textRect, priceText, textStyle);
+        }
     }
 }
