@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -20,6 +18,11 @@ public struct UnitItem
 
 public class UnitStore : MonoBehaviour
 {
+    public Texture2D activeCard;
+    public Texture2D unactiveCard;
+    public Texture2D hoverCard;
+    public Texture2D clickCard;
+
     public UnitItem[] units;
     public Enemy target;
 
@@ -48,83 +51,58 @@ public class UnitStore : MonoBehaviour
 
     void OnGUI()
     {
-        float[] panelInfo = DrawStorePanel();
-        DrawContent(panelInfo);
-    }
-
-    private float[] DrawStorePanel()
-    {
-        const float baseWidth = 1920f;
-        const float baseHeight = 1080f;
-
-        float scaleX = Screen.width / baseWidth;
-        float scaleY = Screen.height / baseHeight;
-
-        float panelWidth = 1600f * scaleX;
-        float panelHeight = 90f * scaleY;
-        float paddingX = 160f * scaleX;
-        float paddingY = 20f * scaleY;
-
-        Rect rect = new Rect(paddingX, Screen.height - panelHeight - paddingY, panelWidth, panelHeight);
-        GUI.Box(rect, "유닛 상점");
-
-        return new float[] { panelWidth, panelHeight, paddingX, paddingY, scaleX, scaleY };
-    }
-
-    private void DrawContent(float[] panelInfo)
-    {
-        float panelWidth = panelInfo[0];
-        float panelHeight = panelInfo[1];
-        float paddingX = panelInfo[2];
-        float paddingY = panelInfo[3];
-        float scaleX = panelInfo[4];
-        float scaleY = panelInfo[5];
-
-        float unitBoxWidth = 300f * scaleX;
-        float unitBoxHeight = 70f * scaleY;
-        float spacing = 10f * scaleX;
-
-        float startX = paddingX + spacing;
-        float yPos = Screen.height - panelHeight - paddingY + 10f * scaleY;
-
-        int maxDisplay = Mathf.Min(units.Length, 5);
-
-        for (int i = 0; i < maxDisplay; i++)
+        for (int i = 0; i < units.Length; i++)
         {
-            UnitItem unit = units[i];
-            float xPos = startX + i * (unitBoxWidth + spacing);
-            Rect rect = new Rect(xPos, yPos, unitBoxWidth, unitBoxHeight);
-
-            bool canBuy = true;
-            foreach (Price p in unit.price)
-            {
-                if (scoreCounter.GetPoint(p.key) < p.value)
-                {
-                    canBuy = false;
-                    break;
-                }
-            }
-
-            GUIStyle style = new GUIStyle(GUI.skin.button);
-            style.fontSize = Mathf.RoundToInt(14f * scaleY);
-
-            if (!canBuy)
-            {
-                GUI.Box(rect, new GUIContent(unit.unableImage), style);
-            }
-            else
-            {
-                if (GUI.Button(rect, new GUIContent(unit.image), style))
-                {
-                    BuyUnit(unit);
-                    GameObject unitObject = Instantiate(unit.prefab, blockRoot.mousePosition, Quaternion.Euler(-90.0f, 0, 0));
-                    SelectedUnit = unitObject.GetComponent<Unit>();
-                }
-            }
-
-            DrawPrice(unit.price, new Vector2(xPos + 5f * scaleX, yPos + 5f * scaleY), scaleY);
+            DrawUnitCard(i);
         }
     }
+
+    private void DrawUnitCard(int index)
+    {
+        UnitItem unit = units[index];
+
+        float height = Screen.height / 4.5f;
+        float width = height * (4.5f / 5f);
+        float x = (width / 5) * (index + 1) + width * index;
+        Rect rect = new Rect(x, Screen.height - height, width, height);
+
+        GUIStyle style = new GUIStyle(GUI.skin.button);
+        style.normal.background = activeCard;
+        style.hover.background = hoverCard;
+        style.active.background = clickCard;
+
+
+        bool isActive = true;
+        foreach (Price p in unit.price)
+        {
+            if (scoreCounter.GetPoint(p.key) < p.value)
+            {
+                isActive = false;
+                break;
+            }
+        }
+
+        if (isActive)
+        {
+            GUIContent content = new GUIContent(new GUIContent(unit.image));
+            if (GUI.Button(rect, content, style))
+            {
+                BuyUnit(unit);
+                GameObject unitObject = Instantiate(unit.prefab, blockRoot.mousePosition, Quaternion.Euler(-90.0f, 0, 0));
+                SelectedUnit = unitObject.GetComponent<Unit>();
+            }
+        }
+        else
+        {
+            GUIContent content = new GUIContent(new GUIContent(unit.unableImage));
+            style.normal.background = unactiveCard;
+            style.hover.background = null;
+            style.active.background = null;
+            GUI.Box(rect, content, style);
+        }
+    }
+
+
 
 
     private Color GetColorFromBlock(Block.COLOR color)

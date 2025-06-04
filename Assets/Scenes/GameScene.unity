@@ -223,8 +223,8 @@ Transform:
   m_GameObject: {fileID: 312120332}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1, z: 0.1}
-  m_LocalScale: {x: 2.483889, y: 1, z: 1.3971877}
+  m_LocalPosition: {x: 0, y: 1, z: 0.3}
+  m_LocalScale: {x: 2.5249453, y: 1, z: 1.4202816}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
-  planeZ: 0.1
+  planeZ: 0.3
 --- !u!1 &583268872
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef9f05809a06033458bc3478da1ef6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlockPrefab: {fileID: 7064368780360772222, guid: 424ea16fc3f741a46ae0dfe20e4c36ae, type: 3}
+  BlockPrefab: {fileID: 2293371343628167503, guid: 4e0bf4e943a991948ac6e993d7e01c4b, type: 3}
   startPos: {x: 6, y: 1.8}
   mousePosition: {x: 0, y: 0, z: 0}
   levelData: {fileID: 4900000, guid: 67ea787a9a5b9b34ca6e323ec6b829e7, type: 3}
@@ -478,6 +478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c59b3da42a9fbf4780ca477328b3b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeCard: {fileID: 2800000, guid: 4bcc223d7bbd2ef4f85e6e27f88f6586, type: 3}
+  unactiveCard: {fileID: 2800000, guid: b662c77d3d21cea4690189e32332efc4, type: 3}
+  hoverCard: {fileID: 2800000, guid: 3fd9d456d40319b40b6534e2f1ba28fd, type: 3}
+  clickCard: {fileID: 2800000, guid: c3efec1975c38f647a7b7e19f000d7c4, type: 3}
   units:
   - prefab: {fileID: 3509506487342159816, guid: 0815bc8a755950144b89922fd042d866, type: 3}
     image: {fileID: 2800000, guid: 7a64df5b251479944961eb0629df3a3f, type: 3}

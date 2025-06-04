@@ -51,36 +51,38 @@ public class BlockControl : MonoBehaviour
     public Material opagueMaterial;
     public Material transparentMaterial;
 
+    public GameObject[] children;
+
+    void Awake()
+    {
+        InitChildren();
+    }
+
     void Start()
     {
-        this.setColor(this.color);
+        this.SetColor(this.color);
         this.nextStep = Block.STEP.IDLE;
     }
 
-    // 특정 color로 블록을 칠함
-    public void setColor(Block.COLOR color)
+    void InitChildren()
     {
-        this.color = color; // 이번에 지정된 색을 멤버 변수에 보관
-        Color colorValue;  // Color 클래스는 색을 나타냄
-        // 칠할 색에 따라서 갈라짐
-        switch (this.color)
+
+        children = new GameObject[this.transform.childCount];
+        for (int i = 0; i < this.transform.childCount; i++)
         {
-            default:
-            case Block.COLOR.RED:
-                colorValue = Color.red; break;//new Color(1.0f, 0.5f, 0.5f); break;
-            case Block.COLOR.BLUE:
-                colorValue = Color.blue; break;
-            case Block.COLOR.YELLOW:
-                colorValue = Color.yellow; break;
-            case Block.COLOR.GREEN:
-                colorValue = Color.green; break;
-            case Block.COLOR.MAGENTA:
-                colorValue = Color.magenta; break;
-            case Block.COLOR.ORANGE:
-                colorValue = new Color(1.0f, 0.46f, 0.0f); break;
+            children[i] = this.transform.GetChild(i).gameObject;
         }
-        this.GetComponent<Renderer>().material.color = colorValue; // 색상변경
     }
+
+    public void SetColor(Block.COLOR color)
+    {
+        int index = (int)this.color;
+        if (index < 0 || index > children.Length) return;
+        children[index].SetActive(false);
+        this.color = color;
+        children[(int)this.color].SetActive(true);
+    }
+
     public Block.STEP step = Block.STEP.NONE; // 지금 상태
     public Block.STEP nextStep = Block.STEP.NONE; // 다음 상태
     private Vector3 positionOffsetInitial = Vector3.zero; // 교체 전 위치
@@ -136,7 +138,7 @@ public class BlockControl : MonoBehaviour
                     }
                     break;
                 case Block.STEP.IDLE:
-                    this.GetComponent<Renderer>().enabled = true;
+                    children[(int)this.color].SetActive(true);
                     break;
                 case Block.STEP.FALL:
                     if (this.positionOffset.y <= 0.0f)
@@ -169,7 +171,7 @@ public class BlockControl : MonoBehaviour
                 case Block.STEP.RESPAWN:
                     // 색을 랜덤하게 선택하여 블록을 그 색으로 설정.
                     int colorIndex = Random.Range(0, (int)Block.COLOR.NORMAL_COLOR_NUM);
-                    this.setColor((Block.COLOR)colorIndex);
+                    this.SetColor((Block.COLOR)colorIndex);
                     this.nextStep = Block.STEP.IDLE;
                     break;
                 case Block.STEP.FALL:
@@ -200,7 +202,7 @@ public class BlockControl : MonoBehaviour
         }
         Vector3 position = blockRoot.CalcBlockPosition(this.iPos) + this.positionOffset;
         this.transform.position = position;
-        this.setColor(this.color);
+        this.SetColor(this.color);
         if (this.vanishTimer >= 0.0f)
         {
             float vanishTime = this.blockRoot.levelControl.GetVanishTime();
@@ -229,7 +231,7 @@ public class BlockControl : MonoBehaviour
         * Block.COLLISION_SIZE; // 지정 위치까지 y좌표를 이동
         this.nextStep = Block.STEP.FALL;
         Block.COLOR color = this.blockRoot.SelectBlockColor();
-        this.setColor(color);
+        this.SetColor(color);
     }
 
     // 블록이 비표시(그리드상의 위치가 텅 빔)로 되어 있다면 true를 반환
@@ -371,15 +373,12 @@ public class BlockControl : MonoBehaviour
 
     public bool IsVisible()
     {
-        // 그리기 가능(renderer.enabled가 true) 상태라면표시
-        bool isVisible = this.GetComponent<Renderer>().enabled;
-        return (isVisible);
+        return children[(int)this.color].activeSelf;
     }
 
     public void SetVisible(bool isVisible)
     {
-        // 그리기 가능 설정에 인수를 대입
-        this.GetComponent<Renderer>().enabled = isVisible;
+        children[(int)this.color].SetActive(isVisible);
     }
 
     public bool IsIdle()

@@ -52,7 +52,7 @@ public class BlockRoot : MonoBehaviour
 
                 // 현재 출현 확률을 바탕으로 색을 결정
                 color = this.SelectBlockColor();
-                block.setColor(color);
+                block.SetColor(color);
 
                 block.name = "block(" + block.iPos.x.ToString() + "," + block.iPos.y.ToString() + ")";
                 colorIndex = Random.Range(0, (int)Block.COLOR.NORMAL_COLOR_NUM);
@@ -146,7 +146,7 @@ public class BlockRoot : MonoBehaviour
         }
         if (this.grabbedBlock == null)
         {
-            if (!this.isHasFallingBlock())
+            if (!this.IsHasFallingBlock())
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -194,7 +194,7 @@ public class BlockRoot : MonoBehaviour
                 this.grabbedBlock = null;
             }
         }
-        if (this.isHasFallingBlock() || this.HasSlidingBlock())
+        if (this.IsHasFallingBlock() || this.HasSlidingBlock())
         {
         }
         else
@@ -374,8 +374,8 @@ public class BlockRoot : MonoBehaviour
         Vector3 offset0 = BlockRoot.getDirVector(dir);
         Vector3 offset1 = BlockRoot.getDirVector(BlockRoot.getOppositDir(dir));
         // 색을 교체
-        block0.setColor(color1);
-        block1.setColor(color0);
+        block0.SetColor(color1);
+        block1.SetColor(color0);
         // 확대율을 교체
         block0.transform.localScale = scale1;
         block1.transform.localScale = scale0;
@@ -714,7 +714,7 @@ public class BlockRoot : MonoBehaviour
         return (ret);
     }
     // 낙하 중인 블록이 하나라도 있으면 true를 반환한다.
-    private bool isHasFallingBlock()
+    private bool IsHasFallingBlock()
     {
         bool ret = false;
         foreach (BlockControl block in this.blocks)
@@ -742,8 +742,8 @@ public class BlockRoot : MonoBehaviour
         Block.STEP step0 = block0.step;
         Block.STEP step1 = block1.step;
         // block0과 block1의 각종 속성을 교체한다.
-        block0.setColor(color1);
-        block1.setColor(color0);
+        block0.SetColor(color1);
+        block1.SetColor(color0);
         block0.transform.localScale = scale1;
         block1.transform.localScale = scale0;
         block0.vanishTimer = vanishTimer1;
