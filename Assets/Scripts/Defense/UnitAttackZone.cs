@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class UnitAttackZone : MonoBehaviour
 {
-    Unit parent;
+    bool isPlaced = false;
+    private Renderer render;
+    private Unit parent;
 
     void Start()
     {
+        render = this.GetComponent<Renderer>();
         parent = transform.parent.GetComponent<Unit>();
+    }
+
+    void Update()
+    {
+        if (!isPlaced && parent.isActive)
+        {
+            isPlaced = true;
+            var color = render.material.color;
+            var newColor = new Color(color.r, color.g, color.b, 0.1f);
+            render.material.color = newColor;
+        }
     }
 
     void OnTriggerStay(Collider other)

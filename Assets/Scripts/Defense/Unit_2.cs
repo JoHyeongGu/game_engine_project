@@ -4,6 +4,19 @@ using UnityEngine;
 
 public class Unit_2 : Unit
 {
+    protected override void Update()
+    {
+        if (GetTargetCount() > 0)
+        {
+            anim.SetBool("Attack", true);
+        }
+        else
+        {
+            anim.SetBool("Attack", false);
+        }
+        base.Update();
+    }
+
     protected override IEnumerator Attack()
     {
         isAttacking = true;
@@ -25,6 +38,10 @@ public class Unit_2 : Unit
                     targetList.Remove(_enemy);
                     continue;
                 }
+                if (targetList.Count == 0)
+                {
+                    targetList.Add(_enemy);
+                }
                 _class.hp -= 0.3f;
                 if (_class.hp <= 0)
                 {
@@ -32,5 +49,21 @@ public class Unit_2 : Unit
                 }
             }
         }
+    }
+
+    private int GetTargetCount()
+    {
+        int count = 0;
+        foreach (GameObject target in targetList)
+        {
+            count++;
+            Enemy _class = target.GetComponent<Enemy>();
+            if (_class == null)
+            {
+                count--;
+                targetList.Remove(target);
+            }
+        }
+        return count;
     }
 }

@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 7804043003282214247}
   m_Layer: 0
   m_Name: DefenseMap_3
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -767,7 +767,7 @@ Transform:
   m_GameObject: {fileID: 4473281447611924924}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6299996, y: 0.29999983, z: -1.71}
+  m_LocalPosition: {x: 1.5500007, y: 0.29999983, z: -1.71}
   m_LocalScale: {x: 0.58, y: 0.58, z: 0.58}
   m_ConstrainProportionsScale: 1
   m_Children: []

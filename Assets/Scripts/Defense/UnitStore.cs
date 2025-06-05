@@ -64,7 +64,7 @@ public class UnitStore : MonoBehaviour
         float height = Screen.height / 4.5f;
         float width = height * (4.5f / 5f);
         float x = (width / 5) * (index + 1) + width * index;
-        Rect rect = new Rect(x, Screen.height - height, width, height);
+        Rect rect = new Rect(x, Screen.height - (height * 1.1f), width, height);
 
         GUIStyle style = new GUIStyle(GUI.skin.button);
         style.normal.background = activeCard;
@@ -88,8 +88,6 @@ public class UnitStore : MonoBehaviour
             if (GUI.Button(rect, content, style))
             {
                 BuyUnit(unit);
-                GameObject unitObject = Instantiate(unit.prefab, blockRoot.mousePosition, Quaternion.Euler(-90.0f, 0, 0));
-                SelectedUnit = unitObject.GetComponent<Unit>();
             }
         }
         else
@@ -101,9 +99,6 @@ public class UnitStore : MonoBehaviour
             GUI.Box(rect, content, style);
         }
     }
-
-
-
 
     private Color GetColorFromBlock(Block.COLOR color)
     {
@@ -153,5 +148,11 @@ public class UnitStore : MonoBehaviour
             // 포인트 감소
             scoreCounter.PointUp(p.key, -p.value);
         }
+        GameObject unitObject = Instantiate(unit.prefab, blockRoot.mousePosition, Quaternion.Euler(-90f, 0, 0));
+        GameObject map = GameObject.FindGameObjectWithTag("Map");
+        unitObject.transform.SetParent(map.transform);
+        SelectedUnit = unitObject.GetComponent<Unit>();
+        SelectedUnit.price = unit.price;
+        SelectedUnit.scoreCounter = this.scoreCounter;
     }
 }
