@@ -11,6 +11,16 @@ public class Unit_3 : Unit
         if (!isActive)
         {
             this.transform.position = mousePosition;
+            if (Input.GetMouseButtonDown(1))
+            {
+                foreach (Price p in price)
+                {
+                    // 포인트 복구
+                    scoreCounter.PointUp(p.key, p.value);
+                }
+                Destroy(this.gameObject);
+                Destroy(this);
+            }
             CheckCanPlaced();
             return;
         }
@@ -75,7 +85,7 @@ public class Unit_3 : Unit
             if (localDir == Vector3.zero) return;
 
             Quaternion lookRotation = Quaternion.LookRotation(localDir);
-            Quaternion offsetRotation = Quaternion.AngleAxis(-100f, Vector3.up); // 로컬 Y축 기준 -30도
+            Quaternion offsetRotation = Quaternion.AngleAxis(-170f, Vector3.up); // 로컬 Y축 기준 -30도
 
             transform.localRotation = lookRotation * offsetRotation;
         }

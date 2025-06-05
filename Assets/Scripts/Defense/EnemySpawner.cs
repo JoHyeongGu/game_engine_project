@@ -70,6 +70,7 @@ public class EnemySpawner : MonoBehaviour
     private IEnumerator SpawnRoutine()
     {
         routineIsRunning = true;
+        yield return new WaitForSeconds(6);
         while (true)
         {
             if (!this.activate)

@@ -747,7 +747,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -874,7 +874,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.9433962, g: 0.7936334, b: 0.5918476, a: 1}
   m_Intensity: 1
-  m_Range: 30
+  m_Range: 15
   m_SpotAngle: 158.8
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -931,13 +931,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952595917}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.46260357, y: -0, z: -0, w: 0.8865653}
-  m_LocalPosition: {x: -6.33, y: -3.72, z: -2.56}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -6.33, y: 2.25, z: -3.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -55.11, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

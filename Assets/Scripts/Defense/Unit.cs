@@ -152,7 +152,7 @@ public class Unit : MonoBehaviour
             target = firstEnemy;
             anim.SetTrigger("Attack");
             yield return new WaitForSeconds(0.4f);
-            enemyClass.hp -= 0.5f;
+            enemyClass.hp -= 1.0f;
             if (enemyClass.hp <= 0)
             {
                 target = null;
