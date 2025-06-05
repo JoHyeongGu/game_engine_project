@@ -68,7 +68,7 @@ public class Unit : MonoBehaviour
         LookTarget();
     }
 
-    public void LookTarget()
+    public virtual void LookTarget()
     {
         if (target != null)
         {

@@ -14,6 +14,7 @@ public class Unit_2 : Unit
         {
             anim.SetBool("Attack", false);
         }
+        LookTarget();
         base.Update();
     }
 
@@ -57,6 +58,7 @@ public class Unit_2 : Unit
         foreach (GameObject target in targetList)
         {
             count++;
+            if (target == null) continue;
             Enemy _class = target.GetComponent<Enemy>();
             if (_class == null)
             {
@@ -65,5 +67,23 @@ public class Unit_2 : Unit
             }
         }
         return count;
+    }
+
+    public override void LookTarget()
+    {
+        if (targetList.Count == 0) return;
+        target = targetList[0];
+        if (target != null)
+        {
+            Vector3 localDir = transform.parent.InverseTransformPoint(target.transform.position) - transform.localPosition;
+            localDir.y = 0f;
+
+            if (localDir == Vector3.zero) return;
+
+            Quaternion lookRotation = Quaternion.LookRotation(localDir);
+            Quaternion offsetRotation = Quaternion.AngleAxis(-100f, Vector3.up); // 로컬 Y축 기준 -30도
+
+            transform.localRotation = lookRotation * offsetRotation;
+        }
     }
 }

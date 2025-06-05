@@ -12,8 +12,10 @@ public class Unit_3 : Unit
         {
             this.transform.position = mousePosition;
             CheckCanPlaced();
+            return;
         }
         attackTime += Time.deltaTime;
+        LookTarget();
         if (attackTime >= 5.0f)
         {
             AttackEnemy();
@@ -36,6 +38,7 @@ public class Unit_3 : Unit
             targetList.Remove(_enemy);
             return;
         }
+        anim.SetTrigger("Attack");
         enemyClass.hp -= 30;
         if (enemyClass.hp <= 0)
         {
@@ -59,5 +62,22 @@ public class Unit_3 : Unit
             }
         }
         return fullHpEnemy;
+    }
+
+    public override void LookTarget()
+    {
+        target = GetFullHpEnemy();
+        if (target != null)
+        {
+            Vector3 localDir = transform.parent.InverseTransformPoint(target.transform.position) - transform.localPosition;
+            localDir.y = 0f;
+
+            if (localDir == Vector3.zero) return;
+
+            Quaternion lookRotation = Quaternion.LookRotation(localDir);
+            Quaternion offsetRotation = Quaternion.AngleAxis(-100f, Vector3.up); // 로컬 Y축 기준 -30도
+
+            transform.localRotation = lookRotation * offsetRotation;
+        }
     }
 }
