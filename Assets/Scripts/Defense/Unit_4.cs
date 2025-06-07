@@ -6,14 +6,8 @@ public class Unit_4 : Unit
 {
     protected override void Update()
     {
-        if (GetTargetCount() > 0)
-        {
-            anim.SetBool("IsAttack", true);
-        }
-        else
-        {
-            anim.SetBool("IsAttack", false);
-        }
+        if (IsNearEnemy()) anim.SetBool("IsAttack", true);
+        else anim.SetBool("IsAttack", false);
         LookTarget();
         base.Update();
     }
@@ -53,21 +47,16 @@ public class Unit_4 : Unit
         }
     }
 
-    private int GetTargetCount()
+    private bool IsNearEnemy()
     {
-        int count = 0;
-        foreach (GameObject target in targetList)
+        if (!isActive) return false;
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
         {
-            count++;
-            if (target == null) continue;
-            Enemy _class = target.GetComponent<Enemy>();
-            if (_class == null)
-            {
-                count--;
-                targetList.Remove(target);
-            }
+            float distance = Vector3.Distance(this.transform.position, enemy.transform.position);
+            if (distance < 4.0f) return true;
         }
-        return count;
+        return false;
     }
 
     public override void LookTarget()

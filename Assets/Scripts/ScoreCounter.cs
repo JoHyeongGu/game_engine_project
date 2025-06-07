@@ -7,6 +7,7 @@ public class ScoreCounter : MonoBehaviour
     public Vector2 posOffset = new Vector2(270.0f, 85.0f);
     public GUIStyle guistyle; // 폰트스타일
     public Dictionary<Block.COLOR, int> score = new Dictionary<Block.COLOR, int>();
+    public Dictionary<Block.COLOR, Texture2D> imageDict;
 
     void Start()
     {
@@ -24,24 +25,55 @@ public class ScoreCounter : MonoBehaviour
 
     void OnGUI()
     {
-        float x = posOffset.x;
+        float x = Screen.width / 2 - 15f;
         float y = posOffset.y;
         GUI.color = Color.black;
         foreach (KeyValuePair<Block.COLOR, int> data in score)
         {
-            this.printValue(x, y, $"{data.Key}", data.Value);
-            y += 30;
+            PrintScore(x, y, data);
+            y += 80;
         }
     }
 
-    public void printValue(float x, float y, string label, int value)
+    public void PrintScore(float x, float y, KeyValuePair<Block.COLOR, int> data)
     {
-        float labelWidth = 100.0f;
-        float _x = (Screen.width - labelWidth) / 2f + x;
-        GUI.Label(new Rect(_x, y, labelWidth, 20), label, guistyle); // label을 표시
-        y += 15;
-        GUI.Label(new Rect(_x, y, labelWidth, 20), value.ToString(), guistyle); // 다음 행에 value를 표시
-        y += 15;
+        float scaleY = 5f;
+
+        float lineHeight = 10f * scaleY;
+        float boxSize = 12f * scaleY;
+        float spacing = 5f * scaleY;
+        float outlineOffset = 0.5f * scaleY;
+
+        GUIStyle textStyle = new GUIStyle
+        {
+            fontStyle = FontStyle.Bold,
+            fontSize = Mathf.RoundToInt(10f * scaleY)
+        };
+
+        Texture2D image = imageDict[data.Key];
+        float ratio = (float)image.height / image.width;
+
+        Vector2 imagePos = new Vector2(x, y + 4f * scaleY);
+        if (data.Key == Block.COLOR.YELLOW) imagePos.y += 13f;
+        Rect imageRect = new Rect(imagePos.x, imagePos.y, boxSize, boxSize * ratio);
+        Rect outlineRect = new Rect(
+            imageRect.x - outlineOffset,
+            imageRect.y - outlineOffset,
+            imageRect.width + outlineOffset * 2,
+            imageRect.height + outlineOffset * 2
+        );
+
+        // 이미지 윤곽선 + 원본
+        GUI.color = Color.black;
+        GUI.DrawTexture(outlineRect, image, ScaleMode.ScaleToFit, true);
+        GUI.color = Color.white;
+        GUI.DrawTexture(imageRect, image, ScaleMode.ScaleToFit, true);
+
+        // 텍스트 윤곽선 + 텍스트
+        string priceText = $"{data.Value}";
+        Rect textRect = new Rect(x + boxSize * 0.7f + spacing, y + boxSize / 3, 30f * scaleY, lineHeight);
+        DrawOutlinedLabel(textRect, priceText, textStyle, Color.white, Color.black, 2f);
+        GUI.color = Color.white;
     }
 
     public void PointUp(Block.COLOR key, int count = 1)
@@ -52,5 +84,38 @@ public class ScoreCounter : MonoBehaviour
     public float GetPoint(Block.COLOR key)
     {
         return this.score[key];
+    }
+
+    public void SetImageDict(PriceImage[] priceImages)
+    {
+        imageDict = new Dictionary<Block.COLOR, Texture2D>();
+        foreach (PriceImage data in priceImages)
+        {
+            imageDict[data.key] = data.image;
+        }
+    }
+
+    private void DrawOutlinedLabel(Rect rect, string text, GUIStyle style, Color mainColor, Color outlineColor, float offset)
+    {
+        Vector2[] directions = {
+            new Vector2(-offset, 0), new Vector2(offset, 0),
+            new Vector2(0, -offset), new Vector2(0, offset),
+            new Vector2(-offset, -offset), new Vector2(-offset, offset),
+            new Vector2(offset, -offset), new Vector2(offset, offset)
+        };
+
+        Color originalColor = style.normal.textColor;
+
+        style.normal.textColor = outlineColor;
+        foreach (Vector2 dir in directions)
+        {
+            Rect offsetRect = new Rect(rect.x + dir.x, rect.y + dir.y, rect.width, rect.height);
+            GUI.Label(offsetRect, text, style);
+        }
+
+        style.normal.textColor = mainColor;
+        GUI.Label(rect, text, style);
+
+        style.normal.textColor = originalColor;
     }
 }

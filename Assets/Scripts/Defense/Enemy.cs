@@ -76,4 +76,16 @@ public class Enemy : MonoBehaviour
             _class.speed = newSpeed;
         }
     }
+
+    public void ActiveEffect(string effect, bool active = true)
+    {
+        foreach (Transform child in this.GetComponentsInChildren<Transform>(true))
+            {
+                if (child.CompareTag(effect))
+                {
+                    child.gameObject.SetActive(active);
+                    return;
+                }
+            }
+    }
 }

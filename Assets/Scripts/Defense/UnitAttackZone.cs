@@ -4,25 +4,34 @@ using UnityEngine;
 
 public class UnitAttackZone : MonoBehaviour
 {
-    bool isPlaced = false;
+    bool canChangeColor = true;
     private Renderer render;
     private Unit parent;
+    private Color color;
 
     void Start()
     {
         render = this.GetComponent<Renderer>();
-        parent = transform.parent.GetComponent<Unit>();
+        parent = this.transform.parent.GetComponent<Unit>();
+        color = render.material.color;
     }
 
     void Update()
     {
-        if (!isPlaced && parent.isActive)
+        if (!canChangeColor) return;
+        if (parent.isActive)
         {
-            isPlaced = true;
-            var color = render.material.color;
-            var newColor = new Color(color.r, color.g, color.b, 0.1f);
-            render.material.color = newColor;
+            canChangeColor = false;
+            ChangeColor(new Color(color.r, color.g, color.b, 0.1f));
+            return;
         }
+        if (parent.canPlaced) ChangeColor(new Color(color.r, color.g * 2, color.b, color.a * 0.7f));
+        else ChangeColor(new Color(color.r * 2, color.g, color.b, color.a));
+    }
+
+    private void ChangeColor(Color newColor)
+    {
+        render.material.color = newColor;
     }
 
     void OnTriggerStay(Collider other)

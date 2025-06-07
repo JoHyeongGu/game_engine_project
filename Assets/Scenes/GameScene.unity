@@ -482,6 +482,19 @@ MonoBehaviour:
   unactiveCard: {fileID: 2800000, guid: b662c77d3d21cea4690189e32332efc4, type: 3}
   hoverCard: {fileID: 2800000, guid: 3fd9d456d40319b40b6534e2f1ba28fd, type: 3}
   clickCard: {fileID: 2800000, guid: c3efec1975c38f647a7b7e19f000d7c4, type: 3}
+  priceImages:
+  - key: 0
+    image: {fileID: 2800000, guid: bc0cd2ba4cca75c4896b59df24c34b59, type: 3}
+  - key: 1
+    image: {fileID: 2800000, guid: f3695266af8807e46bcf526aeb19d203, type: 3}
+  - key: 2
+    image: {fileID: 2800000, guid: ec8a5de0e5ad73f4282c4c88d6d99609, type: 3}
+  - key: 3
+    image: {fileID: 2800000, guid: c48abc028493fbc40a1260e20a94e4d6, type: 3}
+  - key: 4
+    image: {fileID: 2800000, guid: e8ce2a60aedc6f747b28a109b12990c2, type: 3}
+  - key: 5
+    image: {fileID: 2800000, guid: 568aa29f3dbe7e8479e957097d649f35, type: 3}
   units:
   - prefab: {fileID: 3509506487342159816, guid: 0815bc8a755950144b89922fd042d866, type: 3}
     image: {fileID: 2800000, guid: 7a64df5b251479944961eb0629df3a3f, type: 3}

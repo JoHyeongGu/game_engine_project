@@ -26,7 +26,7 @@ public class Unit_3 : Unit
         }
         attackTime += Time.deltaTime;
         LookTarget();
-        if (attackTime >= 5.0f)
+        if (attackTime >= 10.0f)
         {
             AttackEnemy();
             attackTime = 0.0f;

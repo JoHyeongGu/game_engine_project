@@ -6,14 +6,8 @@ public class Unit_2 : Unit
 {
     protected override void Update()
     {
-        if (GetTargetCount() > 0)
-        {
-            anim.SetBool("Attack", true);
-        }
-        else
-        {
-            anim.SetBool("Attack", false);
-        }
+        if (IsNearEnemy()) anim.SetBool("Attack", true);
+        else anim.SetBool("Attack", false);
         LookTarget();
         base.Update();
     }
@@ -23,8 +17,8 @@ public class Unit_2 : Unit
         isAttacking = true;
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
             if (targetList.Count == 0) break;
+            yield return new WaitForSeconds(0.3f);
             for (int i = targetList.Count - 1; i >= 0; i--)
             {
                 GameObject _enemy = targetList[i];
@@ -43,7 +37,7 @@ public class Unit_2 : Unit
                 {
                     targetList.Add(_enemy);
                 }
-                _class.hp -= 0.3f;
+                _class.hp -= 0.1f;
                 if (_class.hp <= 0)
                 {
                     targetList.Remove(_enemy);
@@ -52,21 +46,16 @@ public class Unit_2 : Unit
         }
     }
 
-    private int GetTargetCount()
+    private bool IsNearEnemy()
     {
-        int count = 0;
-        foreach (GameObject target in targetList)
+        if (!isActive) return false;
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
         {
-            count++;
-            if (target == null) continue;
-            Enemy _class = target.GetComponent<Enemy>();
-            if (_class == null)
-            {
-                count--;
-                targetList.Remove(target);
-            }
+            float distance = Vector3.Distance(this.transform.position, enemy.transform.position);
+            if (distance < 2.0f) return true;
         }
-        return count;
+        return false;
     }
 
     public override void LookTarget()

@@ -29,7 +29,6 @@ public class Unit : MonoBehaviour
         render = gameObject.GetComponent<Renderer>();
         targetList = new List<GameObject>();
         prefab = transform.GetChild(transform.childCount - 1);
-        this.SetOpacity(invisible);
     }
 
     protected virtual void Update()
@@ -92,14 +91,6 @@ public class Unit : MonoBehaviour
     public void Active()
     {
         isActive = true;
-        this.SetOpacity(visible);
-    }
-
-    private void SetOpacity(float alpha)
-    {
-        var color = render.material.color;
-        var newColor = new Color(color.r, color.g, color.b, alpha);
-        render.material.color = newColor;
     }
 
     protected void CheckCanPlaced()
@@ -110,22 +101,31 @@ public class Unit : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100f))
         {
             GameObject hitObject = hit.collider.gameObject;
-            if (hitObject.CompareTag("Wall"))
+            if (hitObject.CompareTag("Wall") && !IsNearUnit())
             {
-                SetOpacity(canOpacity);
                 canPlaced = true;
             }
             else
             {
-                SetOpacity(invisible);
                 canPlaced = false;
             }
         }
         else
         {
-            SetOpacity(invisible);
             canPlaced = false;
         }
+    }
+
+    private bool IsNearUnit()
+    {
+        GameObject[] units = GameObject.FindGameObjectsWithTag("Unit");
+        foreach (GameObject unit in units)
+        {
+            if (unit == this.gameObject) continue;
+            float distance = Vector3.Distance(this.transform.position, unit.transform.position);
+            if (distance < 0.5f) return true;
+        }
+        return false;
     }
 
     protected virtual IEnumerator Attack()

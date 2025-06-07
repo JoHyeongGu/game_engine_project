@@ -421,10 +421,10 @@ public class BlockRoot : MonoBehaviour
             return;
         }
 
-        if (_matchCount >= 6)
+        if (_matchCount >= 7)
         {
-            FireEnemies();
-            FreezeEnemies();
+            FireEnemies(true);
+            FreezeEnemies(true);
         }
         else if (_matchCount >= 5)
         {
@@ -437,44 +437,41 @@ public class BlockRoot : MonoBehaviour
         matchCount.Clear();
     }
 
-    private async void FreezeEnemies()
+    private async void FreezeEnemies(bool both = false)
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         List<float> speedList = new List<float>();
-        List<Color> originalColors = new List<Color>();
 
         foreach (GameObject obj in enemies)
         {
             if (obj == null) continue;
             Enemy enemy = obj.GetComponent<Enemy>();
-            Renderer render = obj.GetComponent<Renderer>();
-            originalColors.Add(render.material.color);
+            enemy.ActiveEffect(both ? "Both" : "Freeze");
             speedList.Add(enemy.speed);
             enemy.agent.speed /= 3;
-            render.material.color *= Color.cyan;
         }
         await Task.Delay(5000);
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null) continue;
             Enemy enemy = enemies[i].GetComponent<Enemy>();
-            Renderer render = enemies[i].GetComponent<Renderer>();
             enemy.agent.speed = speedList[i];
-            render.material.color = originalColors[i];
+            enemy.ActiveEffect(both ? "Both" : "Freeze", false);
         }
     }
 
-    private async void FireEnemies()
+    private async void FireEnemies(bool both = false)
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        List<Color> originalColors = new List<Color>();
+        List<float> speedList = new List<float>();
+
         foreach (GameObject obj in enemies)
         {
             if (obj == null) continue;
             Enemy enemy = obj.GetComponent<Enemy>();
-            Renderer render = obj.GetComponent<Renderer>();
-            originalColors.Add(render.material.color);
-            render.material.color *= Color.red;
+            enemy.ActiveEffect(both ? "Both" : "Fire");
+            speedList.Add(enemy.speed);
+            enemy.agent.speed *= 0.6f;
         }
         for (int i = 0; i < 10; i++)
         {
@@ -483,7 +480,7 @@ public class BlockRoot : MonoBehaviour
             {
                 if (obj == null) continue;
                 Enemy enemy = obj.GetComponent<Enemy>();
-                enemy.hp -= 0.2f;
+                enemy.hp -= 0.1f;
             }
         }
         await Task.Delay(500);
@@ -491,8 +488,8 @@ public class BlockRoot : MonoBehaviour
         {
             if (enemies[i] == null) continue;
             Enemy enemy = enemies[i].GetComponent<Enemy>();
-            Renderer render = enemies[i].GetComponent<Renderer>();
-            render.material.color = originalColors[i];
+            enemy.ActiveEffect(both ? "Both" : "Fire", false);
+            enemy.agent.speed = speedList[i];
         }
     }
 
