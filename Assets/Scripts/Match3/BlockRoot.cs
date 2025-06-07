@@ -18,6 +18,8 @@ public class BlockRoot : MonoBehaviour
     private bool noMatchTimeFlow = true;
     private Coroutine showHintRoutine;
 
+    public bool isPaused = false;
+
     public void InitialSetUp()
     {
         if (this.prefabList == null)
@@ -450,7 +452,7 @@ public class BlockRoot : MonoBehaviour
             speedList.Add(enemy.speed);
             enemy.agent.speed /= 3;
         }
-        await Task.Delay(5000);
+        await SleepWithPause(5000);
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null) continue;
@@ -475,7 +477,7 @@ public class BlockRoot : MonoBehaviour
         }
         for (int i = 0; i < 10; i++)
         {
-            await Task.Delay(500);
+            await SleepWithPause(500);
             foreach (GameObject obj in enemies)
             {
                 if (obj == null) continue;
@@ -483,13 +485,26 @@ public class BlockRoot : MonoBehaviour
                 enemy.hp -= 0.1f;
             }
         }
-        await Task.Delay(500);
+        await SleepWithPause(500);
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null) continue;
             Enemy enemy = enemies[i].GetComponent<Enemy>();
             enemy.ActiveEffect(both ? "Both" : "Fire", false);
             enemy.agent.speed = speedList[i];
+        }
+    }
+
+    private async Task SleepWithPause(int time)
+    {
+        int div = 100;
+        for (int ms = 0; ms < time / div; ms++)
+        {
+            await Task.Delay(div);
+            while (isPaused)
+            {
+                await Task.Delay(5);
+            }
         }
     }
 

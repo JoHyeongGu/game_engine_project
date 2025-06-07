@@ -256,6 +256,7 @@ GameObject:
   - component: {fileID: 583268875}
   - component: {fileID: 583268876}
   - component: {fileID: 583268877}
+  - component: {fileID: 583268878}
   m_Layer: 0
   m_Name: GameRoot
   m_TagString: Root
@@ -300,76 +301,12 @@ MonoBehaviour:
   - {fileID: 5771282464016408193, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
   - {fileID: 2533781801306245280, guid: d788fc6d58aefae469687896c9b52827, type: 3}
   - {fileID: 2533781801306245280, guid: f97cd2646a34f4745ab700a8a466768c, type: 3}
+  settingUI: {fileID: 583268878}
+  heartFull: {fileID: 2800000, guid: d2491828c4197144ab467b80ec3c9b93, type: 3}
+  heartEmpty: {fileID: 2800000, guid: 6b9ab5ae627598141a752f4b2cf87428, type: 3}
   step: -1
   nextStep: -1
   stepTimer: 0
-  guistyle:
-    m_Name: 
-    m_Normal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Hover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Active:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Focused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnNormal:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnHover:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnActive:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_OnFocused:
-      m_Background: {fileID: 0}
-      m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
-    m_Border:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Margin:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Padding:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Overflow:
-      m_Left: 0
-      m_Right: 0
-      m_Top: 0
-      m_Bottom: 0
-    m_Font: {fileID: 0}
-    m_FontSize: 0
-    m_FontStyle: 0
-    m_Alignment: 0
-    m_WordWrap: 0
-    m_RichText: 1
-    m_TextClipping: 0
-    m_ImagePosition: 0
-    m_ContentOffset: {x: 0, y: 0}
-    m_FixedWidth: 0
-    m_FixedHeight: 0
-    m_StretchWidth: 1
-    m_StretchHeight: 0
 --- !u!114 &583268875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +322,7 @@ MonoBehaviour:
   BlockPrefab: {fileID: 2293371343628167503, guid: 4e0bf4e943a991948ac6e993d7e01c4b, type: 3}
   startPos: {x: 6, y: 1.8}
   mousePosition: {x: 0, y: 0, z: 0}
+  isPaused: 0
   levelData: {fileID: 4900000, guid: 67ea787a9a5b9b34ca6e323ec6b829e7, type: 3}
 --- !u!114 &583268876
 MonoBehaviour:
@@ -529,6 +467,19 @@ MonoBehaviour:
     - key: 2
       value: 0
   target: {fileID: 0}
+--- !u!114 &583268878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 583268872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d456d1b0dfb63f468df7ce29a679b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSetting: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

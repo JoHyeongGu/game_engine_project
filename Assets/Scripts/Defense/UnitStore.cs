@@ -108,7 +108,7 @@ public class UnitStore : MonoBehaviour
             GUI.Box(rect, content, style);
             priceColor = Color.black;
         }
-        DrawPrice(unit.price, new Vector2(x, y), 4f, priceColor);
+        DrawPrice(unit.price, new Vector2(x + 10, y + 5), 4f, priceColor);
     }
 
     private Texture2D GetImageFromBlockColor(Block.COLOR color)

@@ -340,6 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: quit
   focus: 0.1
+  settingUI: {fileID: 0}
 --- !u!1001 &207276336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -413,6 +414,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 370383042}
+  - component: {fileID: 370383043}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -439,6 +441,19 @@ Transform:
   - {fileID: 2036272405}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &370383043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370383041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d456d1b0dfb63f468df7ce29a679b35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSetting: 0
 --- !u!1001 &443700855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1411,6 +1426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: TutorialScene
   focus: 0.1
+  settingUI: {fileID: 0}
 --- !u!1 &1843597685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,6 +1548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: setting
   focus: 0.1
+  settingUI: {fileID: 370383043}
 --- !u!1 &1996547849 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3629494015462800493, guid: b8a4b14342b1ec54b9e2da35301c54de, type: 3}
@@ -1674,6 +1691,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: GameScene
   focus: 0.1
+  settingUI: {fileID: 0}
 --- !u!1 &2128189268
 GameObject:
   m_ObjectHideFlags: 0

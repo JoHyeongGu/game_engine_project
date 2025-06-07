@@ -5,6 +5,7 @@ public class TitleButton : MonoBehaviour
 {
     public string scene;
     public float focus = 0.1f;
+    public SettingUI settingUI;
     private bool isHovering = false;
 
     void Update()
@@ -54,7 +55,7 @@ public class TitleButton : MonoBehaviour
     void OnClick()
     {
         if (scene == "quit") Application.Quit();
-        else if (scene == "setting") Application.Quit();
+        else if (scene == "setting") settingUI.onSetting = true;
         else SceneManager.LoadScene(scene);
     }
 
