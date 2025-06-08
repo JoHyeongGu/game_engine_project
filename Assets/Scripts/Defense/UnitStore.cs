@@ -47,6 +47,7 @@ public class UnitStore : MonoBehaviour
 
     void Update()
     {
+        if (blockRoot.isPaused) return;
         if (Input.GetMouseButtonDown(0) && SelectedUnit != null && SelectedUnit.canPlaced)
         {
             SelectedUnit.Active();
@@ -77,8 +78,8 @@ public class UnitStore : MonoBehaviour
 
         GUIStyle style = new GUIStyle(GUI.skin.button);
         style.normal.background = activeCard;
-        style.hover.background = hoverCard;
-        style.active.background = clickCard;
+        style.hover.background = blockRoot.isPaused ? activeCard : hoverCard;
+        style.active.background = blockRoot.isPaused ? activeCard : clickCard;
 
         bool isActive = true;
         foreach (Price p in unit.price)
@@ -94,7 +95,7 @@ public class UnitStore : MonoBehaviour
         if (isActive)
         {
             GUIContent content = new GUIContent(new GUIContent(unit.image));
-            if (GUI.Button(rect, content, style))
+            if (GUI.Button(rect, content, style) && !blockRoot.isPaused)
             {
                 BuyUnit(unit);
             }
@@ -108,7 +109,8 @@ public class UnitStore : MonoBehaviour
             GUI.Box(rect, content, style);
             priceColor = Color.black;
         }
-        DrawPrice(unit.price, new Vector2(x + 10, y + 5), 4f, priceColor);
+        float scaleY = Screen.width / 550f;
+        DrawPrice(unit.price, new Vector2(x + 10, y + 5), scaleY, priceColor);
     }
 
     private Texture2D GetImageFromBlockColor(Block.COLOR color)

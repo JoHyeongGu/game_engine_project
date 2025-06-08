@@ -4,78 +4,158 @@ public class SettingUI : MonoBehaviour
 {
     public bool onSetting = false;
 
+    public Font customFont;
+    public Texture2D windowBackground;
+    public Texture2D buttonNormal, buttonHover, buttonActive;
+    public Texture2D sliderBackground;
+    public Texture2D sliderThumb;
+
     private GUIStyle windowStyle;
     private GUIStyle buttonStyle;
+    private GUIStyle resButtonStyle;
     private GUIStyle labelStyle;
     private GUIStyle sliderStyle;
-    private GUIStyle popupStyle;
+    private GUIStyle sliderThumbStyle;
 
     private Rect windowRect;
     private float volume = 1.0f;
     private bool previousAudioListenerPaused = false;
     private bool isDraggingSlider = false;
 
-    private int selectedResolutionIndex = 0;
-    private bool isStyleInitialized = false;
-    
-    private readonly Vector2Int[] resolutions = new Vector2Int[]
+    private readonly Vector2Int[] resolutions =
     {
         new Vector2Int(1280, 720),
         new Vector2Int(1600, 900),
         new Vector2Int(1920, 1080),
-        new Vector2Int(2560, 1440)
+        new Vector2Int(2560, 1440),
+        new Vector2Int(3840, 2160)
     };
+    private readonly float baseHeight = 1080f;
+    private float uiScale = 1f;
 
     private void OnGUI()
     {
-        if (!isStyleInitialized)
-        {
-            InitStyles();
-            isStyleInitialized = true;
-        }
-        if (onSetting)
-        {
-            float windowWidth = Screen.width * 0.6f;
-            float windowHeight = Screen.height * 0.7f;
-            windowRect = new Rect(
-                (Screen.width - windowWidth) / 2f,
-                (Screen.height - windowHeight) / 2f,
-                windowWidth,
-                windowHeight
-            );
+        if (!onSetting) return;
+        GUI.depth = 0;
+        uiScale = Screen.height / baseHeight;
+        InitStyles();
 
-            // 창 외부 클릭 시 닫기
-            if (Event.current.type == EventType.MouseDown && !windowRect.Contains(Event.current.mousePosition))
-            {
-                onSetting = false;
-                if (isDraggingSlider)
-                {
-                    AudioListener.pause = previousAudioListenerPaused;
-                    isDraggingSlider = false;
-                }
-                return;
-            }
+        // 배경 검정
+        var background = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
+        background.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.6f));
+        background.Apply();
+        GUI.Box(new Rect(0f, 0.0f, Screen.width, Screen.height), "");
 
-            GUI.Window(10001, windowRect, DrawSettingWindow, "⚙ 설정", windowStyle);
+        float windowWidth = Screen.width * 0.6f;
+        float windowHeight = Screen.height * 0.7f;
+        windowRect = new Rect(
+            (Screen.width - windowWidth) / 2f,
+            (Screen.height - windowHeight) / 2f,
+            windowWidth,
+            windowHeight
+        );
+
+        // 창 밖 클릭 시 닫기
+        if (Event.current.type == EventType.MouseDown && !windowRect.Contains(Event.current.mousePosition))
+        {
+            onSetting = false;
+            return;
         }
+
+        // 배경 창
+        GUI.Box(windowRect, "설정", windowStyle);
+
+        // 내부 UI 그리기
+        Rect contentRect = new Rect(
+            windowRect.x + windowStyle.padding.left,
+            windowRect.y + windowStyle.padding.top,
+            windowRect.width - windowStyle.padding.horizontal,
+            windowRect.height - windowStyle.padding.vertical
+        );
+
+        GUILayout.BeginArea(contentRect);
+        DrawSettingWindow();
+        GUILayout.EndArea();
     }
 
-    private void DrawSettingWindow(int windowID)
+    private void InitStyles()
     {
-        GUILayout.Space(30);
-        GUILayout.Label("🎵 배경음악 볼륨", labelStyle);
+        Color btnTextColor = new Color32(181, 154, 102, 255);
 
-        float newVolume = GUILayout.HorizontalSlider(volume, 0f, 1f, sliderStyle, GUI.skin.horizontalSliderThumb);
+        int fontSizeLarge = Mathf.RoundToInt(36 * uiScale);  // 1080 기준 약 36
+        int fontSizeMedium = Mathf.RoundToInt(28 * uiScale);
+        int fontSizeSmall = Mathf.RoundToInt(25 * uiScale);
 
+        int paddingH = Mathf.RoundToInt(40 * uiScale);
+        int paddingV = Mathf.RoundToInt(50 * uiScale);
+        int buttonHeight = Mathf.RoundToInt(60 * uiScale);
+        int sliderHeight = Mathf.RoundToInt(20 * uiScale);
+
+        windowStyle = new GUIStyle
+        {
+            normal = { background = windowBackground, textColor = Color.white },
+            font = customFont,
+            fontSize = fontSizeLarge,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.UpperCenter,
+            padding = new RectOffset(paddingH, paddingH, paddingV, paddingV)
+        };
+
+        buttonStyle = new GUIStyle(GUI.skin.button)
+        {
+            normal = { background = buttonNormal, textColor = btnTextColor },
+            hover = { background = buttonHover, textColor = btnTextColor },
+            active = { background = buttonActive, textColor = btnTextColor },
+            font = customFont,
+            fontSize = fontSizeMedium,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+            padding = new RectOffset(paddingH / 2, paddingH / 2, paddingV / 3, paddingV / 3)
+        };
+        resButtonStyle = new GUIStyle(buttonStyle)
+        {
+            fontSize = fontSizeSmall,
+            padding = new RectOffset(0, 0, paddingV / 3, paddingV / 3)
+        };
+
+        labelStyle = new GUIStyle()
+        {
+            font = customFont,
+            fontSize = fontSizeMedium,
+            fontStyle = FontStyle.Bold,
+            normal = { textColor = Color.white },
+            margin = new RectOffset(0, 0, Mathf.RoundToInt(10 * uiScale), Mathf.RoundToInt(10 * uiScale))
+        };
+
+        sliderStyle = new GUIStyle(GUI.skin.horizontalSlider)
+        {
+            normal = { background = sliderBackground },
+            fixedHeight = sliderHeight
+        };
+
+        sliderThumbStyle = new GUIStyle(GUI.skin.horizontalSliderThumb)
+        {
+            normal = { background = sliderThumb },
+            fixedWidth = sliderHeight,
+            fixedHeight = sliderHeight
+        };
+    }
+
+    private void DrawSettingWindow()
+    {
+        GUILayout.Space(Mathf.RoundToInt(50 * uiScale));
+        GUILayout.Label("배경음악 볼륨", labelStyle);
+
+        float newVolume = GUILayout.HorizontalSlider(volume, 0f, 1f, sliderStyle, sliderThumbStyle);
         if (newVolume != volume)
         {
             if (!isDraggingSlider)
             {
-                previousAudioListenerPaused = AudioListener.pause;
                 isDraggingSlider = true;
+                previousAudioListenerPaused = AudioListener.pause;
+                AudioListener.pause = false;
             }
 
-            AudioListener.pause = false;
             volume = newVolume;
 
             AudioSource bgm = GameObject.Find("BGM")?.GetComponent<AudioSource>();
@@ -83,32 +163,69 @@ public class SettingUI : MonoBehaviour
                 bgm.volume = volume;
         }
 
-        if (isDraggingSlider && (Event.current.type == EventType.MouseUp || Event.current.rawType == EventType.MouseUp))
+        if (isDraggingSlider && Event.current.type == EventType.MouseUp)
         {
             AudioListener.pause = previousAudioListenerPaused;
             isDraggingSlider = false;
         }
 
-        GUILayout.Space(30);
-        GUILayout.Label("🖥 해상도 설정", labelStyle);
+        GUILayout.Space(Mathf.RoundToInt(10 * uiScale));
+        GUILayout.Label("효과음 볼륨", labelStyle);
 
-        string[] resOptions = new string[resolutions.Length];
-        for (int i = 0; i < resolutions.Length; i++)
+        float newVolume2 = GUILayout.HorizontalSlider(volume, 0f, 1f, sliderStyle, sliderThumbStyle);
+        if (newVolume2 != volume)
         {
-            resOptions[i] = $"{resolutions[i].x} x {resolutions[i].y}";
+            if (!isDraggingSlider)
+            {
+                isDraggingSlider = true;
+                previousAudioListenerPaused = AudioListener.pause;
+                AudioListener.pause = false;
+            }
+
+            volume = newVolume2;
+
+            AudioSource bgm = GameObject.Find("BGM")?.GetComponent<AudioSource>();
+            if (bgm != null)
+                bgm.volume = volume;
         }
 
-        selectedResolutionIndex = GUILayout.SelectionGrid(selectedResolutionIndex, resOptions, 1, popupStyle);
-
-        GUILayout.Space(20);
-        if (GUILayout.Button("📐 적용하기", buttonStyle, GUILayout.Height(60)))
+        if (isDraggingSlider && Event.current.type == EventType.MouseUp)
         {
-            Vector2Int res = resolutions[selectedResolutionIndex];
-            Screen.SetResolution(res.x, res.y, FullScreenMode.Windowed);
+            AudioListener.pause = previousAudioListenerPaused;
+            isDraggingSlider = false;
         }
 
-        GUILayout.Space(20);
-        if (GUILayout.Button("닫기", buttonStyle, GUILayout.Height(60)))
+        GUILayout.Space(Mathf.RoundToInt(10 * uiScale));
+        GUILayout.Label("해상도 설정", labelStyle);
+        GUILayout.Space(Mathf.RoundToInt(10 * uiScale));
+
+        int buttonHeight = Mathf.RoundToInt(45 * uiScale);
+        foreach (Vector2Int res in resolutions)
+        {
+            bool nowRes = Screen.width == res.x && Screen.height == res.y;
+            if (nowRes)
+            {
+                GUIStyle _style = new GUIStyle(resButtonStyle);
+                _style.normal.background = buttonActive;
+                int offset = Mathf.RoundToInt(4 * uiScale);
+                _style.padding = new RectOffset(
+                    resButtonStyle.padding.left,
+                    resButtonStyle.padding.right,
+                    resButtonStyle.padding.top + offset,
+                    resButtonStyle.padding.bottom - offset
+                );
+                GUILayout.Box($"{res.x} x {res.y}", _style, GUILayout.Height(buttonHeight));
+            }
+            else if (GUILayout.Button($"{res.x} x {res.y}", resButtonStyle, GUILayout.Height(buttonHeight)))
+            {
+                Screen.SetResolution(res.x, res.y, FullScreenMode.Windowed);
+            }
+            GUILayout.Space(Mathf.RoundToInt(10 * uiScale));
+        }
+
+
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("완료", buttonStyle, GUILayout.Height(Mathf.RoundToInt(60 * uiScale))))
         {
             onSetting = false;
             if (isDraggingSlider)
@@ -117,60 +234,5 @@ public class SettingUI : MonoBehaviour
                 isDraggingSlider = false;
             }
         }
-    }
-
-    private void InitStyles()
-    {
-        Color beige = new Color(0.96f, 0.91f, 0.84f);
-        Color darkBrown = new Color(0.36f, 0.24f, 0.2f);
-        Color lightBeige = new Color(0.91f, 0.85f, 0.76f);
-
-        Texture2D bgTex = new Texture2D(1, 1);
-        bgTex.SetPixel(0, 0, beige);
-        bgTex.Apply();
-
-        Texture2D btnTex = new Texture2D(1, 1);
-        btnTex.SetPixel(0, 0, lightBeige);
-        btnTex.Apply();
-
-        windowStyle = new GUIStyle(GUI.skin.window)
-        {
-            normal = { background = bgTex, textColor = darkBrown },
-            fontSize = Mathf.RoundToInt(Screen.height * 0.03f),
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.UpperCenter,
-            padding = new RectOffset(40, 40, 30, 30)
-        };
-
-        buttonStyle = new GUIStyle(GUI.skin.button)
-        {
-            normal = { background = btnTex, textColor = darkBrown },
-            fontSize = Mathf.RoundToInt(Screen.height * 0.025f),
-            fontStyle = FontStyle.Bold,
-            padding = new RectOffset(20, 20, 10, 10),
-            alignment = TextAnchor.MiddleCenter
-        };
-
-        labelStyle = new GUIStyle(GUI.skin.label)
-        {
-            normal = { textColor = darkBrown },
-            fontSize = Mathf.RoundToInt(Screen.height * 0.025f),
-            fontStyle = FontStyle.Bold,
-            margin = new RectOffset(0, 0, 10, 10)
-        };
-
-        sliderStyle = new GUIStyle(GUI.skin.horizontalSlider)
-        {
-            fixedHeight = Screen.height * 0.02f
-        };
-
-        popupStyle = new GUIStyle(GUI.skin.button)
-        {
-            normal = { background = btnTex, textColor = darkBrown },
-            fontSize = Mathf.RoundToInt(Screen.height * 0.022f),
-            alignment = TextAnchor.MiddleLeft,
-            padding = new RectOffset(20, 10, 10, 10),
-            margin = new RectOffset(0, 0, 5, 5)
-        };
     }
 }

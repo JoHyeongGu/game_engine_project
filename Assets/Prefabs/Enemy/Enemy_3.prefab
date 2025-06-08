@@ -247,12 +247,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d30c2d23a0ba8742974653cfc8585dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
-  maxHp: 3
+  hp: 5
+  maxHp: 5
   speed: 0.7
   goal: {x: 0, y: 0, z: 0}
+  wayPoints: []
   splitCount: 3
   agent: {fileID: 0}
+  isSplited: 0
 --- !u!1 &1220794817618100908
 GameObject:
   m_ObjectHideFlags: 0

@@ -134,6 +134,7 @@ public class BlockRoot : MonoBehaviour
 
     void Update()
     {
+        if (isPaused) return;
         this.UnprojectMousePosition(out mousePosition, Input.mousePosition);
         Vector2 mousePositionXy = new Vector2(mousePosition.x, mousePosition.y);
         if (this.noMatchTimeFlow)

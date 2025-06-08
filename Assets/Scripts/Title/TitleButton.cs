@@ -15,6 +15,7 @@ public class TitleButton : MonoBehaviour
 
     void RayCheck()
     {
+        if (settingUI != null && settingUI.onSetting) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 

@@ -37,7 +37,7 @@ public class ScoreCounter : MonoBehaviour
 
     public void PrintScore(float x, float y, KeyValuePair<Block.COLOR, int> data)
     {
-        float scaleY = 5f;
+        float scaleY = Screen.width / 500f;
 
         float lineHeight = 10f * scaleY;
         float boxSize = 12f * scaleY;

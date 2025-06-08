@@ -340,7 +340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: quit
   focus: 0.1
-  settingUI: {fileID: 0}
+  settingUI: {fileID: 370383043}
 --- !u!1001 &207276336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -454,6 +454,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onSetting: 0
+  customFont: {fileID: 12800000, guid: ea3f378fe80d6e24fb1042a914da29e6, type: 3}
+  windowBackground: {fileID: 2800000, guid: 3b112f5b69adfd643a79abcec3922b90, type: 3}
+  buttonNormal: {fileID: 2800000, guid: 1cf7826e45191b4498d27c332d824cfd, type: 3}
+  buttonHover: {fileID: 2800000, guid: 2e54e882095409943850d7166ed42c88, type: 3}
+  buttonActive: {fileID: 2800000, guid: a53399e5fe0dae24286081c1f9c90c04, type: 3}
+  sliderBackground: {fileID: 2800000, guid: 65dab793fa7194b4eb482b30c117a957, type: 3}
+  sliderThumb: {fileID: 2800000, guid: fef26a5f8919ede4ea17a142e6e651f2, type: 3}
 --- !u!1001 &443700855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1426,7 +1433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: TutorialScene
   focus: 0.1
-  settingUI: {fileID: 0}
+  settingUI: {fileID: 370383043}
 --- !u!1 &1843597685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1691,7 +1698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scene: GameScene
   focus: 0.1
-  settingUI: {fileID: 0}
+  settingUI: {fileID: 370383043}
 --- !u!1 &2128189268
 GameObject:
   m_ObjectHideFlags: 0

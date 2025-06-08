@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Destination
   - Map
   - Wall
   - Enemy
@@ -13,6 +12,8 @@ TagManager:
   - Freeze
   - Fire
   - Both
+  - Goal
+  - WayPoint
   layers:
   - Default
   - TransparentFX

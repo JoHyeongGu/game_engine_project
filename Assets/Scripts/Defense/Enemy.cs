@@ -10,14 +10,19 @@ public class Enemy : MonoBehaviour
     public float maxHp;
     public float speed;
     public Vector3 goal;
+    public List<Vector3> wayPoints;
     public int splitCount = 0;
     public NavMeshAgent agent;
+    public bool isSplited = false;
+
+    private bool completeWayPoints = false;
 
     void Start()
     {
         maxHp = hp;
         InitAgent();
-        SetGoal();
+        InitWayPoints();
+        StartCoroutine(FollowGoals());
     }
 
     void Update()
@@ -29,8 +34,9 @@ public class Enemy : MonoBehaviour
                 SplitBody();
             }
             Destroy(this.gameObject);
+            Destroy(this);
         }
-        else if (agent.remainingDistance <= 0.01f)
+        else if (completeWayPoints && agent.remainingDistance <= 0.01f)
         {
             ArriveToGoal();
         }
@@ -43,11 +49,36 @@ public class Enemy : MonoBehaviour
         agent.acceleration = speed;
     }
 
-    private void SetGoal()
+    private void InitWayPoints()
     {
-        GameObject desObj = GameObject.FindGameObjectWithTag("Destination");
-        goal = desObj.transform.position;
-        agent.destination = goal;
+        this.goal = GameObject.FindGameObjectWithTag("Goal").transform.position;
+        if (isSplited) return;
+        GameObject[] points = GameObject.FindGameObjectsWithTag("WayPoint");
+        foreach (GameObject point in points)
+        {
+            this.wayPoints.Add(point.transform.position);
+        }
+    }
+
+    IEnumerator FollowGoals()
+    {
+        if (isSplited) wayPoints.Clear();
+        if (wayPoints.Count > 0)
+        {
+            int index = Random.Range(0, wayPoints.Count);
+            Vector3 point = wayPoints[index];
+            agent.SetDestination(point);
+            while (true)
+            {
+                yield return null;
+                if (!agent.isActiveAndEnabled || agent.remainingDistance <= 1f) break;
+            }
+        }
+        if (agent.isActiveAndEnabled)
+        {
+            completeWayPoints = true;
+            agent.SetDestination(this.goal);
+        }
     }
 
     private void ArriveToGoal()
@@ -74,18 +105,19 @@ public class Enemy : MonoBehaviour
             _class.hp = newHp;
             _class.splitCount = 0;
             _class.speed = newSpeed;
+            _class.isSplited = true;
         }
     }
 
     public void ActiveEffect(string effect, bool active = true)
     {
         foreach (Transform child in this.GetComponentsInChildren<Transform>(true))
+        {
+            if (child.CompareTag(effect))
             {
-                if (child.CompareTag(effect))
-                {
-                    child.gameObject.SetActive(active);
-                    return;
-                }
+                child.gameObject.SetActive(active);
+                return;
             }
+        }
     }
 }

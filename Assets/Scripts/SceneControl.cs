@@ -14,6 +14,8 @@ public class SceneControl : MonoBehaviour
     public SettingUI settingUI;
     public Texture2D heartFull;
     public Texture2D heartEmpty;
+    public Font font;
+    public Texture2D buttonNormal, buttonHover, buttonActive;
 
     public enum STEP
     {
@@ -30,6 +32,8 @@ public class SceneControl : MonoBehaviour
     private bool waveComplete = false;
 
     private bool isPaused = false;
+    private readonly float baseHeight = 1080f;
+    private float uiScale = 1f;
 
     void Start()
     {
@@ -54,9 +58,7 @@ public class SceneControl : MonoBehaviour
             }
             else
             {
-                this.step = STEP.PLAY;
-                Time.timeScale = 1f;
-                AudioListener.pause = false;
+                RePlayTime();
             }
         }
         if (this.hp <= 0)
@@ -141,6 +143,7 @@ public class SceneControl : MonoBehaviour
     void OnGUI()
     {
         GUIStyle guistyle = new GUIStyle();
+        uiScale = Screen.height / baseHeight;
         switch (this.step)
         {
             case STEP.PLAY:
@@ -222,22 +225,40 @@ public class SceneControl : MonoBehaviour
 
     private void PauseGUI()
     {
+        if (settingUI.onSetting)
+        {
+            return;
+        }
+
         var background = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
         background.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.6f));
         background.Apply();
-        GUIStyle titleStyle = new GUIStyle();
-        titleStyle.normal.textColor = Color.white;
-        titleStyle.normal.background = background;
-        titleStyle.fontStyle = FontStyle.Bold;
-        titleStyle.fontSize = 40;
-        GUI.Box(new Rect(0f, 0.0f, Screen.width, Screen.height), "", titleStyle);
+        GUI.Box(new Rect(0f, 0.0f, Screen.width, Screen.height), "");
+
+        GUIStyle titleStyle = new GUIStyle()
+        {
+            normal = { background = background, textColor = Color.white },
+            font = font,
+            fontSize = Mathf.RoundToInt(40 * uiScale),
+            fontStyle = FontStyle.Bold
+        };
         GUI.Label(new Rect(Screen.width / 2.0f - 100f, Screen.height / 2.0f - 90f, 200.0f, 20.0f), "일시 정지", titleStyle);
-        GUIStyle buttnStyle = new GUIStyle();
+        Color btnTextColor = new Color32(181, 154, 102, 255);
+        GUIStyle _buttonStyle = new GUIStyle(GUI.skin.button)
+        {
+            normal = { background = buttonNormal, textColor = btnTextColor },
+            hover = { background = buttonHover, textColor = btnTextColor },
+            active = { background = buttonActive, textColor = btnTextColor },
+            font = font,
+            fontSize = Mathf.RoundToInt(20 * uiScale),
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+        };
         float btnX = Screen.width / 2.0f - 110.0f;
         float btnY = Screen.height / 2.0f;
-        bool toPlay = GUI.Button(new Rect(btnX, btnY, 200.0f, 40f), "재개하기");
-        bool setting = GUI.Button(new Rect(btnX, btnY + 60f, 200.0f, 40f), "설정");
-        bool toTitle = GUI.Button(new Rect(btnX, btnY + 120f, 200.0f, 40f), "타이틀로 돌아가기");
+        bool toPlay = GUI.Button(new Rect(btnX, btnY, 200.0f, 40f), "재개하기", _buttonStyle);
+        bool setting = GUI.Button(new Rect(btnX, btnY + 60f, 200.0f, 40f), "설정", _buttonStyle);
+        bool toTitle = GUI.Button(new Rect(btnX, btnY + 120f, 200.0f, 40f), "타이틀로 돌아가기", _buttonStyle);
         if (toPlay)
         {
             RePlayTime();
@@ -260,6 +281,7 @@ public class SceneControl : MonoBehaviour
         this.step = STEP.PLAY;
         Time.timeScale = 1f;
         AudioListener.pause = false;
+        if (settingUI.onSetting) settingUI.onSetting = false;
     }
 
     private void ResetLevelData()

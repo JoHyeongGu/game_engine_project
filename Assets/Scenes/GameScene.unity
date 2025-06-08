@@ -252,11 +252,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 583268873}
+  - component: {fileID: 583268878}
   - component: {fileID: 583268874}
   - component: {fileID: 583268875}
   - component: {fileID: 583268876}
   - component: {fileID: 583268877}
-  - component: {fileID: 583268878}
   m_Layer: 0
   m_Name: GameRoot
   m_TagString: Root
@@ -298,12 +298,16 @@ MonoBehaviour:
   maxWave: 5
   maxTime: 10
   defenseMapList:
-  - {fileID: 5771282464016408193, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
-  - {fileID: 2533781801306245280, guid: d788fc6d58aefae469687896c9b52827, type: 3}
   - {fileID: 2533781801306245280, guid: f97cd2646a34f4745ab700a8a466768c, type: 3}
+  - {fileID: 2533781801306245280, guid: d788fc6d58aefae469687896c9b52827, type: 3}
+  - {fileID: 5771282464016408193, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
   settingUI: {fileID: 583268878}
   heartFull: {fileID: 2800000, guid: d2491828c4197144ab467b80ec3c9b93, type: 3}
   heartEmpty: {fileID: 2800000, guid: 6b9ab5ae627598141a752f4b2cf87428, type: 3}
+  font: {fileID: 12800000, guid: ea3f378fe80d6e24fb1042a914da29e6, type: 3}
+  buttonNormal: {fileID: 2800000, guid: 1cf7826e45191b4498d27c332d824cfd, type: 3}
+  buttonHover: {fileID: 2800000, guid: 2e54e882095409943850d7166ed42c88, type: 3}
+  buttonActive: {fileID: 2800000, guid: a53399e5fe0dae24286081c1f9c90c04, type: 3}
   step: -1
   nextStep: -1
   stepTimer: 0
@@ -480,6 +484,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onSetting: 0
+  customFont: {fileID: 12800000, guid: ea3f378fe80d6e24fb1042a914da29e6, type: 3}
+  windowBackground: {fileID: 2800000, guid: 3b112f5b69adfd643a79abcec3922b90, type: 3}
+  buttonNormal: {fileID: 2800000, guid: 1cf7826e45191b4498d27c332d824cfd, type: 3}
+  buttonHover: {fileID: 2800000, guid: 2e54e882095409943850d7166ed42c88, type: 3}
+  buttonActive: {fileID: 2800000, guid: a53399e5fe0dae24286081c1f9c90c04, type: 3}
+  sliderBackground: {fileID: 2800000, guid: 65dab793fa7194b4eb482b30c117a957, type: 3}
+  sliderThumb: {fileID: 2800000, guid: fef26a5f8919ede4ea17a142e6e651f2, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
