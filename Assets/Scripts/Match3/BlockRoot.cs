@@ -101,7 +101,7 @@ public class BlockRoot : MonoBehaviour
     public void SetLevelData(int stage, int wave, int maxWave)
     {
         this.levelControl.initialize(stage, wave, maxWave);
-        this.levelControl.loadLevelData(this.levelData); // 데이터 읽기
+        this.levelControl.LoadLevelData(this.levelData); // 데이터 읽기
         this.levelControl.SelectLevel(); // 레벨 선택
     }
 

@@ -90,11 +90,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c298d9fb5487f448af8f6dc92e28352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atk: 1
+  atkDist: 1.5
+  cooltime: 1
+  animCooltime: 0.4
+  rotateOffset: -90
   isActive: 0
   canPlaced: 0
-  targetList: []
-  price: []
   scoreCounter: {fileID: 0}
+  price: []
 --- !u!54 &7237018944796288545
 Rigidbody:
   m_ObjectHideFlags: 0

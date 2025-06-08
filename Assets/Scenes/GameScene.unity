@@ -298,9 +298,9 @@ MonoBehaviour:
   maxWave: 5
   maxTime: 10
   defenseMapList:
-  - {fileID: 2533781801306245280, guid: f97cd2646a34f4745ab700a8a466768c, type: 3}
-  - {fileID: 2533781801306245280, guid: d788fc6d58aefae469687896c9b52827, type: 3}
   - {fileID: 5771282464016408193, guid: c7e046cf14095b0408977e9a73b8f2b3, type: 3}
+  - {fileID: 2533781801306245280, guid: d788fc6d58aefae469687896c9b52827, type: 3}
+  - {fileID: 2533781801306245280, guid: f97cd2646a34f4745ab700a8a466768c, type: 3}
   settingUI: {fileID: 583268878}
   heartFull: {fileID: 2800000, guid: d2491828c4197144ab467b80ec3c9b93, type: 3}
   heartEmpty: {fileID: 2800000, guid: 6b9ab5ae627598141a752f4b2cf87428, type: 3}
@@ -449,27 +449,29 @@ MonoBehaviour:
     unableImage: {fileID: 2800000, guid: 2674c2ac2dd6a514f82024eccccfd782, type: 3}
     price:
     - key: 1
-      value: 0
+      value: 10
+    - key: 5
+      value: 6
     - key: 2
-      value: 0
+      value: 6
   - prefab: {fileID: 3509506487342159816, guid: d8d0c7816049a794691106186b2e08c7, type: 3}
     image: {fileID: 2800000, guid: 69197fe6c0d9b25448f44702a49433b0, type: 3}
     unableImage: {fileID: 2800000, guid: 70e632af4c027ec4697e7a3aef10525c, type: 3}
     price:
     - key: 4
-      value: 0
-    - key: 2
-      value: 0
+      value: 10
     - key: 5
-      value: 0
+      value: 6
+    - key: 3
+      value: 6
   - prefab: {fileID: 3509506487342159816, guid: 727dcc810339b9c4c9dbe7cff92f9f05, type: 3}
     image: {fileID: 2800000, guid: 9a0cc845e38ab964cae6d43312d0c2af, type: 3}
     unableImage: {fileID: 2800000, guid: 2b21d0c62a01c0d41843fdd172687f60, type: 3}
     price:
     - key: 3
-      value: 0
-    - key: 2
-      value: 0
+      value: 10
+    - key: 0
+      value: 5
   target: {fileID: 0}
 --- !u!114 &583268878
 MonoBehaviour:

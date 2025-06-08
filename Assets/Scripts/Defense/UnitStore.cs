@@ -50,7 +50,7 @@ public class UnitStore : MonoBehaviour
         if (blockRoot.isPaused) return;
         if (Input.GetMouseButtonDown(0) && SelectedUnit != null && SelectedUnit.canPlaced)
         {
-            SelectedUnit.Active();
+            SelectedUnit.isActive = true;
             SelectedUnit = null;
         }
         if (SelectedUnit != null)

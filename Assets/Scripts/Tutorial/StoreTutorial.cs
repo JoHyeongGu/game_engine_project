@@ -31,7 +31,7 @@ public class StoreTutorial : MonoBehaviour
         this.UnprojectMousePosition(out mousePosition, Input.mousePosition);
         if (Input.GetMouseButtonDown(0) && SelectedUnit != null && SelectedUnit.canPlaced)
         {
-            SelectedUnit.Active();
+            SelectedUnit.isActive = true;
             SelectedUnit = null;
             tutorialUI.stepIndex++;
         }

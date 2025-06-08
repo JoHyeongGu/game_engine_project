@@ -14,6 +14,7 @@ public class UnitAttackZone : MonoBehaviour
         render = this.GetComponent<Renderer>();
         parent = this.transform.parent.GetComponent<Unit>();
         color = render.material.color;
+        SetScale();
     }
 
     void Update()
@@ -29,24 +30,14 @@ public class UnitAttackZone : MonoBehaviour
         else ChangeColor(new Color(color.r * 2, color.g, color.b, color.a));
     }
 
+    private void SetScale()
+    {
+        float diameter = parent.atkDist * 2f;
+        this.transform.localScale = new Vector3(diameter, 0.1f, diameter);
+    }
+
     private void ChangeColor(Color newColor)
     {
         render.material.color = newColor;
-    }
-
-    void OnTriggerStay(Collider other)
-    {
-        if (!parent.isActive) return;
-        GameObject otherObj = other.gameObject;
-        if (otherObj.CompareTag("Enemy") && !parent.targetList.Contains(otherObj))
-        {
-            parent.targetList.Add(otherObj);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        GameObject otherObj = other.gameObject;
-        parent.targetList.Remove(otherObj);
     }
 }

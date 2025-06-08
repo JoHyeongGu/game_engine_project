@@ -71,7 +71,7 @@ public class LevelControl
     }
     
     // 텍스트 데이터를 읽어와서 그 내용을 해석하고 데이터를 보관
-    public void loadLevelData(TextAsset levelDataText)
+    public void LoadLevelData(TextAsset levelDataText)
     { 
         string levelTexts = levelDataText.text;
         string[] lines = levelTexts.Split('\n');

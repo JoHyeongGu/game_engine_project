@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
             Destroy(this.gameObject);
             Destroy(this);
         }
-        else if (completeWayPoints && agent.remainingDistance <= 0.01f)
+        else if (completeWayPoints && agent.remainingDistance <= 0.1f)
         {
             ArriveToGoal();
         }

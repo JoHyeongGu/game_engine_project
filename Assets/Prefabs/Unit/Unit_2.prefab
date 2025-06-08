@@ -117,9 +117,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bc0ccc8aa5eee84d92734cdefa68c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atk: 0.05
+  atkDist: 2
+  cooltime: 0.1
+  animCooltime: 0
+  rotateOffset: -90
   isActive: 0
   canPlaced: 0
-  targetList: []
+  scoreCounter: {fileID: 0}
+  price: []
 --- !u!1 &6788972972740698597
 GameObject:
   m_ObjectHideFlags: 0

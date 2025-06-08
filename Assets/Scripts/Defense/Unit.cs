@@ -4,31 +4,26 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    public float atk;
+    public float atkDist;
+    public float cooltime;
+    public float animCooltime;
+
+    public float rotateOffset = -90f;
     public bool isActive = false;
     public bool canPlaced = false;
-    public List<GameObject> targetList;
 
-    protected Vector3 mousePosition;
-    protected Renderer render;
-
-    protected float invisible = 0.3f;
-    protected float visible = 1.0f;
-    protected float canOpacity = 0.7f;
-    protected bool isAttacking = false;
-    protected Coroutine AttackRoutine;
-    protected Animator anim;
-    protected GameObject target;
-    protected Transform prefab;
-
-    public Price[] price;
     public ScoreCounter scoreCounter = null;
+    protected Vector3 mousePosition;
+    protected Animator anim;
+    public Price[] price;
+
+    protected Enemy target;
 
     void Start()
     {
         anim = this.GetComponentInChildren<Animator>();
-        render = gameObject.GetComponent<Renderer>();
-        targetList = new List<GameObject>();
-        prefab = transform.GetChild(transform.childCount - 1);
+        StartCoroutine(AttackRoutine());
     }
 
     protected virtual void Update()
@@ -36,61 +31,91 @@ public class Unit : MonoBehaviour
         if (!isActive)
         {
             this.transform.position = mousePosition;
-            // 구매 취소
-            if (Input.GetMouseButtonDown(1))
-            {
-                foreach (Price p in price)
-                {
-                    // 포인트 복구
-                    scoreCounter.PointUp(p.key, p.value);
-                }
-                Destroy(this.gameObject);
-                Destroy(this);
-            }
+            if (Input.GetMouseButtonDown(1)) CancelBuy(); // 구매 취소
             CheckCanPlaced();
-        }
-        else if (targetList.Count > 0)
-        {
-            if (!isAttacking)
-            {
-                AttackRoutine = StartCoroutine(Attack());
-            }
         }
         else
         {
-            if (AttackRoutine != null && isAttacking)
-            {
-                isAttacking = false;
-                StopCoroutine(AttackRoutine);
-            }
+            SetTarget();
+            SetReadyAnimation();
         }
         LookTarget();
     }
 
+    private void CancelBuy()
+    {
+        foreach (Price p in price)
+        {
+            scoreCounter.PointUp(p.key, p.value);
+        }
+        Destroy(this.gameObject);
+        Destroy(this);
+    }
+
+    protected virtual IEnumerator AttackRoutine()
+    {
+        while (true)
+        {
+            while (!isActive || target == null)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(cooltime);
+            if (HasAnimParam("Attack")) anim.SetTrigger("Attack");
+            yield return new WaitForSeconds(animCooltime);
+            if (target != null) yield return Attack();
+        }
+    }
+
+    protected virtual IEnumerator Attack()
+    {
+        target.hp -= atk;
+        yield return null;
+    }
+
+    protected virtual void SetTarget()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            float distance = Vector3.Distance(this.transform.position, enemy.transform.position);
+            if (distance > atkDist) continue;
+            target = enemy.GetComponent<Enemy>();
+            return;
+        }
+        target = null;
+    }
+
+    protected virtual void SetReadyAnimation()
+    {
+        if (!HasAnimParam("IsAttack")) return;
+        anim.SetBool("IsAttack", target != null);
+    }
+
     public virtual void LookTarget()
     {
-        if (target != null)
+        Vector3 _target = Vector3.zero;
+        if (!isActive)
         {
-            Vector3 localDir = transform.parent.InverseTransformPoint(target.transform.position) - transform.localPosition;
-            localDir.y = 0f;
-
-            if (localDir == Vector3.zero) return;
-
-            Quaternion lookRotation = Quaternion.LookRotation(localDir);
-            Quaternion offsetRotation = Quaternion.AngleAxis(-90f, Vector3.up); // 로컬 Y축 기준 -30도
-
-            transform.localRotation = lookRotation * offsetRotation;
+            _target = GameObject.FindGameObjectWithTag("MainCamera").transform.position;
         }
+        else if (target != null)
+        {
+            _target = target.transform.position;
+        }
+        if (_target == Vector3.zero) return;
+
+        Vector3 localDir = transform.parent.InverseTransformPoint(_target) - transform.localPosition;
+        localDir.y = 0f;
+        if (localDir == Vector3.zero) return;
+        Quaternion lookRotation = Quaternion.LookRotation(localDir);
+        Quaternion offsetRotation = Quaternion.AngleAxis(rotateOffset, Vector3.up);
+        transform.localRotation = lookRotation * offsetRotation;
     }
 
     public void SetMousePosition(Vector3 mousePosition)
     {
         this.mousePosition = mousePosition;
-    }
-
-    public void Active()
-    {
-        isActive = true;
     }
 
     protected void CheckCanPlaced()
@@ -105,15 +130,9 @@ public class Unit : MonoBehaviour
             {
                 canPlaced = true;
             }
-            else
-            {
-                canPlaced = false;
-            }
+            else canPlaced = false;
         }
-        else
-        {
-            canPlaced = false;
-        }
+        else canPlaced = false;
     }
 
     private bool IsNearUnit()
@@ -128,36 +147,12 @@ public class Unit : MonoBehaviour
         return false;
     }
 
-    protected virtual IEnumerator Attack()
+    public bool HasAnimParam(string paramName)
     {
-        isAttacking = true;
-        while (true)
+        foreach (AnimatorControllerParameter param in anim.parameters)
         {
-            yield return new WaitForSeconds(1);
-            if (targetList.Count == 0) break;
-            GameObject firstEnemy = targetList[0];
-            if (firstEnemy == null)
-            {
-                target = null;
-                targetList.Remove(targetList[0]);
-                continue;
-            }
-            Enemy enemyClass = firstEnemy.GetComponent<Enemy>();
-            if (enemyClass == null)
-            {
-                target = null;
-                targetList.Remove(targetList[0]);
-                continue;
-            }
-            target = firstEnemy;
-            anim.SetTrigger("Attack");
-            yield return new WaitForSeconds(0.4f);
-            enemyClass.hp -= 1.0f;
-            if (enemyClass.hp <= 0)
-            {
-                target = null;
-                targetList.Remove(targetList[0]);
-            }
+            if (param.name == paramName) return true;
         }
+        return false;
     }
 }
