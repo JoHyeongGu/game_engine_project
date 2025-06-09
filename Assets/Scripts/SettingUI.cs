@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 public class SettingUI : MonoBehaviour
 {
@@ -78,7 +79,11 @@ public class SettingUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!onSetting) return;
+        if (!onSetting)
+        {
+            if (SceneManager.GetActiveScene().name != "TutorialScene") MadeByNamed();
+            return;
+        }
         GUI.depth = 0;
         uiScale = Screen.height / baseHeight;
         InitStyles();
@@ -268,5 +273,19 @@ public class SettingUI : MonoBehaviour
     private void PlaySFXSound()
     {
         this.GetComponent<AudioSource>().Play();
+    }
+
+    private void MadeByNamed()
+    {
+        GUIStyle nameStyle = new GUIStyle()
+        {
+            normal = { textColor = new Color32(255, 255, 255, 150) },
+            font = customFont,
+            fontSize = Mathf.RoundToInt(25 * uiScale),
+        };
+        float width = 290f * uiScale;
+        float height = 30f * uiScale;
+        Rect rect = new Rect(Screen.width - width, Screen.height - height, width, height);
+        GUI.Label(rect, "Made by C077032 조형구", nameStyle);
     }
 }
