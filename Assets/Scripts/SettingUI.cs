@@ -155,7 +155,7 @@ public class SettingUI : MonoBehaviour
             hover = { background = buttonHover, textColor = btnTextColor },
             active = { background = buttonActive, textColor = btnTextColor },
             font = customFont,
-            fontSize = fontSizeMedium,
+            fontSize = fontSizeSmall,
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
             padding = new RectOffset(paddingH / 2, paddingH / 2, paddingV / 3, paddingV / 3)
@@ -163,7 +163,7 @@ public class SettingUI : MonoBehaviour
         resButtonStyle = new GUIStyle(buttonStyle)
         {
             fontSize = fontSizeSmall,
-            padding = new RectOffset(0, 0, paddingV / 3, paddingV / 3)
+            padding = new RectOffset(0, 0, 0, 0)
         };
 
         labelStyle = new GUIStyle()
