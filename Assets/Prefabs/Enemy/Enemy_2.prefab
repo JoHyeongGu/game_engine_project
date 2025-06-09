@@ -533,7 +533,7 @@ NavMeshAgent:
   m_Height: 1.2
   m_BaseOffset: 1.0000005
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &5043782748384290805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,9 +549,15 @@ MonoBehaviour:
   hp: 10
   maxHp: 10
   speed: 0.5
+  sounds:
+    attacked: {fileID: 8300000, guid: f80d1a43062079f4f836dcf0013a89a8, type: 3}
+    destroy: {fileID: 8300000, guid: 492b0063864db3345aec0cb587031570, type: 3}
+    splited: {fileID: 0}
   goal: {x: 0, y: 0, z: 0}
+  wayPoints: []
   splitCount: 0
   agent: {fileID: 0}
+  isSplited: 0
 --- !u!1 &955872340164140886
 GameObject:
   m_ObjectHideFlags: 0

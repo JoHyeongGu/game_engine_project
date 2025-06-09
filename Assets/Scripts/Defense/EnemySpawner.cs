@@ -20,6 +20,7 @@ public struct EnemyInfo
 public class EnemySpawner : MonoBehaviour
 {
     public int stage = 1;
+    public float startCooltime = 6f;
     public float minCooltime = 0.1f;
     public float maxCooltime = 1.0f;
     public EnemyInfo[] enemyList;
@@ -70,7 +71,7 @@ public class EnemySpawner : MonoBehaviour
     private IEnumerator SpawnRoutine()
     {
         routineIsRunning = true;
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(startCooltime);
         while (true)
         {
             if (!this.activate)

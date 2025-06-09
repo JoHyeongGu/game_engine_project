@@ -3,11 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct BlockSound
+{
+    public AudioClip blockBreak;
+    public AudioClip freeze;
+    public AudioClip fire;
+}
+
 public class BlockRoot : MonoBehaviour
 {
     public GameObject BlockPrefab = null;
     public BlockControl[,] blocks;
     public Vector2 startPos = new Vector2(6.0f, 1.0f);
+    public AudioSource audioSource;
+    public BlockSound sounds;
 
     public Vector3 mousePosition;
 
@@ -128,6 +138,7 @@ public class BlockRoot : MonoBehaviour
 
     void Start()
     {
+        this.audioSource = GetComponent<AudioSource>();
         this.mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
         this.scoreCounter = this.gameObject.GetComponent<ScoreCounter>();
     }
@@ -213,6 +224,8 @@ public class BlockRoot : MonoBehaviour
                 // 세로 또는 가로에 같은 색 블록이 세 개 이상 나열했다면
                 if (this.checkConnection(block))
                 {
+                    audioSource.clip = sounds.blockBreak;
+                    audioSource.Play();
                     igniteCount++; // 불붙은 개수를 증가
                     this.noMatchTime = 0.0f;
                     this.noMatchTimeFlow = true;
@@ -403,13 +416,18 @@ public class BlockRoot : MonoBehaviour
             {
                 ReSwap(block0, block1, dir);
             }
-            else CountMatchBlock();
+            else
+            {
+                audioSource.clip = sounds.blockBreak;
+                audioSource.Play();
+                CountMatchBlock();
+            }
         }
     }
 
     private async void CountMatchBlock()
     {
-        await Task.Delay(500);
+        await Task.Delay(300);
         int _matchCount = 0;
         foreach (KeyValuePair<Block.COLOR, int> item in matchCount)
         {
@@ -426,24 +444,29 @@ public class BlockRoot : MonoBehaviour
 
         if (_matchCount >= 7)
         {
-            FireEnemies(true);
-            FreezeEnemies(true);
+            StartCoroutine(FireEnemies(true));
+            StartCoroutine(FreezeEnemies(true));
         }
         else if (_matchCount >= 5)
         {
-            FireEnemies();
+            StartCoroutine(FireEnemies());
         }
         else if (_matchCount >= 4)
         {
-            FreezeEnemies();
+            StartCoroutine(FreezeEnemies());
         }
         matchCount.Clear();
     }
 
-    private async void FreezeEnemies(bool both = false)
+    private IEnumerator FreezeEnemies(bool both = false)
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         List<float> speedList = new List<float>();
+        if (!both && enemies.Length > 0)
+        {
+            audioSource.clip = sounds.freeze;
+            audioSource.Play();
+        }
 
         foreach (GameObject obj in enemies)
         {
@@ -453,7 +476,7 @@ public class BlockRoot : MonoBehaviour
             speedList.Add(enemy.speed);
             enemy.agent.speed /= 3;
         }
-        await SleepWithPause(5000);
+        yield return SleepWithPause(5000);
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null) continue;
@@ -463,10 +486,15 @@ public class BlockRoot : MonoBehaviour
         }
     }
 
-    private async void FireEnemies(bool both = false)
+    private IEnumerator FireEnemies(bool both = false)
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         List<float> speedList = new List<float>();
+        if (enemies.Length > 0)
+        {
+            audioSource.clip = sounds.fire;
+            audioSource.Play();
+        }
 
         foreach (GameObject obj in enemies)
         {
@@ -478,7 +506,7 @@ public class BlockRoot : MonoBehaviour
         }
         for (int i = 0; i < 10; i++)
         {
-            await SleepWithPause(500);
+            yield return SleepWithPause(500);
             foreach (GameObject obj in enemies)
             {
                 if (obj == null) continue;
@@ -486,7 +514,7 @@ public class BlockRoot : MonoBehaviour
                 enemy.hp -= 0.1f;
             }
         }
-        await SleepWithPause(500);
+        yield return SleepWithPause(500);
         for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null) continue;
@@ -496,18 +524,31 @@ public class BlockRoot : MonoBehaviour
         }
     }
 
-    private async Task SleepWithPause(int time)
+    private IEnumerator SleepWithPause(int time)
     {
-        int div = 100;
+        int div = 100; // 0.1초
         for (int ms = 0; ms < time / div; ms++)
         {
-            await Task.Delay(div);
+            yield return new WaitForSeconds((float)div / 1000f);
             while (isPaused)
             {
-                await Task.Delay(5);
+                yield return null;
             }
         }
     }
+
+    // private async Task SleepWithPause(int time)
+    // {
+    //     int div = 100;
+    //     for (int ms = 0; ms < time / div; ms++)
+    //     {
+    //         await Task.Delay(div);
+    //         while (isPaused)
+    //         {
+    //             await Task.Delay(5);
+    //         }
+    //     }
+    // }
 
     private async void ReSwap(BlockControl block0, BlockControl block1, Block.DIR4 dir)
     {

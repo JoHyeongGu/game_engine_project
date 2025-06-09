@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class SceneControl : MonoBehaviour
 {
@@ -11,11 +12,15 @@ public class SceneControl : MonoBehaviour
     public float maxTime = 30.0f;
     public GameObject[] defenseMapList;
 
-    public SettingUI settingUI;
+    public AudioSource sfxSource;
+    public AudioSource bgmSource;
+    private bool isPlayedClearSound = false;
+
     public Texture2D heartFull;
     public Texture2D heartEmpty;
     public Font font;
     public Texture2D buttonNormal, buttonHover, buttonActive;
+    private SettingUI settingUI;
 
     public enum STEP
     {
@@ -24,6 +29,7 @@ public class SceneControl : MonoBehaviour
     public STEP step = STEP.NONE;
     public STEP nextStep = STEP.NONE;
     public float stepTimer = 0.0f;
+    public bool timeFlow = true;
     private float clearTime = 0.0f;
 
     private BlockRoot blockRoot = null;
@@ -40,13 +46,14 @@ public class SceneControl : MonoBehaviour
         this.blockRoot = this.gameObject.GetComponent<BlockRoot>();
         this.blockRoot.Create(stage, wave, maxWave);
         this.blockRoot.InitialSetUp();
+        settingUI = GameObject.FindGameObjectWithTag("Setting").GetComponent<SettingUI>();
         CreateRandomDefenseMap();
         this.nextStep = STEP.PLAY;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (SceneManager.GetActiveScene().name != "TutorialScene" && Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
             blockRoot.isPaused = isPaused;
@@ -54,13 +61,13 @@ public class SceneControl : MonoBehaviour
             {
                 this.step = STEP.PAUSE;
                 Time.timeScale = 0f;
-                AudioListener.pause = true;
             }
             else
             {
                 RePlayTime();
             }
         }
+        DirectTrigger();
         if (this.hp <= 0)
         {
             SceneManager.LoadScene("FailScene");
@@ -85,22 +92,12 @@ public class SceneControl : MonoBehaviour
             waveComplete = true;
         }
 
-        this.stepTimer += Time.deltaTime;
+        if (this.timeFlow) this.stepTimer += Time.deltaTime;
 
         if (!waveComplete && this.stepTimer / this.maxTime >= this.wave)
         {
             this.wave++;
             ResetLevelData();
-        }
-
-        switch (this.step)
-        {
-            case STEP.CLEAR:
-                if (Input.GetMouseButtonDown(0))
-                {
-                    SceneManager.LoadScene("TitleScene");
-                }
-                break;
         }
 
         while (this.nextStep != STEP.NONE)
@@ -162,13 +159,13 @@ public class SceneControl : MonoBehaviour
     {
         // 글씨 스타일 설정
         GUIStyle labelStyle = new GUIStyle();
-        labelStyle.fontSize = 30;
+        labelStyle.fontSize = Mathf.RoundToInt(30 * uiScale);
         labelStyle.fontStyle = FontStyle.Bold;
         labelStyle.alignment = TextAnchor.UpperLeft;
 
-        float labelX = 20f;
-        float labelY = 20f;
-        float spacing = 40f;
+        float labelX = 20f * uiScale;
+        float labelY = 20f * uiScale;
+        float spacing = 40f * uiScale;
 
         // 외곽선: 2px 오프셋만 사용 (상하좌우 총 4방향)
         labelStyle.normal.textColor = Color.black;
@@ -189,7 +186,7 @@ public class SceneControl : MonoBehaviour
 
         // 타이머
         GUIStyle timeStyle = new GUIStyle();
-        timeStyle.fontSize = 30;
+        timeStyle.fontSize = Mathf.RoundToInt(30 * uiScale);
         timeStyle.normal.textColor = Color.white;
         GUI.Label(new Rect(labelX, labelY + spacing * 2, 200.0f, 30.0f), $"{Mathf.CeilToInt(this.stepTimer)} 초", timeStyle);
 
@@ -197,9 +194,9 @@ public class SceneControl : MonoBehaviour
         if (heartFull != null && heartEmpty != null)
         {
             int maxHP = 3;
-            float heartSize = 40f;
+            float heartSize = 40f * uiScale;
             float heartX = labelX;
-            float heartY = labelY + spacing * 2 + 40f;
+            float heartY = labelY + spacing * 2 + 40f * uiScale;
 
             for (int i = 0; i < maxHP; i++)
             {
@@ -211,16 +208,64 @@ public class SceneControl : MonoBehaviour
 
     private void ClearGUI()
     {
-        GUIStyle guistyle = new GUIStyle();
+        if (!isPlayedClearSound)
+        {
+            Time.timeScale = 0f;
+            PlayClearSound();
+        }
         var background = new Texture2D(1, 1, TextureFormat.RGBAFloat, false);
         background.SetPixel(0, 0, new Color(0f, 0f, 0f, 0.6f));
         background.Apply();
-        guistyle.normal.textColor = Color.white;
-        guistyle.normal.background = background;
-        guistyle.fontStyle = FontStyle.Bold;
-        GUI.Box(new Rect(0f, 0.0f, Screen.width, Screen.height), "", guistyle);
-        GUI.Label(new Rect(Screen.width / 2.0f - 80.0f, Screen.height / 2.0f - 70f, 200.0f, 20.0f), "☆클리어-!☆", guistyle);
-        GUI.Button(new Rect(Screen.width / 2.0f - 110.0f, Screen.height / 2.0f, 200.0f, 40f), "Go back Title");
+        GUIStyle backStyle = new GUIStyle()
+        {
+            normal = { background = background },
+        };
+        GUI.Box(new Rect(0f, 0.0f, Screen.width, Screen.height), "", backStyle);
+        GUIStyle titleStyle = new GUIStyle()
+        {
+            normal = { background = background, textColor = Color.white },
+            font = font,
+            fontSize = Mathf.RoundToInt(40 * uiScale),
+            fontStyle = FontStyle.Bold
+        };
+        Rect titleRect = new Rect(Screen.width / 2.0f - (130f * uiScale), Screen.height / 2.0f - (90f * uiScale), 200f * uiScale, 20f * uiScale);
+        GUI.Label(titleRect, "☆ 클리어-! ☆", titleStyle);
+        Color btnTextColor = new Color32(181, 154, 102, 255);
+        GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
+        {
+            normal = { background = buttonNormal, textColor = btnTextColor },
+            hover = { background = buttonHover, textColor = btnTextColor },
+            active = { background = buttonActive, textColor = btnTextColor },
+            font = font,
+            fontSize = Mathf.RoundToInt(20 * uiScale),
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleCenter,
+        };
+        float btnX = Screen.width / 2.0f - 110.0f * uiScale;
+        float btnY = Screen.height / 2.0f;
+        float btnWidth = 200f * uiScale;
+        float btnHeight = 40f * uiScale;
+        float padding = 60f * uiScale;
+        if (GUI.Button(new Rect(btnX, btnY, btnWidth, btnHeight), "재도전!", buttonStyle))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("GameScene");
+        }
+        if (GUI.Button(new Rect(btnX, btnY + padding, btnWidth, btnHeight), "타이틀로 돌아가기", buttonStyle))
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene("TitleScene");
+        }
+    }
+
+    private async void PlayClearSound()
+    {
+        isPlayedClearSound = true;
+        AudioSource bgm = GameObject.FindGameObjectWithTag("BGM").GetComponent<AudioSource>();
+        bgm.Pause();
+        this.sfxSource.Play();
+        await Task.Delay(2000);
+        this.bgmSource.Play();
     }
 
     private void PauseGUI()
@@ -242,7 +287,8 @@ public class SceneControl : MonoBehaviour
             fontSize = Mathf.RoundToInt(40 * uiScale),
             fontStyle = FontStyle.Bold
         };
-        GUI.Label(new Rect(Screen.width / 2.0f - 100f, Screen.height / 2.0f - 90f, 200.0f, 20.0f), "일시 정지", titleStyle);
+        Rect titleRect = new Rect(Screen.width / 2.0f - (100f * uiScale), Screen.height / 2.0f - (90f * uiScale), 200f * uiScale, 20f * uiScale);
+        GUI.Label(titleRect, "일시 정지", titleStyle);
         Color btnTextColor = new Color32(181, 154, 102, 255);
         GUIStyle _buttonStyle = new GUIStyle(GUI.skin.button)
         {
@@ -254,11 +300,14 @@ public class SceneControl : MonoBehaviour
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleCenter,
         };
-        float btnX = Screen.width / 2.0f - 110.0f;
+        float btnX = Screen.width / 2.0f - 110.0f * uiScale;
         float btnY = Screen.height / 2.0f;
-        bool toPlay = GUI.Button(new Rect(btnX, btnY, 200.0f, 40f), "재개하기", _buttonStyle);
-        bool setting = GUI.Button(new Rect(btnX, btnY + 60f, 200.0f, 40f), "설정", _buttonStyle);
-        bool toTitle = GUI.Button(new Rect(btnX, btnY + 120f, 200.0f, 40f), "타이틀로 돌아가기", _buttonStyle);
+        float btnWidth = 200f * uiScale;
+        float btnHeight = 40f * uiScale;
+        float padding = 60f * uiScale;
+        bool toPlay = GUI.Button(new Rect(btnX, btnY, btnWidth, btnHeight), "재개하기", _buttonStyle);
+        bool setting = GUI.Button(new Rect(btnX, btnY + padding, btnWidth, btnHeight), "설정", _buttonStyle);
+        bool toTitle = GUI.Button(new Rect(btnX, btnY + padding * 2, btnWidth, btnHeight), "타이틀로 돌아가기", _buttonStyle);
         if (toPlay)
         {
             RePlayTime();
@@ -280,7 +329,6 @@ public class SceneControl : MonoBehaviour
         blockRoot.isPaused = false;
         this.step = STEP.PLAY;
         Time.timeScale = 1f;
-        AudioListener.pause = false;
         if (settingUI.onSetting) settingUI.onSetting = false;
     }
 
@@ -304,5 +352,18 @@ public class SceneControl : MonoBehaviour
         this.defenseMap = Instantiate(defenseMapList[index]);
         this.spawner = this.defenseMap.GetComponentInChildren<EnemySpawner>();
         this.spawner.ClearSpawnedList();
+    }
+
+    private void DirectTrigger()
+    {
+        if (Input.GetKey(KeyCode.J) && Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.G)
+        && Input.GetKey(KeyCode.Space))
+        {
+            if (Input.GetKey(KeyCode.F))
+            {
+                this.hp = 0;
+            }
+            else this.step = STEP.CLEAR;
+        }
     }
 }

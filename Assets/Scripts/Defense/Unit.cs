@@ -13,6 +13,9 @@ public class Unit : MonoBehaviour
     public bool isActive = false;
     public bool canPlaced = false;
 
+    public AudioSource selfAudioSource;
+    public AudioSource enemyAudioSource;
+
     public ScoreCounter scoreCounter = null;
     protected Vector3 mousePosition;
     protected Animator anim;
@@ -62,15 +65,36 @@ public class Unit : MonoBehaviour
             }
             yield return new WaitForSeconds(cooltime);
             if (HasAnimParam("Attack")) anim.SetTrigger("Attack");
-            yield return new WaitForSeconds(animCooltime);
             if (target != null) yield return Attack();
         }
     }
 
     protected virtual IEnumerator Attack()
     {
-        target.hp -= atk;
+        selfAudioSource.Play();
+        yield return new WaitForSeconds(animCooltime);
+        if (target != null)
+        {
+            PlayEnemySound();
+            target.Attacked(atk);
+        }
         yield return null;
+    }
+
+    protected void PlayEnemySound()
+    {
+        if (target.hp - atk <= 0)
+        {
+            if (target.isSplited) PlayEnemyClip(target.sounds.splited);
+            else PlayEnemyClip(target.sounds.destroy);
+        }
+        else PlayEnemyClip(target.sounds.attacked);
+    }
+
+    private void PlayEnemyClip(AudioClip audio)
+    {
+        enemyAudioSource.clip = audio;
+        enemyAudioSource.Play();
     }
 
     protected virtual void SetTarget()

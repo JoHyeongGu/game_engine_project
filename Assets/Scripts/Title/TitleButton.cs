@@ -8,6 +8,11 @@ public class TitleButton : MonoBehaviour
     public SettingUI settingUI;
     private bool isHovering = false;
 
+    void Start()
+    {
+        settingUI = GameObject.FindGameObjectWithTag("Setting").GetComponent<SettingUI>();
+    }
+
     void Update()
     {
         RayCheck();

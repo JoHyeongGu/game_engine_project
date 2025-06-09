@@ -30,6 +30,7 @@ public class UnitStore : MonoBehaviour
     public Texture2D hoverCard;
     public Texture2D clickCard;
     public PriceImage[] priceImages;
+    public bool isLocked = false;
 
     public UnitItem[] units;
     public Enemy target;
@@ -95,7 +96,7 @@ public class UnitStore : MonoBehaviour
         if (isActive)
         {
             GUIContent content = new GUIContent(new GUIContent(unit.image));
-            if (GUI.Button(rect, content, style) && !blockRoot.isPaused)
+            if (GUI.Button(rect, content, style) && !isLocked && !blockRoot.isPaused)
             {
                 BuyUnit(unit);
             }

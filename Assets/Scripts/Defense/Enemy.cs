@@ -4,11 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Serializable]
+public struct EnemySound
+{
+    public AudioClip attacked;
+    public AudioClip destroy;
+    public AudioClip splited;
+}
+
 public class Enemy : MonoBehaviour
 {
     public float hp;
     public float maxHp;
     public float speed;
+    public EnemySound sounds;
     public Vector3 goal;
     public List<Vector3> wayPoints;
     public int splitCount = 0;
@@ -34,12 +43,33 @@ public class Enemy : MonoBehaviour
                 SplitBody();
             }
             Destroy(this.gameObject);
-            Destroy(this);
         }
-        else if (completeWayPoints && agent.remainingDistance <= 0.1f)
+        else if (completeWayPoints && agent.remainingDistance <= 0.01f)
         {
-            ArriveToGoal();
+            Destroy(this.gameObject);
         }
+    }
+
+    public void Attacked(float atk)
+    {
+        hp -= atk;
+    }
+
+    private void Play(AudioClip clip)
+    {
+        // AudioSource.PlayClipAtPoint(clip, transform.position);
+        AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position);
+    }
+
+    private async void Destory()
+    {
+        GetComponent<Collider>().enabled = false;
+        foreach (var r in GetComponentsInChildren<Renderer>())
+        {
+            r.enabled = false;
+        }
+        await Task.Delay(1000);
+        Destroy(this.gameObject);
     }
 
     private void InitAgent()
@@ -81,13 +111,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void ArriveToGoal()
-    {
-        SceneControl scene = GameObject.FindWithTag("Root").GetComponent<SceneControl>();
-        if (scene.stepTimer >= 0.1f) scene.hp--;
-        Destroy(this.gameObject);
-    }
-
     private void SplitBody()
     {
         int newHp = (int)(this.maxHp / splitCount);
@@ -98,10 +121,10 @@ public class Enemy : MonoBehaviour
         for (int i = 0; i < splitCount; i++)
         {
             GameObject clone = Instantiate(this.gameObject);
+            Enemy _class = clone.GetComponent<Enemy>();
             clone.transform.localScale = newSize;
             float posOffset = (i - 1) * Random.Range(0.01f, 0.15f);
             clone.transform.position = new Vector3(pos.x + posOffset, pos.y + posOffset, pos.z + posOffset);
-            Enemy _class = clone.GetComponent<Enemy>();
             _class.hp = newHp;
             _class.splitCount = 0;
             _class.speed = newSpeed;

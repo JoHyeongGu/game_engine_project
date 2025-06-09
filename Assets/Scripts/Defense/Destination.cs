@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class Destination : MonoBehaviour
 {
-    void OnCollisionEnter(Collision other)
+    private SceneControl scene;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        scene = GameObject.FindWithTag("Root").GetComponent<SceneControl>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            SceneControl scene = GameObject.FindWithTag("Root").GetComponent<SceneControl>();
-            if (scene.stepTimer >= 0.1f) scene.hp--;
+            audioSource.Play();
+            scene.hp--;
         }
     }
 }

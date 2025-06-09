@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Audio;
+using System.Threading.Tasks;
 
 public class SettingUI : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class SettingUI : MonoBehaviour
     public Texture2D buttonNormal, buttonHover, buttonActive;
     public Texture2D sliderBackground;
     public Texture2D sliderThumb;
+    public AudioMixer audioMixer;
 
     private GUIStyle windowStyle;
     private GUIStyle buttonStyle;
@@ -18,9 +21,39 @@ public class SettingUI : MonoBehaviour
     private GUIStyle sliderThumbStyle;
 
     private Rect windowRect;
-    private float volume = 1.0f;
-    private bool previousAudioListenerPaused = false;
+    private static float bgmVolume = 0.45f;
+    private static float sfxVolume = 0.5f;
     private bool isDraggingSlider = false;
+
+    public static SettingUI Instance { get; private set; }
+    private static readonly object _lock = new object();
+
+    protected virtual void Awake()
+    {
+        SetInstance();
+    }
+
+    void Start()
+    {
+        SetBgmVolume();
+        SetSFXVolume();
+    }
+
+    protected void SetInstance()
+    {
+        lock (_lock)
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 
     private readonly Vector2Int[] resolutions =
     {
@@ -32,6 +65,16 @@ public class SettingUI : MonoBehaviour
     };
     private readonly float baseHeight = 1080f;
     private float uiScale = 1f;
+
+    private void SetBgmVolume()
+    {
+        audioMixer.SetFloat("BGM", Mathf.Log10(bgmVolume) * 20);
+    }
+
+    private void SetSFXVolume()
+    {
+        audioMixer.SetFloat("SFX", Mathf.Log10(sfxVolume) * 20);
+    }
 
     private void OnGUI()
     {
@@ -146,52 +189,39 @@ public class SettingUI : MonoBehaviour
         GUILayout.Space(Mathf.RoundToInt(50 * uiScale));
         GUILayout.Label("배경음악 볼륨", labelStyle);
 
-        float newVolume = GUILayout.HorizontalSlider(volume, 0f, 1f, sliderStyle, sliderThumbStyle);
-        if (newVolume != volume)
+        float newBgm = GUILayout.HorizontalSlider(bgmVolume, 0.0001f, 1f, sliderStyle, sliderThumbStyle);
+        if (newBgm != bgmVolume)
         {
             if (!isDraggingSlider)
             {
                 isDraggingSlider = true;
-                previousAudioListenerPaused = AudioListener.pause;
-                AudioListener.pause = false;
             }
-
-            volume = newVolume;
-
-            AudioSource bgm = GameObject.Find("BGM")?.GetComponent<AudioSource>();
-            if (bgm != null)
-                bgm.volume = volume;
+            bgmVolume = newBgm;
+            SetBgmVolume();
         }
 
         if (isDraggingSlider && Event.current.type == EventType.MouseUp)
         {
-            AudioListener.pause = previousAudioListenerPaused;
             isDraggingSlider = false;
         }
 
         GUILayout.Space(Mathf.RoundToInt(10 * uiScale));
         GUILayout.Label("효과음 볼륨", labelStyle);
 
-        float newVolume2 = GUILayout.HorizontalSlider(volume, 0f, 1f, sliderStyle, sliderThumbStyle);
-        if (newVolume2 != volume)
+        float newSfx = GUILayout.HorizontalSlider(sfxVolume, 0.0001f, 1f, sliderStyle, sliderThumbStyle);
+        if (newSfx != sfxVolume)
         {
             if (!isDraggingSlider)
             {
                 isDraggingSlider = true;
-                previousAudioListenerPaused = AudioListener.pause;
-                AudioListener.pause = false;
             }
-
-            volume = newVolume2;
-
-            AudioSource bgm = GameObject.Find("BGM")?.GetComponent<AudioSource>();
-            if (bgm != null)
-                bgm.volume = volume;
+            sfxVolume = newSfx;
+            PlaySFXSound();
+            SetSFXVolume();
         }
 
         if (isDraggingSlider && Event.current.type == EventType.MouseUp)
         {
-            AudioListener.pause = previousAudioListenerPaused;
             isDraggingSlider = false;
         }
 
@@ -230,9 +260,13 @@ public class SettingUI : MonoBehaviour
             onSetting = false;
             if (isDraggingSlider)
             {
-                AudioListener.pause = previousAudioListenerPaused;
                 isDraggingSlider = false;
             }
         }
+    }
+
+    private void PlaySFXSound()
+    {
+        this.GetComponent<AudioSource>().Play();
     }
 }

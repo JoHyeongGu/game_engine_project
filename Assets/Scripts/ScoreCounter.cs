@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-    public Vector2 posOffset = new Vector2(270.0f, 85.0f);
     public GUIStyle guistyle; // 폰트스타일
     public Dictionary<Block.COLOR, int> score = new Dictionary<Block.COLOR, int>();
     public Dictionary<Block.COLOR, Texture2D> imageDict;
+    public bool isLocked = false;
 
     void Start()
     {
@@ -25,13 +25,14 @@ public class ScoreCounter : MonoBehaviour
 
     void OnGUI()
     {
-        float x = Screen.width / 2 - 15f;
-        float y = posOffset.y;
+        float ratio = Screen.height / 1080f;
+        float x = Screen.width / 2 - 15f * ratio;
+        float y = Screen.height / 10;
         GUI.color = Color.black;
         foreach (KeyValuePair<Block.COLOR, int> data in score)
         {
             PrintScore(x, y, data);
-            y += 80;
+            y += Screen.height / 16;
         }
     }
 
@@ -78,6 +79,7 @@ public class ScoreCounter : MonoBehaviour
 
     public void PointUp(Block.COLOR key, int count = 1)
     {
+        if (isLocked) return;
         this.score[key] += count;
     }
 
